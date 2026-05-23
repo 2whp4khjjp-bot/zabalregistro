@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atl. Zabal Linense — Registro Temporada</title>
-<!-- v2025-05-23 11:42 -->
+<!-- v2025-05-23 12:10 -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -160,6 +160,15 @@ input[type=file]{display:none}
 .cert-btn{display:block;width:100%;background:transparent;border:1px solid rgba(245,208,0,.4);border-radius:3px;color:var(--ac);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:13px;cursor:pointer;text-align:center;text-decoration:none;transition:all .2s}
 .cert-btn:hover{background:rgba(245,208,0,.1);border-color:var(--ac)}
 
+/* SELECTOR TIPO */
+.tipo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.tipo-btn{background:var(--d2);border:2px solid var(--bd);border-radius:4px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:10px}
+.tipo-btn:hover{border-color:var(--g)}
+.tipo-btn.on{background:rgba(26,26,122,.15);border-color:var(--gc)}
+.tipo-btn .tipo-ico{font-size:36px}
+.tipo-btn .tipo-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;text-transform:uppercase;color:var(--tx)}
+.tipo-btn .tipo-sub{font-size:12px;color:#555;line-height:1.4}
+
 @media(max-width:500px){
   .g2{grid-template-columns:1fr}
   .g2 .f2{grid-column:span 1}
@@ -177,13 +186,71 @@ input[type=file]{display:none}
   <p class="sub">Registro Oficial · Temporada 2026/2027</p>
 </header>
 
-<div class="steps">
-  <div class="step active" id="s1"><div class="sc">1</div><div class="sl">Jugador</div></div>
-  <div class="step"        id="s2"><div class="sc">2</div><div class="sl">Tutor</div></div>
+<!-- SELECTOR TIPO — pantalla previa a los pasos -->
+<div id="tipoSelector" class="card show" style="margin-bottom:14px">
+  <div class="ct">¿Qué tipo de inscripción?</div>
+  <p class="cd">Selecciona si vas a registrar a un jugador o a un entrenador.</p>
+  <div class="tipo-grid">
+    <div class="tipo-btn" id="tipoJugador" onclick="selTipo('jugador')">
+      <div class="tipo-ico">⚽</div>
+      <div class="tipo-lbl">Jugador</div>
+      <div class="tipo-sub">Inscripción de un niño o niña</div>
+    </div>
+    <div class="tipo-btn" id="tipoEntrenador" onclick="selTipo('entrenador')">
+      <div class="tipo-ico">📋</div>
+      <div class="tipo-lbl">Entrenador</div>
+      <div class="tipo-sub">Inscripción de un técnico del club</div>
+    </div>
+  </div>
+</div>
+
+<div id="flujoFormulario" style="display:none">
+
+<div class="steps" id="stepsBar">
+  <div class="step active" id="s1"><div class="sc">1</div><div class="sl" id="sl1">Datos</div></div>
+  <div class="step"        id="s2"><div class="sc">2</div><div class="sl" id="sl2">Tutor</div></div>
   <div class="step"        id="s3"><div class="sc">3</div><div class="sl">Enviar</div></div>
 </div>
 
-<!-- ══════════ PASO 1 — JUGADOR ══════════ -->
+<!-- ══════════ PASO 1B — ENTRENADOR ══════════ -->
+<div class="card" id="pe1">
+  <div class="ct"> Datos del entrenador</div>
+  <p class="cd">Rellena los datos personales del entrenador o técnico. Los campos con <span style="color:var(--ac)">*</span> son obligatorios.</p>
+  <div class="g2">
+    <div class="fld"><label>Nombre <span class="r">*</span></label><input id="eNombre" placeholder="Nombre"></div>
+    <div class="fld"><label>Apellidos <span class="r">*</span></label><input id="eApellidos" placeholder="Apellidos"></div>
+    <div class="fld"><label>DNI / NIE <span class="r">*</span></label><input id="eDni" placeholder="00000000A"></div>
+    <div class="fld"><label>Teléfono <span class="r">*</span></label><input id="eTel" type="tel" placeholder="+34 600 000 000"></div>
+    <div class="fld f2"><label>Email <span class="r">*</span></label><input id="eEmail" type="email" placeholder="tu@email.com"></div>
+    <div class="fld f2">
+      <label>Categoría que entrena <span class="r">*</span></label>
+      <div class="cats" id="catsEntrenador">
+        <div class="cat" onclick="selCat(this)">Bebés</div>
+        <div class="cat" onclick="selCat(this)">Prebenjamín</div>
+        <div class="cat" onclick="selCat(this)">Benjamín</div>
+        <div class="cat" onclick="selCat(this)">Alevín</div>
+        <div class="cat" onclick="selCat(this)">Infantil</div>
+        <div class="cat" onclick="selCat(this)">Cadete</div>
+        <div class="cat" onclick="selCat(this)">Juvenil</div>
+      </div>
+    </div>
+    <div class="fld f2"><label>Titulación</label>
+      <select id="eTitulacion">
+        <option value="">— Selecciona —</option>
+        <option>Monitor de fútbol</option>
+        <option>Entrenador UEFA C</option>
+        <option>Entrenador UEFA B</option>
+        <option>Entrenador UEFA A</option>
+        <option>Entrenador UEFA Pro</option>
+        <option>Sin titulación</option>
+      </select>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="bback" onclick="volverTipo()">← Cambiar tipo</button>
+    <button class="bnext" onclick="irEntrenador(3)">Siguiente →</button>
+  </div>
+</div>
 <div class="card show" id="p1">
   <div class="ct"> Datos del jugador</div>
   <p class="cd">Rellena los datos del niño o niña que se inscribe. Los campos con <span style="color:var(--ac)">*</span> son obligatorios.</p>
@@ -298,7 +365,7 @@ input[type=file]{display:none}
   </div>
 
   <div class="nav">
-    <button class="bback" onclick="ir(2)">← Atrás</button>
+    <button class="bback" onclick="tipo==='entrenador'?volverAEntrenador():ir(2)">← Atrás</button>
     <a id="btnEnviar" class="bnext send" style="display:flex;align-items:center;justify-content:center;text-decoration:none" href="#" onclick="prepararMailto(event)">
       📧 Abrir correo para enviar
     </a>
@@ -347,8 +414,10 @@ input[type=file]{display:none}
   <button class="bnuevo" onclick="reiniciar()">+ Registrar otro jugador</button>
 </div>
 
+</div><!-- /flujoFormulario -->
+
 </div><!-- /wrap -->
-<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 11:42</div>
+<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 12:10</div>
 
 <script>
 /* ═══════════════════════════════════════════
@@ -369,9 +438,50 @@ const DOCS = [
 ];
 
 /* ══════════ estado ══════════ */
-let paso = 1, cat = '';
+let paso = 1, cat = '', tipo = '';
 let docsState = {};
 DOCS.forEach(d => docsState[d.id] = null);
+
+/* ══════════ selección de tipo ══════════ */
+function selTipo(t){
+  tipo = t;
+  document.getElementById('tipoJugador').classList.toggle('on', t==='jugador');
+  document.getElementById('tipoEntrenador').classList.toggle('on', t==='entrenador');
+
+  setTimeout(()=>{
+    document.getElementById('tipoSelector').style.display = 'none';
+    document.getElementById('flujoFormulario').style.display = 'block';
+
+    if(t === 'jugador'){
+      document.getElementById('sl1').textContent = 'Jugador';
+      document.getElementById('sl2').textContent = 'Tutor';
+      document.getElementById('s2').style.display = '';
+      document.getElementById('p1').classList.add('show');
+    } else {
+      document.getElementById('sl1').textContent = 'Entrenador';
+      document.getElementById('s2').style.display = 'none'; // entrenador solo tiene 2 pasos
+      document.getElementById('pe1').classList.add('show');
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 200);
+}
+
+function volverTipo(){
+  document.getElementById('flujoFormulario').style.display = 'none';
+  document.getElementById('tipoSelector').style.display = 'block';
+  document.getElementById('p1').classList.remove('show');
+  document.getElementById('pe1').classList.remove('show');
+  document.getElementById('p2').classList.remove('show');
+  document.getElementById('p3').classList.remove('show');
+  cat = ''; tipo = '';
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('.step').forEach((s,i)=>{
+    s.classList.toggle('active', i===0);
+    s.classList.remove('done');
+  });
+  paso = 1;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 /* ══════════ pasos ══════════ */
 function ir(n) {
@@ -384,6 +494,19 @@ function ir(n) {
   paso = n;
   document.getElementById('p'+n).classList.add('show');
   if (n === 3) construirResumen();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function irEntrenador(n){
+  if(!validarEntrenador()) return;
+  document.getElementById('pe1').classList.remove('show');
+  document.querySelectorAll('.step').forEach((s,i)=>{
+    s.classList.toggle('active', i===2);
+    s.classList.toggle('done',   i<2);
+  });
+  paso = 3;
+  document.getElementById('p3').classList.add('show');
+  construirResumen();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -406,22 +529,29 @@ function validar(p){
     return ok;
   }
   if(p===2) return req('tNombre') & req('tDni') & req('tTel') & req('tEmail');
-  if(p===3){
-    const faltantes = DOCS.filter(d => d.oblig && !docsState[d.id]);
-    if(faltantes.length){
-      faltantes.forEach(d => {
-        const row = document.getElementById('row_'+d.id);
-        row.classList.add('err-doc');
-        setTimeout(()=>row.classList.remove('err-doc'), 1200);
-      });
-      return false;
-    }
-    return true;
-  }
   return true;
 }
 
-/* ══════════ categorías ══════════ */
+function volverAEntrenador(){
+  document.getElementById('p3').classList.remove('show');
+  document.querySelectorAll('.step').forEach((s,i)=>{
+    s.classList.toggle('active', i===0);
+    s.classList.remove('done');
+  });
+  paso = 1;
+  document.getElementById('pe1').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function validarEntrenador(){
+  const ok = req('eNombre') & req('eApellidos') & req('eDni') & req('eTel') & req('eEmail');
+  if(!cat){
+    document.getElementById('catsEntrenador').classList.add('err');
+    setTimeout(()=>document.getElementById('catsEntrenador').classList.remove('err'), 1000);
+    return false;
+  }
+  return ok;
+}
 function selCat(el){
   document.querySelectorAll('.cat').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');
@@ -513,7 +643,14 @@ function cerrarAdmin(){
 function v(id){ return document.getElementById(id)?.value || '—'; }
 
 function construirResumen(){
-  document.getElementById('resumen').innerHTML = `
+  const esEntrenador = tipo === 'entrenador';
+  document.getElementById('resumen').innerHTML = esEntrenador ? `
+    <div class="ri"><div class="rl">Entrenador</div><div class="rv">${v('eNombre')} ${v('eApellidos')}</div></div>
+    <div class="ri"><div class="rl">DNI / NIE</div><div class="rv">${v('eDni')}</div></div>
+    <div class="ri"><div class="rl">Teléfono</div><div class="rv">${v('eTel')}</div></div>
+    <div class="ri"><div class="rl">Email</div><div class="rv">${v('eEmail')}</div></div>
+    <div class="ri"><div class="rl">Categoría</div><div class="rv">${cat||'—'}</div></div>
+    <div class="ri"><div class="rl">Titulación</div><div class="rv">${v('eTitulacion')||'No indicada'}</div></div>` : `
     <div class="ri"><div class="rl">Jugador</div><div class="rv">${v('jNombre')} ${v('jApellidos')}</div></div>
     <div class="ri"><div class="rl">Categoría</div><div class="rv">${cat||'—'}</div></div>
     <div class="ri"><div class="rl">Fecha de nacimiento</div><div class="rv">${v('jFecha')}</div></div>
@@ -531,10 +668,37 @@ function prepararMailto(e){
   e.preventDefault();
 
   const anyo  = 2026;
-  const jName = `${v('jNombre')} ${v('jApellidos')}`.trim();
-  const asunto = `Registro de Jugadores - ${cat} - ${jName}`;
+  const esEntrenador = tipo === 'entrenador';
+  const nombre = esEntrenador
+    ? `${v('eNombre')} ${v('eApellidos')}`.trim()
+    : `${v('jNombre')} ${v('jApellidos')}`.trim();
+  const tipoLabel = esEntrenador ? 'Entrenador' : 'Registro de Jugadores';
+  const asunto = `${tipoLabel} - ${cat} - ${nombre}`;
 
-  const cuerpo =
+  const cuerpo = esEntrenador ?
+`INSCRIPCIÓN ENTRENADOR TEMPORADA ${anyo}/${anyo+1}
+${CLUB_NOMBRE.toUpperCase()}
+${'─'.repeat(40)}
+
+DATOS DEL ENTRENADOR
+  Nombre:       ${v('eNombre')} ${v('eApellidos')}
+  DNI / NIE:    ${v('eDni')}
+  Teléfono:     ${v('eTel')}
+  Email:        ${v('eEmail')}
+  Categoría:    ${cat}
+  Titulación:   ${v('eTitulacion') || 'No indicada'}
+
+${'─'.repeat(40)}
+DOCUMENTOS A ADJUNTAR A ESTE CORREO
+${'─'.repeat(40)}
+  🪪 DNI / NIE del entrenador
+  📷 Foto tipo DNI (fondo blanco)
+  📜 Titulación / certificado de entrenador
+  🔍 Certificado de antecedentes penales
+
+${'─'.repeat(40)}
+Formulario web — Atl. Zabal Linense`
+  :
 `INSCRIPCIÓN TEMPORADA ${anyo}/${anyo+1}
 ${CLUB_NOMBRE.toUpperCase()}
 ${'─'.repeat(40)}
@@ -575,20 +739,40 @@ Formulario web — Atl. Zabal Linense`;
   // Guardar enlace de fallback
   document.getElementById('mailLink').href = mailto;
 
-  // Mostrar siempre el botón de certificado médico
-  const cuerpoCert =
+  // Adaptar lista de documentos según tipo
+  const listaDocs = esEntrenador
+    ? `<div style="font-size:12px;color:#666;line-height:2;margin-top:8px">
+        🪪 DNI / NIE del entrenador<br>
+        📷 Foto tipo DNI (fondo blanco)<br>
+        📜 Titulación / certificado de entrenador<br>
+        🔍 Certificado de antecedentes penales
+       </div>`
+    : `<div style="font-size:12px;color:#666;line-height:2;margin-top:8px">
+        🪪 DNI / NIE del jugador<br>
+        🪪 DNI / NIE del tutor<br>
+        📷 Foto del jugador (tipo DNI, fondo blanco)<br>
+        🏥 Certificado médico <span style="color:#444">(si lo tienes)</span>
+       </div>`;
+
+  document.querySelector('#success .ok-s').nextElementSibling.querySelector('div[style*="font-size:13px"]').innerHTML =
+    `Pulsa el icono de adjuntar 📎 en tu correo y selecciona los archivos desde tu galería de fotos o app Archivos` + listaDocs;
+
+  // Botón certificado médico solo para jugadores
+  if(!esEntrenador){
+    const cuerpoCert =
 `CERTIFICADO MÉDICO PENDIENTE
 ${CLUB_NOMBRE.toUpperCase()}
 ${'─'.repeat(40)}
 
-Jugador:   ${jName}
+Jugador:   ${nombre}
 Categoría: ${cat}
 Tutor:     ${v('tNombre')}
 
 ${'─'.repeat(40)}
 Adjunte el certificado médico a este correo y pulse Enviar.`;
-  document.getElementById('certPendiente').style.display = 'block';
-  document.getElementById('btnCert').href = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
+    document.getElementById('certPendiente').style.display = 'block';
+    document.getElementById('btnCert').href = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
+  }
 
   // Abrir correo (necesita ser llamado desde click directo del usuario)
   window.location.href = mailto;
