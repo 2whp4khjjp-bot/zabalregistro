@@ -63,11 +63,13 @@ label .r{color:var(--ac)}
 input,select,textarea{background:var(--d2);border:1px solid var(--bd);border-radius:3px;color:var(--tx);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;width:100%;transition:border-color .2s,box-shadow .2s}
 input::placeholder{color:#6b7280}
 input:focus,select:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,26,122,.12)}
-input.err{border-color:var(--rd)}
+input.err,select.err{border-color:var(--rd);box-shadow:0 0 0 3px rgba(224,52,52,.18);background:rgba(224,52,52,.06);animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 select{appearance:none;cursor:pointer}
 textarea{resize:vertical;min-height:68px}
 
-/* CATEGORÍAS */
+.cats.err{border:2px solid var(--rd);border-radius:3px;padding:6px;box-shadow:0 0 0 3px rgba(224,52,52,.18);background:rgba(224,52,52,.04);animation:shake .35s ease}
+.doc.err-doc{border-color:var(--rd);box-shadow:0 0 0 2px rgba(224,52,52,.2);background:rgba(224,52,52,.04);animation:shake .35s ease}
 .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:4px}
 .cat{background:var(--d2);border:2px solid var(--bd);border-radius:3px;color:#666;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:9px 4px;cursor:pointer;text-align:center;transition:all .2s}
 .cat:hover{border-color:var(--ac);color:var(--ac)}
@@ -341,7 +343,7 @@ input[type=file]{display:none}
 /* ═══════════════════════════════════════════
    CONFIGURACIÓN
 ═══════════════════════════════════════════ */
-let CLUB_EMAIL  = localStorage.getItem('clubEmail') || 'secretaria@mifutbolclub.es';
+let CLUB_EMAIL  = localStorage.getItem('clubEmail') || 'raulcote7@gmail.com';
 const CLUB_NOMBRE = 'Atl. Zabal Linense';
 const ADMIN_PWD   = '1234admin';   // ← cambia esta contraseña
 
@@ -349,11 +351,10 @@ const ADMIN_PWD   = '1234admin';   // ← cambia esta contraseña
    DOCUMENTOS
 ═══════════════════════════════════════════ */
 const DOCS = [
-  { id:'dniNino',  icono:'🪪', nombre:'DNI / NIE del jugador',      oblig:true  },
-  { id:'dniPadre', icono:'🪪', nombre:'DNI / NIE del tutor',         oblig:true  },
-  { id:'certMed',  icono:'🏥', nombre:'Certificado médico',          oblig:true  },
-  { id:'foto',     icono:'📷', nombre:'Foto del jugador',            oblig:true  },
-  { id:'sepa',     icono:'🏦', nombre:'Autorización bancaria (SEPA)',oblig:false },
+  { id:'dniNino',  icono:'🪪', nombre:'DNI / NIE del jugador',  oblig:true  },
+  { id:'dniPadre', icono:'🪪', nombre:'DNI / NIE del tutor',     oblig:true  },
+  { id:'certMed',  icono:'🏥', nombre:'Certificado médico',      oblig:true  },
+  { id:'foto',     icono:'📷', nombre:'Foto del jugador',        oblig:true  },
 ];
 
 /* ══════════ estado ══════════ */
@@ -376,18 +377,32 @@ function ir(n) {
 }
 
 /* ══════════ validaciones ══════════ */
-function req(id){ const el=document.getElementById(id); const ok=el.value.trim()!==''; el.classList.toggle('err',!ok); return ok; }
+function req(id){
+  const el = document.getElementById(id);
+  const ok = el.value.trim() !== '';
+  el.classList.toggle('err', !ok);
+  if(!ok) el.addEventListener('input', ()=>el.classList.remove('err'), {once:true});
+  return ok;
+}
 function validar(p){
   if(p===1){
     const ok = req('jNombre') & req('jApellidos') & req('jFecha') & req('jTalla');
-    if(!cat){ alert('Selecciona la categoría del jugador'); return false; }
+    if(!cat){
+      document.querySelector('.cats').classList.add('err');
+      setTimeout(()=>document.querySelector('.cats').classList.remove('err'), 1000);
+      return false;
+    }
     return ok;
   }
   if(p===2) return req('tNombre') & req('tDni') & req('tTel');
   if(p===3){
-    const faltantes = DOCS.filter(d => d.oblig && !docsState[d.id]).map(d => d.nombre);
+    const faltantes = DOCS.filter(d => d.oblig && !docsState[d.id]);
     if(faltantes.length){
-      alert('Faltan documentos obligatorios:\n• ' + faltantes.join('\n• '));
+      faltantes.forEach(d => {
+        const row = document.getElementById('row_'+d.id);
+        row.classList.add('err-doc');
+        setTimeout(()=>row.classList.remove('err-doc'), 1200);
+      });
       return false;
     }
     return true;
