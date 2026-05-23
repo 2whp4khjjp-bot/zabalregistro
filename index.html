@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atl. Zabal Linense — Registro Temporada</title>
-<!-- v2025-05-23 09:24 -->
+<!-- v2025-05-23 09:38 -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -354,7 +354,7 @@ input[type=file]{display:none}
 </div>
 
 </div><!-- /wrap -->
-<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 09:24</div>
+<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 09:38</div>
 
 <script>
 /* ═══════════════════════════════════════════
@@ -584,21 +584,31 @@ async function subirDrive(token, nombre, base64, mimeType){
   form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
   form.append('file', blob);
 
-  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
+  // Subir archivo y pedir id + webViewLink explícitamente
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id%2CwebViewLink', {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
     body: form
   });
-  const data = await res.json();
 
-  // Hacer público el archivo para que el club pueda verlo
-  await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
+  if(!res.ok) throw new Error(`Upload failed: ${res.status}`);
+  const data = await res.json();
+  if(!data.id) throw new Error('No file ID returned');
+
+  // Hacer público el archivo
+  const permRes = await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({ role: 'reader', type: 'anyone' })
   });
 
-  return data.webViewLink;
+  if(!permRes.ok) throw new Error(`Permissions failed: ${permRes.status}`);
+
+  // Devolver enlace directo
+  return `https://drive.google.com/file/d/${data.id}/view`;
 }
 
 async function enviarEmailJS(){
