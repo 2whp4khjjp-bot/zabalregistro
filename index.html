@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atl. Zabal Linense — Registro Temporada</title>
-<!-- v2025-05-23 11:15 -->
+<!-- v2025-05-23 11:42 -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -180,8 +180,7 @@ input[type=file]{display:none}
 <div class="steps">
   <div class="step active" id="s1"><div class="sc">1</div><div class="sl">Jugador</div></div>
   <div class="step"        id="s2"><div class="sc">2</div><div class="sl">Tutor</div></div>
-  <div class="step"        id="s3"><div class="sc">3</div><div class="sl">Docs</div></div>
-  <div class="step"        id="s4"><div class="sc">4</div><div class="sl">Enviar</div></div>
+  <div class="step"        id="s3"><div class="sc">3</div><div class="sl">Enviar</div></div>
 </div>
 
 <!-- ══════════ PASO 1 — JUGADOR ══════════ -->
@@ -250,40 +249,13 @@ input[type=file]{display:none}
   </div>
 </div>
 
-<!-- ══════════ PASO 3 — DOCUMENTOS ══════════ -->
+<!-- ══════════ PASO 3 — REVISAR Y ENVIAR ══════════ -->
 <div class="card" id="p3">
-  <div class="ct"> Documentos requeridos</div>
-  <p class="cd">Pulsa <strong style="color:var(--ac)">📎 Adjuntar</strong> en cada documento y selecciona la foto o PDF desde tu móvil. Los marcados como <strong style="color:var(--ac)">Obligatorio</strong> son necesarios para completar la inscripción.</p>
-
-  <div class="docs" id="docList">
-    <!-- los docs se renderizan desde JS -->
-  </div>
-
-  <div class="attach-note">
-    <strong>💡 ¿Cómo adjuntar?</strong>
-    Pulsa el botón <strong>📎 Adjuntar</strong> de cada documento. Puedes hacer una foto en ese momento o seleccionar una imagen ya guardada en tu móvil. También se aceptan PDFs.<br><br>
-    Al pulsar <strong>Enviar</strong> se abrirá tu app de correo con todo listo — solo tendrás que adjuntar los archivos seleccionados y pulsar Enviar.
-  </div>
-
-  <div class="nav">
-    <button class="bback" onclick="ir(2)">← Atrás</button>
-    <button class="bnext" onclick="ir(4)">Siguiente →</button>
-  </div>
-</div>
-
-<!-- ══════════ PASO 4 — ENVIAR ══════════ -->
-<div class="card" id="p4">
   <div class="ct"> Revisar y enviar</div>
-  <p class="cd">Comprueba que todo está correcto. Al pulsar "Abrir correo" se abrirá tu app de email con el mensaje ya preparado.</p>
+  <p class="cd">Comprueba que los datos son correctos y pulsa el botón. Se abrirá tu app de correo con el mensaje listo.</p>
 
   <!-- resumen datos -->
   <div class="rg" id="resumen"></div>
-
-  <!-- docs -->
-  <div id="docsResumen" style="margin-bottom:18px">
-    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444;margin-bottom:8px">Documentos</div>
-    <div class="chips" id="chipsDoc"></div>
-  </div>
 
   <!-- destino (toque largo en el icono → acceso admin) -->
   <div class="mailbox">
@@ -314,17 +286,19 @@ input[type=file]{display:none}
     </div>
   </div>
 
+  <!-- Qué ocurrirá -->
   <div class="howto">
-    <div class="howto-title">¿Cómo funciona el envío?</div>
+    <div class="howto-title">¿Qué ocurrirá al pulsar el botón?</div>
     <ol>
-      <li>Pulsa el botón — se abrirá tu <strong>app de correo</strong> con el asunto y los datos ya rellenados</li>
-      <li><strong>Adjunta los documentos</strong> que seleccionaste (los tienes en tu galería o en Archivos)</li>
-      <li>Pulsa <strong>Enviar</strong> en tu correo — el club recibirá todo</li>
+      <li>Se abrirá tu <strong>app de correo</strong> (Gmail, Outlook, Mail…) con el asunto y todos los datos ya escritos</li>
+      <li>En el correo verás la lista de documentos que debes adjuntar: <strong>DNI del jugador, DNI del tutor, foto del jugador</strong> y opcionalmente el certificado médico</li>
+      <li>Adjunta los archivos desde tu <strong>galería de fotos</strong> o app <strong>Archivos</strong></li>
+      <li>Pulsa <strong>Enviar</strong> — el club recibirá todo</li>
     </ol>
   </div>
 
   <div class="nav">
-    <button class="bback" onclick="ir(3)">← Atrás</button>
+    <button class="bback" onclick="ir(2)">← Atrás</button>
     <a id="btnEnviar" class="bnext send" style="display:flex;align-items:center;justify-content:center;text-decoration:none" href="#" onclick="prepararMailto(event)">
       📧 Abrir correo para enviar
     </a>
@@ -333,30 +307,48 @@ input[type=file]{display:none}
 
 <!-- SUCCESS -->
 <div id="success">
-  <div class="ok-c">✅</div>
-  <div class="ok-t">¡Correo listo!</div>
-  <p class="ok-s">
-    Tu app de correo se ha abierto con todos los datos del jugador.<br><br>
-    <strong style="color:var(--ac)">Antes de pulsar Enviar, adjunta los documentos:</strong>
-  </p>
-  <div id="listaAdjuntos" style="background:var(--d2);border:1px solid var(--bd);border-radius:3px;padding:14px 16px;margin:14px 0;text-align:left;font-size:13px;line-height:2;color:#888"></div>
-  <p class="ok-s" style="margin-top:8px">
-    Los tienes en tu <strong style="color:var(--tx)">galería de fotos</strong> o en la app <strong style="color:var(--tx)">Archivos</strong> de tu móvil.<br><br>
-    Si el correo no se abrió, pulsa aquí: <a id="mailLink" href="#" style="color:var(--ac)">abrir correo</a>
-  </p>
+  <div class="ok-c">📬</div>
+  <div class="ok-t">¡Correo abierto!</div>
+  <p class="ok-s">Tu app de correo se ha abierto con los datos ya escritos.<br>Sigue estos pasos para completar el envío:</p>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin:20px 0;text-align:left">
+    <div style="background:var(--d2);border:1px solid var(--bd);border-radius:3px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start">
+      <div style="background:var(--g);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--tx)">Adjunta los documentos</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;line-height:1.6">Pulsa el icono de adjuntar 📎 en tu correo y selecciona los archivos desde tu galería de fotos o app Archivos</div>
+        <div style="margin-top:8px;font-size:12px;color:#555;line-height:1.8">
+          🪪 DNI / NIE del jugador<br>
+          🪪 DNI / NIE del tutor<br>
+          📷 Foto del jugador (tipo DNI, fondo blanco)<br>
+          🏥 Certificado médico <span style="color:#444">(si lo tienes)</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--d2);border:1px solid var(--bd);border-radius:3px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start">
+      <div style="background:var(--g);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--tx)">Pulsa Enviar</div>
+        <div style="font-size:13px;color:#666;margin-top:4px">El club recibirá todos los datos y documentos en su bandeja de entrada.</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:#444;text-align:center">¿No se abrió el correo? <a id="mailLink" href="#" style="color:var(--ac)">Pulsa aquí para intentarlo de nuevo</a></p>
 
   <!-- Caja certificado médico pendiente -->
-  <div class="cert-box" id="certPendiente" style="display:none">
-    <div class="cert-box-title">📋 Certificado médico pendiente</div>
-    <p>Cuando tengas el certificado médico, pulsa el botón para abrir tu correo con el asunto ya preparado. El club podrá localizarlo fácilmente junto al resto de la documentación.</p>
-    <a id="btnCert" href="#" class="cert-btn">📎 Enviar certificado médico más tarde</a>
+  <div class="cert-box" id="certPendiente" style="display:none;margin-top:20px">
+    <div class="cert-box-title">📋 Certificado médico — enviar más tarde</div>
+    <p>Cuando lo tengas, pulsa el botón. Se abrirá tu correo con el mismo asunto para que el club lo localice fácilmente.</p>
+    <a id="btnCert" href="#" class="cert-btn">📎 Enviar certificado médico</a>
   </div>
 
   <button class="bnuevo" onclick="reiniciar()">+ Registrar otro jugador</button>
 </div>
 
 </div><!-- /wrap -->
-<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 11:15</div>
+<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 11:42</div>
 
 <script>
 /* ═══════════════════════════════════════════
@@ -391,7 +383,7 @@ function ir(n) {
   });
   paso = n;
   document.getElementById('p'+n).classList.add('show');
-  if (n === 4) construirResumen();
+  if (n === 3) construirResumen();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -529,8 +521,6 @@ function construirResumen(){
     <div class="ri"><div class="rl">Tutor</div><div class="rv">${v('tNombre')}</div></div>
     <div class="ri"><div class="rl">Teléfono</div><div class="rv">${v('tTel')}</div></div>
     <div class="ri"><div class="rl">Talla de ropa</div><div class="rv">${v('jTalla')||'—'}</div></div>`;
-  document.getElementById('chipsDoc').innerHTML = DOCS.map(d=>`
-    <span class="chip ${docsState[d.id]?'ok':'no'}">${d.icono} ${d.nombre} ${docsState[d.id]?'✓':'pendiente'}</span>`).join('');
   document.getElementById('destEmail').textContent = CLUB_EMAIL;
 }
 
@@ -544,44 +534,35 @@ function prepararMailto(e){
   const jName = `${v('jNombre')} ${v('jApellidos')}`.trim();
   const asunto = `Registro de Jugadores - ${cat} - ${jName}`;
 
-  const docsLineas = DOCS.map(d =>
-    `  ${d.icono} ${d.nombre}: ${docsState[d.id] ? '✓ ' + docsState[d.id].nombre : '⚠ PENDIENTE'}`
-  ).join('\n');
-
   const cuerpo =
-`Estimado ${CLUB_NOMBRE},
+`INSCRIPCIÓN TEMPORADA ${anyo}/${anyo+1}
+${CLUB_NOMBRE.toUpperCase()}
+${'─'.repeat(40)}
 
-Le remito la documentación de inscripción para la temporada ${anyo}/${anyo+1}.
+JUGADOR
+  Nombre:           ${v('jNombre')} ${v('jApellidos')}
+  Fecha nacimiento: ${v('jFecha')}
+  DNI / NIE:        ${v('jDni') || 'No indicado'}
+  Categoría:        ${cat}
+  Talla de ropa:    ${v('jTalla') || 'No indicada'}
 
-════════════════════════════
- DATOS DEL JUGADOR
-════════════════════════════
-Nombre:            ${v('jNombre')} ${v('jApellidos')}
-Fecha nacimiento:  ${v('jFecha')}
-DNI / NIE:         ${v('jDni') || 'No indicado'}
-Categoría:         ${cat}
-Talla de ropa:     ${v('jTalla') || 'No indicada'}
+TUTOR LEGAL
+  Nombre:           ${v('tNombre')}
+  DNI / NIE:        ${v('tDni')}
+  Teléfono:         ${v('tTel')}
+  Email:            ${v('tEmail') || 'No indicado'}
+  Relación:         ${v('tRel') || 'No indicada'}
 
-════════════════════════════
- DATOS DEL TUTOR LEGAL
-════════════════════════════
-Nombre:            ${v('tNombre')}
-DNI / NIE:         ${v('tDni')}
-Teléfono:          ${v('tTel')}
-Email:             ${v('tEmail') || 'No indicado'}
-Relación:          ${v('tRel') || 'No indicada'}
+${'─'.repeat(40)}
+DOCUMENTOS A ADJUNTAR A ESTE CORREO
+${'─'.repeat(40)}
+  🪪 DNI / NIE del jugador
+  🪪 DNI / NIE del tutor
+  📷 Foto del jugador (tipo DNI, fondo blanco)
+  🏥 Certificado médico (si dispone de él)
 
-════════════════════════════
- DOCUMENTOS A ADJUNTAR
-════════════════════════════
-⚠ IMPORTANTE: Adjunta los siguientes archivos a este correo antes de enviarlo:
-
-${docsLineas}
-
-Los archivos están en tu galería de fotos o en la app Archivos de tu móvil.
-
-════════════════════════════
-Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.`;
+${'─'.repeat(40)}
+Formulario web — Atl. Zabal Linense`;
 
   const mailto = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
@@ -591,21 +572,23 @@ Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.`;
   document.getElementById('success').style.display = 'block';
   window.scrollTo({top:0, behavior:'smooth'});
 
-  // Lista visual de archivos a adjuntar
-  const adjuntos = DOCS.filter(d => docsState[d.id]);
-  document.getElementById('listaAdjuntos').innerHTML = adjuntos.map(d =>
-    `<div style="color:var(--ac)">📎 ${d.nombre} <span style="color:#555;font-size:11px">(${docsState[d.id].nombre})</span></div>`
-  ).join('') || '<div style="color:#555">No hay archivos seleccionados</div>';
-
   // Guardar enlace de fallback
   document.getElementById('mailLink').href = mailto;
 
-  // Certificado médico pendiente
-  if(!docsState['certMed']){
-    const cuerpoCert = `Estimado ${CLUB_NOMBRE},\n\nLe adjunto el certificado médico pendiente de:\n\nJugador: ${jName}\nCategoría: ${cat}\nTutor: ${v('tNombre')}\n\n⚠ Por favor, adjunte el archivo del certificado médico a este correo antes de enviarlo.\n\nGracias.`;
-    document.getElementById('certPendiente').style.display = 'block';
-    document.getElementById('btnCert').href = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
-  }
+  // Mostrar siempre el botón de certificado médico
+  const cuerpoCert =
+`CERTIFICADO MÉDICO PENDIENTE
+${CLUB_NOMBRE.toUpperCase()}
+${'─'.repeat(40)}
+
+Jugador:   ${jName}
+Categoría: ${cat}
+Tutor:     ${v('tNombre')}
+
+${'─'.repeat(40)}
+Adjunte el certificado médico a este correo y pulse Enviar.`;
+  document.getElementById('certPendiente').style.display = 'block';
+  document.getElementById('btnCert').href = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
 
   // Abrir correo (necesita ser llamado desde click directo del usuario)
   window.location.href = mailto;
