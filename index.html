@@ -61,7 +61,7 @@ h1 em{color:var(--gc);font-style:normal}
 label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555}
 label .r{color:var(--ac)}
 input,select,textarea{background:var(--d2);border:1px solid var(--bd);border-radius:3px;color:var(--tx);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;width:100%;transition:border-color .2s,box-shadow .2s}
-input::placeholder{color:#383838}
+input::placeholder{color:#6b7280}
 input:focus,select:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,26,122,.12)}
 input.err{border-color:var(--rd)}
 select{appearance:none;cursor:pointer}
@@ -178,7 +178,7 @@ input[type=file]{display:none}
 
 <!-- ══════════ PASO 1 — JUGADOR ══════════ -->
 <div class="card show" id="p1">
-  <div class="ct"><i>👦</i> Datos del jugador</div>
+  <div class="ct"> Datos del jugador</div>
   <p class="cd">Información personal del niño/a que se inscribe.</p>
   <div class="g2">
     <div class="fld"><label>Nombre <span class="r">*</span></label><input id="jNombre" placeholder="Nombre"></div>
@@ -204,6 +204,7 @@ input[type=file]{display:none}
     <div class="fld f2">
       <label>Categoría <span class="r">*</span></label>
       <div class="cats">
+        <div class="cat" onclick="selCat(this)">Bebés</div>
         <div class="cat" onclick="selCat(this)">Prebenjamín</div>
         <div class="cat" onclick="selCat(this)">Benjamín</div>
         <div class="cat" onclick="selCat(this)">Alevín</div>
@@ -378,11 +379,19 @@ function ir(n) {
 function req(id){ const el=document.getElementById(id); const ok=el.value.trim()!==''; el.classList.toggle('err',!ok); return ok; }
 function validar(p){
   if(p===1){
-    const ok = req('jNombre') & req('jApellidos') & req('jFecha');
+    const ok = req('jNombre') & req('jApellidos') & req('jFecha') & req('jTalla');
     if(!cat){ alert('Selecciona la categoría del jugador'); return false; }
     return ok;
   }
   if(p===2) return req('tNombre') & req('tDni') & req('tTel');
+  if(p===3){
+    const faltantes = DOCS.filter(d => d.oblig && !docsState[d.id]).map(d => d.nombre);
+    if(faltantes.length){
+      alert('Faltan documentos obligatorios:\n• ' + faltantes.join('\n• '));
+      return false;
+    }
+    return true;
+  }
   return true;
 }
 
