@@ -6,6 +6,7 @@
 <title>Atl. Zabal Linense — Registro Temporada</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
   --g:  #1a1a7a;
@@ -314,13 +315,12 @@ input[type=file]{display:none}
     </div>
   </div>
 
-  <!-- cómo funciona -->
   <div class="howto">
     <div class="howto-title">¿Qué pasará al pulsar el botón?</div>
     <ol>
-      <li>Los datos y documentos se envían <strong>automáticamente</strong> al club</li>
-      <li>El club recibirá todo en su bandeja de entrada</li>
-      <li>Recibirás una <strong>confirmación</strong> en tu email</li>
+      <li>Google te pedirá permiso para subir los archivos <strong>(solo una vez)</strong></li>
+      <li>Los documentos se suben automáticamente a <strong>Google Drive del club</strong></li>
+      <li>El club recibe un email con todos los datos y <strong>enlaces directos</strong> a los documentos</li>
     </ol>
   </div>
 
@@ -338,8 +338,8 @@ input[type=file]{display:none}
   <div class="ok-c">✅</div>
   <div class="ok-t">¡Inscripción enviada!</div>
   <p class="ok-s">
-    El club ha recibido todos los datos y documentos.<br>
-    <strong style="color:var(--ac)">En breve recibirás una confirmación</strong> en <span id="confirmEmail"></span>
+    Todos los datos y documentos han llegado al club.<br>
+    <strong style="color:var(--ac)">Los archivos están guardados en Google Drive</strong> y el club ha recibido los enlaces por email.
   </p>
 
   <!-- Caja certificado médico pendiente -->
@@ -539,25 +539,104 @@ function construirResumen(){
   document.getElementById('destEmail').textContent = CLUB_EMAIL;
 }
 
-/* ══════════ envío via EmailJS ══════════ */
+/* ══════════════════════════════════════════
+   GOOGLE DRIVE + EMAILJS
+══════════════════════════════════════════ */
+const GDRIVE_CLIENT_ID  = '483510853295-b4ct82h2qm7ds863e8kfh3fidv64c1ic.apps.googleusercontent.com';
+const GDRIVE_FOLDER_ID  = '1T3lA5mh-DGHTAa-VJvmWRVua0jTVn1A-';
+const GDRIVE_SCOPE      = 'https://www.googleapis.com/auth/drive.file';
+
+let gToken = null;
+
+function setStatus(txt){
+  document.getElementById('btnEnviarSpin').textContent = txt;
+}
+
+async function obtenerToken(){
+  return new Promise((resolve, reject) => {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: GDRIVE_CLIENT_ID,
+      scope: GDRIVE_SCOPE,
+      callback: (resp) => {
+        if(resp.error) reject(resp);
+        else resolve(resp.access_token);
+      }
+    });
+    client.requestAccessToken({ prompt: 'consent' });
+  });
+}
+
+async function subirDrive(token, nombre, base64, mimeType){
+  // Convertir base64 a blob
+  const byteStr = atob(base64.split(',')[1]);
+  const arr = new Uint8Array(byteStr.length);
+  for(let i=0; i<byteStr.length; i++) arr[i] = byteStr.charCodeAt(i);
+  const blob = new Blob([arr], { type: mimeType });
+
+  const metadata = {
+    name: nombre,
+    parents: [GDRIVE_FOLDER_ID]
+  };
+
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', blob);
+
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: form
+  });
+  const data = await res.json();
+
+  // Hacer público el archivo para que el club pueda verlo
+  await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role: 'reader', type: 'anyone' })
+  });
+
+  return data.webViewLink;
+}
+
 async function enviarEmailJS(){
   const btn     = document.getElementById('btnEnviar');
   const txtBtn  = document.getElementById('btnEnviarTxt');
   const spinBtn = document.getElementById('btnEnviarSpin');
 
-  btn.disabled   = true;
+  btn.disabled  = true;
   txtBtn.style.display  = 'none';
   spinBtn.style.display = 'inline';
+  setStatus('⏳ Conectando con Google...');
 
   const anyo  = 2026;
   const jName = `${v('jNombre')} ${v('jApellidos')}`.trim();
   const asunto = `Registro de Jugadores - ${cat} - ${jName}`;
 
-  const docsLineas = DOCS.map(d =>
-    `${d.icono} ${d.nombre}: ${docsState[d.id] ? '✓ ' + docsState[d.id].nombre : '⚠ PENDIENTE'}`
-  ).join('\n');
+  try {
+    // 1. Obtener token de Google
+    const token = await obtenerToken();
 
-  const cuerpo = `Estimado ${CLUB_NOMBRE},
+    // 2. Subir cada documento a Drive
+    const enlaces = {};
+    const docsConArchivo = DOCS.filter(d => docsState[d.id]);
+    for(let i=0; i<docsConArchivo.length; i++){
+      const d = docsConArchivo[i];
+      setStatus(`⬆️ Subiendo ${i+1}/${docsConArchivo.length}...`);
+      const nombreArchivo = `${jName} - ${d.nombre} - ${d.id}${d.nombre.includes('.') ? '' : ''}`;
+      const mimeType = docsState[d.id].base64.split(';')[0].split(':')[1] || 'application/octet-stream';
+      enlaces[d.id] = await subirDrive(token, docsState[d.id].nombre, docsState[d.id].base64, mimeType);
+    }
+
+    // 3. Construir cuerpo con enlaces
+    setStatus('📧 Enviando correo...');
+    const docsLineas = DOCS.map(d => {
+      if(docsState[d.id] && enlaces[d.id])
+        return `${d.icono} ${d.nombre}: ${enlaces[d.id]}`;
+      return `${d.icono} ${d.nombre}: ⚠ NO ADJUNTADO`;
+    }).join('\n');
+
+    const cuerpo = `Estimado ${CLUB_NOMBRE},
 
 Le remito la documentación para la temporada ${anyo}/${anyo+1}.
 
@@ -575,56 +654,38 @@ Teléfono:         ${v('tTel')}
 Email:            ${v('tEmail') || 'No indicado'}
 Relación:         ${v('tRel')  || 'No indicada'}
 
---- DOCUMENTOS ---
+--- DOCUMENTOS (enlaces Google Drive) ---
 ${docsLineas}
 
 Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.`;
 
-  // Construir adjuntos en base64
-  const adjuntos = {};
-  DOCS.forEach((d, i) => {
-    if(docsState[d.id]){
-      adjuntos[`attachment_${i+1}_name`]    = docsState[d.id].nombre;
-      adjuntos[`attachment_${i+1}_data`]    = docsState[d.id].base64;
-    }
-  });
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:  CLUB_EMAIL,
+      reply_to:  v('tEmail'),
+      from_name: v('tNombre'),
+      subject:   asunto,
+      message:   cuerpo
+    });
 
-  const templateParams = {
-    to_email:    CLUB_EMAIL,
-    reply_to:    v('tEmail'),
-    from_name:   v('tNombre'),
-    subject:     asunto,
-    message:     cuerpo,
-    ...adjuntos
-  };
-
-  try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
-    // Éxito — mostrar pantalla de confirmación
+    // 4. Éxito
     document.querySelectorAll('.card').forEach(c => c.classList.remove('show'));
     document.querySelector('.steps').style.display = 'none';
     document.getElementById('success').style.display = 'block';
-    document.getElementById('confirmEmail').textContent = v('tEmail');
     window.scrollTo({top:0, behavior:'smooth'});
 
-    // Certificado médico pendiente → enlace mailto como antes
     if(!docsState['certMed']){
-      const cuerpoCert = `Estimado ${CLUB_NOMBRE},\n\nLe adjunto el certificado médico pendiente de:\n\nJugador: ${jName}\nCategoría: ${cat}\nTutor: ${v('tNombre')}\n\nPor favor adjunte el archivo antes de enviar.\n\nGracias.`;
+      const cuerpoCert = `Estimado ${CLUB_NOMBRE},\n\nLe adjunto el certificado médico pendiente de:\n\nJugador: ${jName}\nCategoría: ${cat}\nTutor: ${v('tNombre')}\n\nGracias.`;
       const mailtoConfirm = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
       document.getElementById('certPendiente').style.display = 'block';
       document.getElementById('btnCert').href = mailtoConfirm;
     }
 
   } catch(err) {
-    console.error('EmailJS error:', err);
-    // Fallback: abrir mailto si EmailJS falla
-    alert('No se pudo enviar automáticamente. Se abrirá tu gestor de correo como alternativa.');
-    const mailto = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-    window.location.href = mailto;
-    btn.disabled   = false;
+    console.error('Error:', err);
+    btn.disabled  = false;
     txtBtn.style.display  = 'inline';
     spinBtn.style.display = 'none';
+    alert('Hubo un problema al enviar. Por favor inténtalo de nuevo.');
   }
 }
 
