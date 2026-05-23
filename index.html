@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atl. Zabal Linense — Registro Temporada</title>
-<!-- v2025-05-23 09:38 -->
+<!-- v2025-05-23 10:28 -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
   --g:  #1a1a7a;
@@ -319,9 +318,9 @@ input[type=file]{display:none}
   <div class="howto">
     <div class="howto-title">¿Qué pasará al pulsar el botón?</div>
     <ol>
-      <li>Google te pedirá permiso para subir los archivos <strong>(solo una vez)</strong></li>
-      <li>Los documentos se suben automáticamente a <strong>Google Drive del club</strong></li>
-      <li>El club recibe un email con todos los datos y <strong>enlaces directos</strong> a los documentos</li>
+      <li>Los datos y documentos se envían <strong>automáticamente</strong> al club</li>
+      <li>Los archivos llegan <strong>adjuntos</strong> al correo del club</li>
+      <li>No necesitas hacer nada más</li>
     </ol>
   </div>
 
@@ -354,7 +353,7 @@ input[type=file]{display:none}
 </div>
 
 </div><!-- /wrap -->
-<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 09:38</div>
+<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 10:28</div>
 
 <script>
 /* ═══════════════════════════════════════════
@@ -542,73 +541,12 @@ function construirResumen(){
 }
 
 /* ══════════════════════════════════════════
-   GOOGLE DRIVE + EMAILJS
+   FORMSPREE — ENVÍO CON ADJUNTOS
 ══════════════════════════════════════════ */
-const GDRIVE_CLIENT_ID  = '126099263441-sjpqpfbhet9esqdpd805ahlqkaiv0pnp.apps.googleusercontent.com';
-const GDRIVE_FOLDER_ID  = '1T3lA5mh-DGHTAa-VJvmWRVua0jTVn1A-';
-const GDRIVE_SCOPE      = 'https://www.googleapis.com/auth/drive.file';
-
-let gToken = null;
+const FORMSPREE_ID = 'xdajdogv';
 
 function setStatus(txt){
   document.getElementById('btnEnviarSpin').textContent = txt;
-}
-
-async function obtenerToken(){
-  return new Promise((resolve, reject) => {
-    const client = google.accounts.oauth2.initTokenClient({
-      client_id: GDRIVE_CLIENT_ID,
-      scope: GDRIVE_SCOPE,
-      callback: (resp) => {
-        if(resp.error) reject(resp);
-        else resolve(resp.access_token);
-      }
-    });
-    client.requestAccessToken({ prompt: 'consent' });
-  });
-}
-
-async function subirDrive(token, nombre, base64, mimeType){
-  // Convertir base64 a blob
-  const byteStr = atob(base64.split(',')[1]);
-  const arr = new Uint8Array(byteStr.length);
-  for(let i=0; i<byteStr.length; i++) arr[i] = byteStr.charCodeAt(i);
-  const blob = new Blob([arr], { type: mimeType });
-
-  const metadata = {
-    name: nombre,
-    parents: [GDRIVE_FOLDER_ID]
-  };
-
-  const form = new FormData();
-  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-  form.append('file', blob);
-
-  // Subir archivo y pedir id + webViewLink explícitamente
-  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id%2CwebViewLink', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: form
-  });
-
-  if(!res.ok) throw new Error(`Upload failed: ${res.status}`);
-  const data = await res.json();
-  if(!data.id) throw new Error('No file ID returned');
-
-  // Hacer público el archivo
-  const permRes = await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ role: 'reader', type: 'anyone' })
-  });
-
-  if(!permRes.ok) throw new Error(`Permissions failed: ${permRes.status}`);
-
-  // Devolver enlace directo
-  return `https://drive.google.com/file/d/${data.id}/view`;
 }
 
 async function enviarEmailJS(){
@@ -619,67 +557,57 @@ async function enviarEmailJS(){
   btn.disabled  = true;
   txtBtn.style.display  = 'none';
   spinBtn.style.display = 'inline';
-  setStatus('⏳ Conectando con Google...');
+  setStatus('⏳ Enviando...');
 
   const anyo  = 2026;
   const jName = `${v('jNombre')} ${v('jApellidos')}`.trim();
   const asunto = `Registro de Jugadores - ${cat} - ${jName}`;
 
   try {
-    // 1. Obtener token de Google
-    const token = await obtenerToken();
+    const form = new FormData();
 
-    // 2. Subir cada documento a Drive
-    const enlaces = {};
-    const docsConArchivo = DOCS.filter(d => docsState[d.id]);
-    for(let i=0; i<docsConArchivo.length; i++){
-      const d = docsConArchivo[i];
-      setStatus(`⬆️ Subiendo ${i+1}/${docsConArchivo.length}...`);
-      const nombreArchivo = `${jName} - ${d.nombre} - ${d.id}${d.nombre.includes('.') ? '' : ''}`;
-      const mimeType = docsState[d.id].base64.split(';')[0].split(':')[1] || 'application/octet-stream';
-      enlaces[d.id] = await subirDrive(token, docsState[d.id].nombre, docsState[d.id].base64, mimeType);
-    }
+    // Campos de texto
+    form.append('_subject',        asunto);
+    form.append('_replyto',        v('tEmail'));
+    form.append('jugador_nombre',  `${v('jNombre')} ${v('jApellidos')}`);
+    form.append('jugador_fecha',   v('jFecha'));
+    form.append('jugador_dni',     v('jDni') || 'No indicado');
+    form.append('jugador_categoria', cat);
+    form.append('jugador_talla',   v('jTalla') || 'No indicada');
+    form.append('tutor_nombre',    v('tNombre'));
+    form.append('tutor_dni',       v('tDni'));
+    form.append('tutor_telefono',  v('tTel'));
+    form.append('tutor_email',     v('tEmail') || 'No indicado');
+    form.append('tutor_relacion',  v('tRel')   || 'No indicada');
+    form.append('temporada',       `${anyo}/${anyo+1}`);
 
-    // 3. Construir cuerpo con enlaces
-    setStatus('📧 Enviando correo...');
-    const docsLineas = DOCS.map(d => {
-      if(docsState[d.id] && enlaces[d.id])
-        return `${d.icono} ${d.nombre}: ${enlaces[d.id]}`;
-      return `${d.icono} ${d.nombre}: ⚠ NO ADJUNTADO`;
-    }).join('\n');
-
-    const cuerpo = `Estimado ${CLUB_NOMBRE},
-
-Le remito la documentación para la temporada ${anyo}/${anyo+1}.
-
---- DATOS DEL JUGADOR ---
-Nombre:           ${v('jNombre')} ${v('jApellidos')}
-Fecha nacimiento: ${v('jFecha')}
-DNI / NIE:        ${v('jDni') || 'No indicado'}
-Categoría:        ${cat}
-Talla de ropa:    ${v('jTalla') || 'No indicada'}
-
---- DATOS DEL TUTOR LEGAL ---
-Nombre:           ${v('tNombre')}
-DNI / NIE:        ${v('tDni')}
-Teléfono:         ${v('tTel')}
-Email:            ${v('tEmail') || 'No indicado'}
-Relación:         ${v('tRel')  || 'No indicada'}
-
---- DOCUMENTOS (enlaces Google Drive) ---
-${docsLineas}
-
-Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.`;
-
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email:  CLUB_EMAIL,
-      reply_to:  v('tEmail'),
-      from_name: v('tNombre'),
-      subject:   asunto,
-      message:   cuerpo
+    // Adjuntar documentos como archivos reales
+    DOCS.forEach(d => {
+      if(docsState[d.id]){
+        const base64  = docsState[d.id].base64;
+        const mime    = base64.split(';')[0].split(':')[1] || 'application/octet-stream';
+        const byteStr = atob(base64.split(',')[1]);
+        const arr     = new Uint8Array(byteStr.length);
+        for(let i=0; i<byteStr.length; i++) arr[i] = byteStr.charCodeAt(i);
+        const blob = new Blob([arr], { type: mime });
+        form.append(d.id, blob, docsState[d.id].nombre);
+      }
     });
 
-    // 4. Éxito
+    setStatus('📤 Subiendo documentos...');
+
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: form
+    });
+
+    if(!res.ok){
+      const err = await res.json();
+      throw new Error(err.error || `Error ${res.status}`);
+    }
+
+    // Éxito
     document.querySelectorAll('.card').forEach(c => c.classList.remove('show'));
     document.querySelector('.steps').style.display = 'none';
     document.getElementById('success').style.display = 'block';
@@ -693,11 +621,11 @@ Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.`;
     }
 
   } catch(err) {
-    console.error('Error:', err);
+    console.error('Error Formspree:', err);
     btn.disabled  = false;
     txtBtn.style.display  = 'inline';
     spinBtn.style.display = 'none';
-    alert('Hubo un problema al enviar. Por favor inténtalo de nuevo.');
+    alert('Hubo un problema al enviar: ' + err.message + '\nPor favor inténtalo de nuevo.');
   }
 }
 
