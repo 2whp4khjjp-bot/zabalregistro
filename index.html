@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atl. Zabal Linense — Registro Temporada</title>
-<!-- v2025-05-23 10:28 -->
+<!-- v2025-05-23 11:15 -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root {
   --g:  #1a1a7a;
@@ -188,7 +187,7 @@ input[type=file]{display:none}
 <!-- ══════════ PASO 1 — JUGADOR ══════════ -->
 <div class="card show" id="p1">
   <div class="ct"> Datos del jugador</div>
-  <p class="cd">Información personal del niño/a que se inscribe.</p>
+  <p class="cd">Rellena los datos del niño o niña que se inscribe. Los campos con <span style="color:var(--ac)">*</span> son obligatorios.</p>
   <div class="g2">
     <div class="fld"><label>Nombre <span class="r">*</span></label><input id="jNombre" placeholder="Nombre"></div>
     <div class="fld"><label>Apellidos <span class="r">*</span></label><input id="jApellidos" placeholder="Apellidos"></div>
@@ -229,7 +228,7 @@ input[type=file]{display:none}
 <!-- ══════════ PASO 2 — TUTOR ══════════ -->
 <div class="card" id="p2">
   <div class="ct"> Datos del tutor legal</div>
-  <p class="cd">Padre, madre o tutor responsable del jugador.</p>
+  <p class="cd">Datos del padre, madre o tutor responsable. El email es importante — recibirás la confirmación de la inscripción en él.</p>
   <div class="g2">
     <div class="fld"><label>Nombre completo <span class="r">*</span></label><input id="tNombre" placeholder="Nombre y apellidos"></div>
     <div class="fld"><label>DNI / NIE <span class="r">*</span></label><input id="tDni" placeholder="00000000A"></div>
@@ -254,16 +253,16 @@ input[type=file]{display:none}
 <!-- ══════════ PASO 3 — DOCUMENTOS ══════════ -->
 <div class="card" id="p3">
   <div class="ct"> Documentos requeridos</div>
-  <p class="cd">Selecciona los archivos desde tu móvil (foto o PDF). Se adjuntarán al correo.</p>
+  <p class="cd">Pulsa <strong style="color:var(--ac)">📎 Adjuntar</strong> en cada documento y selecciona la foto o PDF desde tu móvil. Los marcados como <strong style="color:var(--ac)">Obligatorio</strong> son necesarios para completar la inscripción.</p>
 
   <div class="docs" id="docList">
     <!-- los docs se renderizan desde JS -->
   </div>
 
   <div class="attach-note">
-    <strong>📱 ¿Cómo funciona?</strong>
-    Los documentos <strong>obligatorios</strong> deben adjuntarse. Los opcionales se pueden enviar más tarde.
-    Al pulsar "Enviar", se abrirá tu app de correo con todo el formulario ya rellenado — solo tendrás que adjuntar los archivos antes de dar a Enviar.
+    <strong>💡 ¿Cómo adjuntar?</strong>
+    Pulsa el botón <strong>📎 Adjuntar</strong> de cada documento. Puedes hacer una foto en ese momento o seleccionar una imagen ya guardada en tu móvil. También se aceptan PDFs.<br><br>
+    Al pulsar <strong>Enviar</strong> se abrirá tu app de correo con todo listo — solo tendrás que adjuntar los archivos seleccionados y pulsar Enviar.
   </div>
 
   <div class="nav">
@@ -316,36 +315,40 @@ input[type=file]{display:none}
   </div>
 
   <div class="howto">
-    <div class="howto-title">¿Qué pasará al pulsar el botón?</div>
+    <div class="howto-title">¿Cómo funciona el envío?</div>
     <ol>
-      <li>Los datos y documentos se envían <strong>automáticamente</strong> al club</li>
-      <li>Los archivos llegan <strong>adjuntos</strong> al correo del club</li>
-      <li>No necesitas hacer nada más</li>
+      <li>Pulsa el botón — se abrirá tu <strong>app de correo</strong> con el asunto y los datos ya rellenados</li>
+      <li><strong>Adjunta los documentos</strong> que seleccionaste (los tienes en tu galería o en Archivos)</li>
+      <li>Pulsa <strong>Enviar</strong> en tu correo — el club recibirá todo</li>
     </ol>
   </div>
 
   <div class="nav">
     <button class="bback" onclick="ir(3)">← Atrás</button>
-    <button class="bnext send" id="btnEnviar" onclick="enviarEmailJS()">
-      <span id="btnEnviarTxt">📧 Enviar inscripción</span>
-      <span id="btnEnviarSpin" style="display:none">⏳ Enviando...</span>
-    </button>
+    <a id="btnEnviar" class="bnext send" style="display:flex;align-items:center;justify-content:center;text-decoration:none" href="#" onclick="prepararMailto(event)">
+      📧 Abrir correo para enviar
+    </a>
   </div>
 </div>
 
 <!-- SUCCESS -->
 <div id="success">
   <div class="ok-c">✅</div>
-  <div class="ok-t">¡Inscripción enviada!</div>
+  <div class="ok-t">¡Correo listo!</div>
   <p class="ok-s">
-    Todos los datos y documentos han llegado al club.<br>
-    <strong style="color:var(--ac)">Los archivos están guardados en Google Drive</strong> y el club ha recibido los enlaces por email.
+    Tu app de correo se ha abierto con todos los datos del jugador.<br><br>
+    <strong style="color:var(--ac)">Antes de pulsar Enviar, adjunta los documentos:</strong>
+  </p>
+  <div id="listaAdjuntos" style="background:var(--d2);border:1px solid var(--bd);border-radius:3px;padding:14px 16px;margin:14px 0;text-align:left;font-size:13px;line-height:2;color:#888"></div>
+  <p class="ok-s" style="margin-top:8px">
+    Los tienes en tu <strong style="color:var(--tx)">galería de fotos</strong> o en la app <strong style="color:var(--tx)">Archivos</strong> de tu móvil.<br><br>
+    Si el correo no se abrió, pulsa aquí: <a id="mailLink" href="#" style="color:var(--ac)">abrir correo</a>
   </p>
 
   <!-- Caja certificado médico pendiente -->
   <div class="cert-box" id="certPendiente" style="display:none">
     <div class="cert-box-title">📋 Certificado médico pendiente</div>
-    <p>Cuando tengas el certificado médico, pulsa el botón para abrir tu correo con el asunto ya preparado. Así el club podrá localizarlo fácilmente junto al resto de tu documentación.</p>
+    <p>Cuando tengas el certificado médico, pulsa el botón para abrir tu correo con el asunto ya preparado. El club podrá localizarlo fácilmente junto al resto de la documentación.</p>
     <a id="btnCert" href="#" class="cert-btn">📎 Enviar certificado médico más tarde</a>
   </div>
 
@@ -353,18 +356,9 @@ input[type=file]{display:none}
 </div>
 
 </div><!-- /wrap -->
-<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 10:28</div>
+<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 11:15</div>
 
 <script>
-/* ═══════════════════════════════════════════
-   EMAILJS — CREDENCIALES
-═══════════════════════════════════════════ */
-const EMAILJS_PUBLIC_KEY  = 'coWzY0iH9e8SQf6On';
-const EMAILJS_SERVICE_ID  = 'service_11yfnqc';
-const EMAILJS_TEMPLATE_ID = 'template_fgdl5qb';
-
-emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-
 /* ═══════════════════════════════════════════
    CONFIGURACIÓN
 ═══════════════════════════════════════════ */
@@ -541,92 +535,80 @@ function construirResumen(){
 }
 
 /* ══════════════════════════════════════════
-   FORMSPREE — ENVÍO CON ADJUNTOS
+   ENVÍO VÍA MAILTO — SIN SERVICIOS EXTERNOS
 ══════════════════════════════════════════ */
-const FORMSPREE_ID = 'xdajdogv';
-
-function setStatus(txt){
-  document.getElementById('btnEnviarSpin').textContent = txt;
-}
-
-async function enviarEmailJS(){
-  const btn     = document.getElementById('btnEnviar');
-  const txtBtn  = document.getElementById('btnEnviarTxt');
-  const spinBtn = document.getElementById('btnEnviarSpin');
-
-  btn.disabled  = true;
-  txtBtn.style.display  = 'none';
-  spinBtn.style.display = 'inline';
-  setStatus('⏳ Enviando...');
+function prepararMailto(e){
+  e.preventDefault();
 
   const anyo  = 2026;
   const jName = `${v('jNombre')} ${v('jApellidos')}`.trim();
   const asunto = `Registro de Jugadores - ${cat} - ${jName}`;
 
-  try {
-    const form = new FormData();
+  const docsLineas = DOCS.map(d =>
+    `  ${d.icono} ${d.nombre}: ${docsState[d.id] ? '✓ ' + docsState[d.id].nombre : '⚠ PENDIENTE'}`
+  ).join('\n');
 
-    // Campos de texto
-    form.append('_subject',        asunto);
-    form.append('_replyto',        v('tEmail'));
-    form.append('jugador_nombre',  `${v('jNombre')} ${v('jApellidos')}`);
-    form.append('jugador_fecha',   v('jFecha'));
-    form.append('jugador_dni',     v('jDni') || 'No indicado');
-    form.append('jugador_categoria', cat);
-    form.append('jugador_talla',   v('jTalla') || 'No indicada');
-    form.append('tutor_nombre',    v('tNombre'));
-    form.append('tutor_dni',       v('tDni'));
-    form.append('tutor_telefono',  v('tTel'));
-    form.append('tutor_email',     v('tEmail') || 'No indicado');
-    form.append('tutor_relacion',  v('tRel')   || 'No indicada');
-    form.append('temporada',       `${anyo}/${anyo+1}`);
+  const cuerpo =
+`Estimado ${CLUB_NOMBRE},
 
-    // Adjuntar documentos como archivos reales
-    DOCS.forEach(d => {
-      if(docsState[d.id]){
-        const base64  = docsState[d.id].base64;
-        const mime    = base64.split(';')[0].split(':')[1] || 'application/octet-stream';
-        const byteStr = atob(base64.split(',')[1]);
-        const arr     = new Uint8Array(byteStr.length);
-        for(let i=0; i<byteStr.length; i++) arr[i] = byteStr.charCodeAt(i);
-        const blob = new Blob([arr], { type: mime });
-        form.append(d.id, blob, docsState[d.id].nombre);
-      }
-    });
+Le remito la documentación de inscripción para la temporada ${anyo}/${anyo+1}.
 
-    setStatus('📤 Subiendo documentos...');
+════════════════════════════
+ DATOS DEL JUGADOR
+════════════════════════════
+Nombre:            ${v('jNombre')} ${v('jApellidos')}
+Fecha nacimiento:  ${v('jFecha')}
+DNI / NIE:         ${v('jDni') || 'No indicado'}
+Categoría:         ${cat}
+Talla de ropa:     ${v('jTalla') || 'No indicada'}
 
-    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-      method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: form
-    });
+════════════════════════════
+ DATOS DEL TUTOR LEGAL
+════════════════════════════
+Nombre:            ${v('tNombre')}
+DNI / NIE:         ${v('tDni')}
+Teléfono:          ${v('tTel')}
+Email:             ${v('tEmail') || 'No indicado'}
+Relación:          ${v('tRel') || 'No indicada'}
 
-    if(!res.ok){
-      const err = await res.json();
-      throw new Error(err.error || `Error ${res.status}`);
-    }
+════════════════════════════
+ DOCUMENTOS A ADJUNTAR
+════════════════════════════
+⚠ IMPORTANTE: Adjunta los siguientes archivos a este correo antes de enviarlo:
 
-    // Éxito
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('show'));
-    document.querySelector('.steps').style.display = 'none';
-    document.getElementById('success').style.display = 'block';
-    window.scrollTo({top:0, behavior:'smooth'});
+${docsLineas}
 
-    if(!docsState['certMed']){
-      const cuerpoCert = `Estimado ${CLUB_NOMBRE},\n\nLe adjunto el certificado médico pendiente de:\n\nJugador: ${jName}\nCategoría: ${cat}\nTutor: ${v('tNombre')}\n\nGracias.`;
-      const mailtoConfirm = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
-      document.getElementById('certPendiente').style.display = 'block';
-      document.getElementById('btnCert').href = mailtoConfirm;
-    }
+Los archivos están en tu galería de fotos o en la app Archivos de tu móvil.
 
-  } catch(err) {
-    console.error('Error Formspree:', err);
-    btn.disabled  = false;
-    txtBtn.style.display  = 'inline';
-    spinBtn.style.display = 'none';
-    alert('Hubo un problema al enviar: ' + err.message + '\nPor favor inténtalo de nuevo.');
+════════════════════════════
+Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.`;
+
+  const mailto = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
+  // Mostrar pantalla de éxito
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('show'));
+  document.querySelector('.steps').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // Lista visual de archivos a adjuntar
+  const adjuntos = DOCS.filter(d => docsState[d.id]);
+  document.getElementById('listaAdjuntos').innerHTML = adjuntos.map(d =>
+    `<div style="color:var(--ac)">📎 ${d.nombre} <span style="color:#555;font-size:11px">(${docsState[d.id].nombre})</span></div>`
+  ).join('') || '<div style="color:#555">No hay archivos seleccionados</div>';
+
+  // Guardar enlace de fallback
+  document.getElementById('mailLink').href = mailto;
+
+  // Certificado médico pendiente
+  if(!docsState['certMed']){
+    const cuerpoCert = `Estimado ${CLUB_NOMBRE},\n\nLe adjunto el certificado médico pendiente de:\n\nJugador: ${jName}\nCategoría: ${cat}\nTutor: ${v('tNombre')}\n\n⚠ Por favor, adjunte el archivo del certificado médico a este correo antes de enviarlo.\n\nGracias.`;
+    document.getElementById('certPendiente').style.display = 'block';
+    document.getElementById('btnCert').href = `mailto:${encodeURIComponent(CLUB_EMAIL)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoCert)}`;
   }
+
+  // Abrir correo (necesita ser llamado desde click directo del usuario)
+  window.location.href = mailto;
 }
 
 function reiniciar(){ location.reload(); }
