@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atl. Zabal Linense — Registro Temporada</title>
-<!-- v2025-05-23 12:18 -->
+<!-- v2025-05-23 12:28 -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -358,7 +358,7 @@ input[type=file]{display:none}
     <div class="howto-title">¿Qué ocurrirá al pulsar el botón?</div>
     <ol>
       <li>Se abrirá tu <strong>app de correo</strong> (Gmail, Outlook, Mail…) con el asunto y todos los datos ya escritos</li>
-      <li>En el correo verás la lista de documentos que debes adjuntar: <strong>DNI del jugador, DNI del tutor, foto del jugador</strong> y opcionalmente el certificado médico</li>
+      <li>En el correo verás la lista de documentos que debes adjuntar: <strong>DNI del jugador (anverso y reverso), DNI del tutor (anverso y reverso), foto del jugador</strong> y opcionalmente el certificado médico</li>
       <li>Adjunta los archivos desde tu <strong>galería de fotos</strong> o app <strong>Archivos</strong></li>
       <li>Pulsa <strong>Enviar</strong> — el club recibirá todo</li>
     </ol>
@@ -417,7 +417,7 @@ input[type=file]{display:none}
 </div><!-- /flujoFormulario -->
 
 </div><!-- /wrap -->
-<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 12:18</div>
+<div style="text-align:center;padding:16px 0 24px;font-size:10px;color:#2a2a2a;letter-spacing:1px">v2025-05-23 12:28</div>
 
 <script>
 /* ═══════════════════════════════════════════
@@ -691,7 +691,8 @@ DATOS DEL ENTRENADOR
 ${'─'.repeat(40)}
 DOCUMENTOS A ADJUNTAR A ESTE CORREO
 ${'─'.repeat(40)}
-  🪪 DNI / NIE del entrenador
+  🪪 DNI / NIE del entrenador — anverso
+  🪪 DNI / NIE del entrenador — reverso
   📷 Foto tipo DNI (fondo blanco)
   📜 Titulación / certificado de entrenador
   🔍 Certificado de antecedentes penales
@@ -720,8 +721,10 @@ TUTOR LEGAL
 ${'─'.repeat(40)}
 DOCUMENTOS A ADJUNTAR A ESTE CORREO
 ${'─'.repeat(40)}
-  🪪 DNI / NIE del jugador
-  🪪 DNI / NIE del tutor
+  🪪 DNI / NIE del jugador — anverso
+  🪪 DNI / NIE del jugador — reverso
+  🪪 DNI / NIE del tutor — anverso
+  🪪 DNI / NIE del tutor — reverso
   📷 Foto del jugador (tipo DNI, fondo blanco)
   🏥 Certificado médico (si dispone de él)
 
@@ -742,14 +745,17 @@ Formulario web — Atl. Zabal Linense`;
   // Adaptar lista de documentos según tipo
   const listaDocs = esEntrenador
     ? `<div style="font-size:12px;color:#666;line-height:2;margin-top:8px">
-        🪪 DNI / NIE del entrenador<br>
+        🪪 DNI / NIE del entrenador — anverso<br>
+        🪪 DNI / NIE del entrenador — reverso<br>
         📷 Foto tipo DNI (fondo blanco)<br>
         📜 Titulación / certificado de entrenador<br>
         🔍 Certificado de antecedentes penales
        </div>`
     : `<div style="font-size:12px;color:#666;line-height:2;margin-top:8px">
-        🪪 DNI / NIE del jugador<br>
-        🪪 DNI / NIE del tutor<br>
+        🪪 DNI / NIE del jugador — anverso<br>
+        🪪 DNI / NIE del jugador — reverso<br>
+        🪪 DNI / NIE del tutor — anverso<br>
+        🪪 DNI / NIE del tutor — reverso<br>
         📷 Foto del jugador (tipo DNI, fondo blanco)<br>
         🏥 Certificado médico <span style="color:#444">(si lo tienes)</span>
        </div>`;
