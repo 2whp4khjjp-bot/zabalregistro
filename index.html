@@ -582,6 +582,98 @@ input[type="file"] { display: none; }
   color: var(--azul);
 }
 
+
+/* ══════════ PANTALLA SELECTOR ══════════ */
+#selector {
+  min-height: calc(100vh - 74px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: var(--fondo);
+}
+.selector-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.selector-sub {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--texto);
+  text-align: center;
+  margin-bottom: 32px;
+  line-height: 1.4;
+}
+.selector-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 560px;
+}
+@media (max-width: 420px) {
+  .selector-btns { grid-template-columns: 1fr; max-width: 320px; }
+}
+.sel-btn {
+  background: var(--blanco);
+  border: 2px solid var(--borde);
+  border-radius: 16px;
+  padding: 32px 20px 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .18s, box-shadow .18s, transform .15s;
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.sel-btn:hover {
+  border-color: var(--azul);
+  box-shadow: 0 4px 20px rgba(26,58,107,.13);
+  transform: translateY(-2px);
+}
+.sel-btn.jugador:hover { border-color: var(--azul); }
+.sel-btn.entrenador:hover { border-color: #b08000; }
+.sel-icon {
+  font-size: 48px;
+  line-height: 1;
+}
+.sel-label {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--azul);
+  letter-spacing: -.01em;
+}
+.sel-btn.entrenador .sel-label { color: #7a5a00; }
+.sel-desc {
+  font-size: 12px;
+  color: var(--texto-suave);
+  line-height: 1.5;
+}
+.sel-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-top: 4px;
+}
+.sel-btn.jugador .sel-pill {
+  background: var(--completado-bg);
+  color: var(--azul);
+}
+.sel-btn.entrenador .sel-pill {
+  background: #fff3c4;
+  color: #7a5a00;
+}
+
 /* ══════════ FOOTER ══════════ */
 .footer {
   text-align: center;
@@ -625,15 +717,35 @@ input[type="file"] { display: none; }
   </div>
 </div>
 
+<!-- ══════════ PANTALLA SELECTOR ══════════ -->
+<div id="selector">
+  <div class="selector-title">Atlético Zabal Linense · Temporada 2025–26</div>
+  <div class="selector-sub">¿Qué tipo de inscripción<br>quieres realizar?</div>
+  <div class="selector-btns">
+    <div class="sel-btn jugador" onclick="elegirTipo('jugador')">
+      <div class="sel-icon">⚽</div>
+      <div class="sel-label">Jugador</div>
+      <div class="sel-desc">Inscripción de un jugador para la temporada</div>
+      <span class="sel-pill">Registro de jugador</span>
+    </div>
+    <div class="sel-btn entrenador" onclick="elegirTipo('entrenador')">
+      <div class="sel-icon">📋</div>
+      <div class="sel-label">Entrenador</div>
+      <div class="sel-desc">Inscripción de un nuevo entrenador del club</div>
+      <span class="sel-pill">Registro de entrenador</span>
+    </div>
+  </div>
+</div>
+
 <!-- TABS -->
-<div class="tabs-wrap" id="tabsWrap">
+<div class="tabs-wrap" id="tabsWrap" style="display:none">
   <div class="tab active" id="tab1"><span class="tab-num">1</span>Jugador</div>
   <div class="tab"        id="tab2"><span class="tab-num">2</span>Tutor</div>
   <div class="tab"        id="tab3"><span class="tab-num">3</span>Documentos</div>
   <div class="tab"        id="tab4"><span class="tab-num">4</span>Enviar</div>
 </div>
 
-<div class="content">
+<div class="content" id="mainContent" style="display:none">
 
   <!-- ══════════ PASO 0 — PORTADA ══════════ -->
   <div class="card show" id="p0">
@@ -684,24 +796,8 @@ input[type="file"] { display: none; }
         <input type="date" id="jFecha">
       </div>
       <div class="field">
-        <label>DNI / NIE</label>
-        <input type="text" id="jDni" placeholder="Opcional">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Posición habitual</label>
-        <select id="jPosicion">
-          <option value="">Seleccionar</option>
-          <option>Portero</option>
-          <option>Defensa</option>
-          <option>Centrocampista</option>
-          <option>Delantero</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Número de camiseta</label>
-        <input type="number" id="jDorsal" placeholder="Ej. 10" min="1" max="99">
+        <label>DNI / NIE <span class="req">*</span></label>
+        <input type="text" id="jDni" placeholder="12345678A">
       </div>
     </div>
     <div class="field-row full">
@@ -711,7 +807,7 @@ input[type="file"] { display: none; }
       </div>
     </div>
 
-    <div class="msg-error" id="err1">Rellena el nombre, apellidos y fecha de nacimiento.</div>
+    <div class="msg-error" id="err1">Rellena el nombre, apellidos, fecha de nacimiento y DNI / NIE del jugador.</div>
     <div class="nav">
       <button class="bback" onclick="ir(0)">← Atrás</button>
       <button class="bnext" onclick="ir(2)">Siguiente</button>
@@ -742,7 +838,7 @@ input[type="file"] { display: none; }
         <input type="text" id="tDni" placeholder="12345678A">
       </div>
       <div class="field">
-        <label>Relación con el jugador</label>
+        <label>Relación con el jugador <span class="req">*</span></label>
         <select id="tRel">
           <option value="">Seleccionar</option>
           <option>Padre</option>
@@ -758,80 +854,114 @@ input[type="file"] { display: none; }
         <input type="tel" id="tTel" placeholder="6XX XXX XXX">
       </div>
       <div class="field">
-        <label>Correo electrónico</label>
+        <label>Correo electrónico <span class="req">*</span></label>
         <input type="email" id="tEmail" placeholder="email@ejemplo.com">
       </div>
     </div>
 
-    <div class="msg-error" id="err2">Rellena el nombre, DNI y teléfono del tutor.</div>
+    <!-- CONSENTIMIENTO IMÁGENES -->
+    <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--azul);margin-bottom:8px;display:flex;align-items:center;gap:7px">
+        <span style="font-size:16px">📸</span> Consentimiento de uso de imágenes <span style="color:#c04000;font-size:12px">*</span>
+      </div>
+      <p style="font-size:12px;color:var(--texto-med);line-height:1.6;margin-bottom:10px">
+        El <strong>Atlético Zabal Linense</strong> puede obtener imágenes fotográficas y/o grabaciones en vídeo del jugador durante partidos, entrenamientos y eventos del club, con fines informativos, deportivos y de difusión en redes sociales y medios de comunicación, sin ánimo de lucro.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+          <input type="radio" name="consentImg" id="imgSi" value="si" style="margin-top:2px;accent-color:var(--azul)">
+          <span style="font-size:13px;color:var(--texto);font-weight:500">✅ <strong>Autorizo</strong> el uso de imágenes del jugador al Atlético Zabal Linense</span>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+          <input type="radio" name="consentImg" id="imgNo" value="no" style="margin-top:2px;accent-color:var(--azul)">
+          <span style="font-size:13px;color:var(--texto);font-weight:500">❌ <strong>No autorizo</strong> el uso de imágenes del jugador</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="msg-error" id="err2">Todos los campos del tutor son obligatorios.</div>
     <div class="nav">
       <button class="bback" onclick="ir(1)">← Atrás</button>
       <button class="bnext" onclick="ir(3)">Siguiente</button>
     </div>
   </div>
 
-  <!-- ══════════ PASO 3 — DOCUMENTOS ══════════ -->
+  <!-- ══════════ PASO 3 — DOCUMENTOS / INFOGRAFÍA ══════════ -->
   <div class="card" id="p3">
     <div class="card-title">
-      <div class="card-title-icon">📎</div>
-      Documentación requerida
+      <div class="card-title-icon">📋</div>
+      Documentación y siguiente paso
     </div>
-    <p class="card-desc">Adjunta los archivos. Se enviarán por correo al club.</p>
+    <p class="card-desc">Revisa qué documentos tendrás que enviar y cómo funciona el proceso de confirmación.</p>
 
-    <div class="doc-list">
-      <div class="doc-item">
-        <div class="doc-icon-wrap">🪪</div>
-        <div class="doc-info">
-          <div class="doc-name">DNI / NIE del jugador</div>
-          <div class="doc-req">Obligatorio</div>
+    <!-- LISTA DE DOCUMENTOS NECESARIOS -->
+    <div style="background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin-bottom:18px">
+      <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Documentos que deberás adjuntar al correo</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+          <span style="font-size:17px">🪪</span>
+          <div><strong>DNI / NIE del jugador</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio</span></div>
         </div>
-        <div class="doc-status pendiente" id="st_dniNino">Pendiente</div>
-        <button class="doc-upload-btn" onclick="document.getElementById('f_dniNino').click()">Subir</button>
-        <input type="file" id="f_dniNino" accept="image/*,application/pdf" onchange="docSubido('dniNino',this)">
-      </div>
-
-      <div class="doc-item">
-        <div class="doc-icon-wrap">🪪</div>
-        <div class="doc-info">
-          <div class="doc-name">DNI / NIE del tutor</div>
-          <div class="doc-req">Obligatorio</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+          <span style="font-size:17px">🪪</span>
+          <div><strong>DNI / NIE del tutor legal</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio</span></div>
         </div>
-        <div class="doc-status pendiente" id="st_dniPadre">Pendiente</div>
-        <button class="doc-upload-btn" onclick="document.getElementById('f_dniPadre').click()">Subir</button>
-        <input type="file" id="f_dniPadre" accept="image/*,application/pdf" onchange="docSubido('dniPadre',this)">
-      </div>
-
-      <div class="doc-item">
-        <div class="doc-icon-wrap">🏥</div>
-        <div class="doc-info">
-          <div class="doc-name">Certificado médico</div>
-          <div class="doc-req">Obligatorio</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+          <span style="font-size:17px">🏥</span>
+          <div><strong>Certificado médico</strong> <span style="color:var(--texto-suave);font-size:11px;font-weight:600">· Opcional</span></div>
         </div>
-        <div class="doc-status pendiente" id="st_certMed">Pendiente</div>
-        <button class="doc-upload-btn" onclick="document.getElementById('f_certMed').click()">Subir</button>
-        <input type="file" id="f_certMed" accept="image/*,application/pdf" onchange="docSubido('certMed',this)">
-      </div>
-
-      <div class="doc-item">
-        <div class="doc-icon-wrap">📷</div>
-        <div class="doc-info">
-          <div class="doc-name">Foto tipo DNI del jugador</div>
-          <div class="doc-req">Obligatorio · Fondo blanco</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+          <span style="font-size:17px">📷</span>
+          <div><strong>Foto tipo DNI del jugador</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio · Fondo liso</span></div>
         </div>
-        <div class="doc-status pendiente" id="st_foto">Pendiente</div>
-        <button class="doc-upload-btn" onclick="document.getElementById('f_foto').click()">Subir</button>
-        <input type="file" id="f_foto" accept="image/*" onchange="docSubido('foto',this)">
       </div>
     </div>
 
-    <div class="attach-note">
-      <strong>📱 ¿Cómo funciona?</strong> Los documentos marcados como obligatorios deben adjuntarse antes de enviar. Al pulsar "Enviar al club" se abrirá tu aplicación de correo con todo el formulario ya preparado — solo tendrás que adjuntar los archivos y pulsar enviar.
+    <!-- INFOGRAFÍA DE PASOS -->
+    <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Cómo funciona el proceso</div>
+
+    <!-- Paso A -->
+    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">1</div>
+      <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Completa el formulario y envía el correo</div>
+        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En el último paso se abrirá tu aplicación de correo con todos los datos ya escritos. <strong>Adjunta los 4 documentos</strong> indicados arriba y pulsa Enviar.</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
+
+    <!-- Paso B -->
+    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">2</div>
+      <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Confirmación inmediata de recepción</div>
+        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En cuanto el club reciba tu correo, recibirás automáticamente un <strong>correo de confirmación</strong> indicando que la solicitud ha llegado correctamente.</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
+
+    <!-- Paso C -->
+    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">3</div>
+      <div style="flex:1;background:var(--amarillo-bg);border:0.5px solid var(--amarillo-borde);border-radius:var(--radio);padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Revisión en 24–48 horas</div>
+        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">El club revisará toda la documentación. Si todo está correcto, recibirás un segundo correo en un plazo de <strong>24 a 48 horas</strong> confirmando que la inscripción está aprobada.</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
+
+    <!-- Paso D -->
+    <div style="display:flex;gap:12px;margin-bottom:6px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">4</div>
+      <div style="flex:1;background:var(--completado-bg);border:0.5px solid #b0d0f0;border-radius:var(--radio);padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Firma en las oficinas del club</div>
+        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En el correo de aprobación se indicarán los <strong>días y horarios de atención</strong> en las oficinas del club para firmar la documentación oficial y completar la inscripción.</div>
+      </div>
     </div>
 
-    <div class="msg-error" id="err3">Adjunta los 4 documentos obligatorios para continuar.</div>
-    <div class="nav">
+    <div class="nav" style="margin-top:20px">
       <button class="bback" onclick="ir(2)">← Atrás</button>
-      <button class="bnext" onclick="ir(4)">Siguiente</button>
+      <button class="bnext" onclick="ir(4)">Continuar</button>
     </div>
   </div>
 
@@ -845,7 +975,6 @@ input[type="file"] { display: none; }
 
     <div class="resumen-section" id="resumenJugador"></div>
     <div class="resumen-section" id="resumenTutor"></div>
-    <div class="resumen-section" id="resumenDocs"></div>
 
     <div class="email-display">
       Enviar a: <span id="emailDestSpan" onclick="toggleAdmin()">cargando...</span>
@@ -891,7 +1020,7 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <div class="footer">Atlético Zabal Linense · Gestión telemática · v2026-05-28</div>
+  <div class="footer">Atlético Zabal Linense · Gestión telemática · v2026-05-29</div>
 </div><!-- /content -->
 
 <script>
@@ -955,20 +1084,17 @@ function validar(p){
     return true;
   }
   if(p===1){
-    const ok = req('jNombre')&req('jApellidos')&req('jFecha');
+    const ok = req('jNombre')&req('jApellidos')&req('jFecha')&req('jDni');
     if(!ok) document.getElementById('err1').classList.add('visible');
     return !!ok;
   }
   if(p===2){
-    const ok = req('tNombre')&req('tApellidos')&req('tDni')&req('tTel');
+    const consentOk = document.querySelector('input[name="consentImg"]:checked');
+    const ok = req('tNombre')&req('tApellidos')&req('tDni')&req('tTel')&req('tRel')&req('tEmail')&(consentOk?1:0);
     if(!ok) document.getElementById('err2').classList.add('visible');
     return !!ok;
   }
-  if(p===3){
-    const todos = Object.values(docsState).every(d=>d!==null);
-    if(!todos) document.getElementById('err3').classList.add('visible');
-    return todos;
-  }
+  if(p===3){ return true; }
   return true;
 }
 
@@ -1019,8 +1145,6 @@ function construirResumen(){
     ['Fecha nacimiento',v('jFecha')],
     ['DNI / NIE',v('jDni')||'—'],
     ['Categoría', cat],
-    ['Posición',v('jPosicion')||'—'],
-    ['Dorsal',v('jDorsal')||'—'],
     ['Condiciones médicas',v('jSalud')||'—'],
   ];
   const tut = [
@@ -1029,15 +1153,10 @@ function construirResumen(){
     ['Relación',v('tRel')||'—'],
     ['Teléfono',v('tTel')],
     ['Email',v('tEmail')||'—'],
+    ['Uso de imágenes', (()=>{ const r=document.querySelector('input[name="consentImg"]:checked'); return r?(r.value==='si'?'✅ Autorizado':'❌ No autorizado'):'—'; })()],
   ];
-  const docRows = Object.entries(docsState).map(([id,d])=>{
-    const nombres={dniNino:'DNI jugador',dniPadre:'DNI tutor',certMed:'Certificado médico',foto:'Foto DNI'};
-    return [nombres[id], d?('✓ '+d.nombre):'✗ Pendiente'];
-  });
-
   document.getElementById('resumenJugador').innerHTML = seccion('Jugador', jug);
   document.getElementById('resumenTutor').innerHTML   = seccion('Tutor', tut);
-  document.getElementById('resumenDocs').innerHTML    = seccion('Documentos', docRows);
   document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
 }
 
@@ -1066,8 +1185,6 @@ Nombre:           ${v('jNombre')} ${v('jApellidos')}
 Fecha nacimiento: ${v('jFecha')}
 DNI / NIE:        ${v('jDni')||'No indicado'}
 Categoría:        ${cat}
-Posición:         ${v('jPosicion')||'—'}
-Dorsal:           ${v('jDorsal')||'—'}
 Condiciones med.: ${v('jSalud')||'—'}
 
 ──────────────────────────
@@ -1078,11 +1195,7 @@ DNI / NIE:        ${v('tDni')}
 Relación:         ${v('tRel')||'—'}
 Teléfono:         ${v('tTel')}
 Email:            ${v('tEmail')||'—'}
-
-──────────────────────────
- DOCUMENTACIÓN
-──────────────────────────
-${docsSubidos}
+Uso de imágenes:  ${(()=>{ const r=document.querySelector('input[name="consentImg"]:checked'); return r?(r.value==='si'?'AUTORIZADO':'NO AUTORIZADO'):'—'; })()}
 
 ──────────────────────────
 
@@ -1109,6 +1222,336 @@ const _ir_wrap = function(n){
   _ir_orig(n);
 };
 window.ir = _ir_wrap;
+
+/* ══════════ SELECTOR INICIAL ══════════ */
+function elegirTipo(tipo) {
+  document.getElementById('selector').style.display = 'none';
+  if (tipo === 'jugador') {
+    document.getElementById('tabsWrap').style.display = 'flex';
+    document.getElementById('mainContent').style.display = 'block';
+  } else {
+    document.getElementById('formEntrenador').style.display = 'block';
+    document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+  }
+}
+function volverSelector() {
+  document.getElementById('formEntrenador').style.display = 'none';
+  document.getElementById('tabsWrap').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('selector').style.display = 'flex';
+}
+
+/* ══════════ NAVEGACIÓN ENTRENADOR ══════════ */
+let epaso = 1;
+function eir(n) {
+  if (n > epaso && !evalidar(epaso)) return;
+  document.querySelectorAll('#formEntrenador .card').forEach(c => c.classList.remove('show'));
+  document.getElementById('ep' + n).classList.add('show');
+  epaso = n;
+  // actualizar tabs entrenador
+  for (let i = 1; i <= 4; i++) {
+    const t = document.getElementById('etab' + i);
+    if (!t) continue;
+    t.classList.remove('active', 'done');
+    if (i === n) t.classList.add('active');
+    else if (i < n) t.classList.add('done');
+  }
+  if (n === 4) econstruirResumen();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function ev(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function ereq(id) {
+  const el = document.getElementById(id);
+  if (!el || !el.value.trim()) { if (el) el.classList.add('error'); return false; }
+  el.classList.remove('error'); return true;
+}
+
+function evalidar(p) {
+  document.querySelectorAll('#formEntrenador input.error, #formEntrenador select.error')
+    .forEach(e => e.classList.remove('error'));
+  document.querySelectorAll('#formEntrenador .msg-error').forEach(e => e.classList.remove('visible'));
+  if (p === 1) {
+    const ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat');
+    if (!ok) document.getElementById('eerr1').classList.add('visible');
+    return !!ok;
+  }
+  if (p === 2) {
+    const ok = ereq('eTitulo');
+    if (!ok) document.getElementById('eerr2').classList.add('visible');
+    return !!ok;
+  }
+  return true;
+}
+
+function econstruirResumen() {
+  const datos = [
+    ['Nombre', ev('eNombre') + ' ' + ev('eApellidos')],
+    ['DNI / NIE', ev('eDni')],
+    ['Fecha nacimiento', ev('eFecha')],
+    ['Teléfono', ev('eTel')],
+    ['Email', ev('eEmail')],
+    ['Categoría', ev('eCat')],
+  ];
+  const form = [
+    ['Titulación', ev('eTitulo')],
+  ];
+  document.getElementById('eResumenDatos').innerHTML = seccion('Datos personales', datos);
+  document.getElementById('eResumenForm').innerHTML  = seccion('Formación', form);
+  document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+}
+
+function enviarEntrenador() {
+  const dest   = EMAIL_DEST;
+  const asunto = `Solicitud entrenador: ${ev('eNombre')} ${ev('eApellidos')} — ${ev('eCat')} ${new Date().getFullYear()}/${new Date().getFullYear()+1}`;
+  const cuerpo = `Estimado ${CLUB_NOMBRE},
+
+Me pongo en contacto para solicitar mi incorporación como entrenador para la temporada ${new Date().getFullYear()}/${new Date().getFullYear()+1}.
+
+──────────────────────────
+ DATOS PERSONALES
+──────────────────────────
+Nombre:           ${ev('eNombre')} ${ev('eApellidos')}
+DNI / NIE:        ${ev('eDni')}
+Fecha nacimiento: ${ev('eFecha')}
+Teléfono:         ${ev('eTel')}
+Email:            ${ev('eEmail')}
+Categoría:        ${ev('eCat')}
+
+──────────────────────────
+ FORMACIÓN Y EXPERIENCIA
+──────────────────────────
+Titulación:       ${ev('eTitulo')}
+
+──────────────────────────
+
+Por favor, adjunto a este correo:
+- DNI / NIE
+- Titulación federativa (si dispongo de ella)
+- Foto tipo DNI (fondo liso)
+- Currículum deportivo (opcional)
+
+Enviado desde el formulario web del ${CLUB_NOMBRE}.
+Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
+
+  window.location.href = `mailto:${encodeURIComponent(dest)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
+  document.getElementById('formEntrenador').querySelectorAll('.card, .tabs-wrap').forEach(el => el.style.display = 'none');
+  document.getElementById('eSuccess').style.display = 'block';
+  document.getElementById('eSuccessEmail').textContent = dest;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 </script>
+
+<!-- ══════════ FORMULARIO ENTRENADOR ══════════ -->
+<div id="formEntrenador" style="display:none">
+  <div class="tabs-wrap" style="display:flex">
+    <div class="tab active" id="etab1"><span class="tab-num">1</span>Datos</div>
+    <div class="tab"        id="etab2"><span class="tab-num">2</span>Formación</div>
+    <div class="tab"        id="etab3"><span class="tab-num">3</span>Proceso</div>
+    <div class="tab"        id="etab4"><span class="tab-num">4</span>Enviar</div>
+  </div>
+  <div class="content">
+
+    <!-- E-PASO 1 — Datos personales -->
+    <div class="card show" id="ep1">
+      <div class="card-title">
+        <div class="card-title-icon">📋</div>
+        Datos del entrenador
+      </div>
+      <p class="card-desc">Información personal del entrenador que se incorpora al club.</p>
+      <div class="field-row">
+        <div class="field">
+          <label>Nombre <span class="req">*</span></label>
+          <input type="text" id="eNombre" placeholder="Nombre">
+        </div>
+        <div class="field">
+          <label>Apellidos <span class="req">*</span></label>
+          <input type="text" id="eApellidos" placeholder="Apellidos">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>DNI / NIE <span class="req">*</span></label>
+          <input type="text" id="eDni" placeholder="12345678A">
+        </div>
+        <div class="field">
+          <label>Fecha de nacimiento <span class="req">*</span></label>
+          <input type="date" id="eFecha">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Teléfono <span class="req">*</span></label>
+          <input type="tel" id="eTel" placeholder="6XX XXX XXX">
+        </div>
+        <div class="field">
+          <label>Correo electrónico <span class="req">*</span></label>
+          <input type="email" id="eEmail" placeholder="email@ejemplo.com">
+        </div>
+      </div>
+      <div class="field-row full">
+        <div class="field">
+          <label>Categoría que entrenaría <span class="req">*</span></label>
+          <select id="eCat">
+            <option value="">Seleccionar</option>
+            <option>Bebé</option>
+            <option>Prebenjamín</option>
+            <option>Benjamín</option>
+            <option>Alevín</option>
+            <option>Infantil</option>
+            <option>Cadete</option>
+            <option>Juvenil</option>
+            <option>Varias / Por determinar</option>
+          </select>
+        </div>
+      </div>
+      <div class="msg-error" id="eerr1">Rellena todos los campos obligatorios.</div>
+      <div class="nav">
+        <button class="bback" onclick="volverSelector()">← Inicio</button>
+        <button class="bnext" onclick="eir(2)">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- E-PASO 2 — Formación -->
+    <div class="card" id="ep2">
+      <div class="card-title">
+        <div class="card-title-icon">🎓</div>
+        Formación y experiencia
+      </div>
+      <p class="card-desc">Titulación federativa y experiencia previa como entrenador.</p>
+      <div class="field-row full">
+        <div class="field">
+          <label>Titulación UEFA / RFEF <span class="req">*</span></label>
+          <select id="eTitulo">
+            <option value="">Seleccionar</option>
+            <option>Sin titulación</option>
+            <option>Monitor</option>
+            <option>UEFA C</option>
+            <option>UEFA B</option>
+            <option>UEFA A</option>
+            <option>UEFA Pro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="msg-error" id="eerr2">Selecciona al menos la titulación.</div>
+      <div class="nav">
+        <button class="bback" onclick="eir(1)">← Atrás</button>
+        <button class="bnext" onclick="eir(3)">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- E-PASO 3 — Infografía proceso -->
+    <div class="card" id="ep3">
+      <div class="card-title">
+        <div class="card-title-icon">📋</div>
+        Documentación y proceso
+      </div>
+      <p class="card-desc">Qué documentos deberás adjuntar y cómo funciona el proceso de incorporación.</p>
+
+      <div style="background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin-bottom:18px">
+        <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Documentos que deberás adjuntar al correo</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+            <span style="font-size:17px">🪪</span>
+            <div><strong>DNI / NIE</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+            <span style="font-size:17px">🎓</span>
+            <div><strong>Titulación federativa</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Si dispones de ella</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+            <span style="font-size:17px">📷</span>
+            <div><strong>Foto tipo DNI</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio · Fondo liso</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
+            <span style="font-size:17px">📄</span>
+            <div><strong>Currículum deportivo</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Opcional</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Cómo funciona el proceso</div>
+
+      <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">1</div>
+        <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
+          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Envía el formulario con los documentos</div>
+          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En el último paso se abrirá tu app de correo con todos los datos. Adjunta los documentos y pulsa Enviar.</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
+
+      <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">2</div>
+        <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
+          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Confirmación inmediata de recepción</div>
+          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">Recibirás un correo automático confirmando que la solicitud ha llegado al club.</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
+
+      <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">3</div>
+        <div style="flex:1;background:var(--amarillo-bg);border:0.5px solid var(--amarillo-borde);border-radius:var(--radio);padding:12px 14px">
+          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Revisión en 24–48 horas</div>
+          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">El club revisará tu perfil. Si todo es correcto, recibirás un segundo correo de confirmación en <strong>24 a 48 horas</strong>.</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
+
+      <div style="display:flex;gap:12px;margin-bottom:6px;align-items:flex-start">
+        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">4</div>
+        <div style="flex:1;background:var(--completado-bg);border:0.5px solid #b0d0f0;border-radius:var(--radio);padding:12px 14px">
+          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Firma en las oficinas del club</div>
+          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">El correo de aprobación incluirá los <strong>días y horarios de atención</strong> en las oficinas para firmar el contrato y completar la incorporación.</div>
+        </div>
+      </div>
+
+      <div class="nav" style="margin-top:20px">
+        <button class="bback" onclick="eir(2)">← Atrás</button>
+        <button class="bnext" onclick="eir(4)">Continuar</button>
+      </div>
+    </div>
+
+    <!-- E-PASO 4 — Enviar -->
+    <div class="card" id="ep4">
+      <div class="card-title">
+        <div class="card-title-icon">📤</div>
+        Revisar y enviar
+      </div>
+      <p class="card-desc">Comprueba los datos y envía la solicitud al club.</p>
+      <div class="resumen-section" id="eResumenDatos"></div>
+      <div class="resumen-section" id="eResumenForm"></div>
+      <div class="email-display">
+        Enviar a: <span id="eEmailDestSpan" onclick="toggleAdmin()">cargando...</span>
+      </div>
+      <button class="bcta" onclick="enviarEntrenador()">
+        Abrir correo y enviar <span class="acento">→</span>
+      </button>
+      <div class="nav" style="margin-top:10px">
+        <button class="bback" onclick="eir(3)">← Atrás</button>
+      </div>
+    </div>
+
+  </div><!-- /content entrenador -->
+
+  <!-- ÉXITO ENTRENADOR -->
+  <div id="eSuccess" style="display:none">
+    <div class="content">
+      <div class="success-card">
+        <div class="success-icon">✅</div>
+        <div class="success-title">¡Solicitud enviada!</div>
+        <p class="success-desc">Tu aplicación de correo se ha abierto con todos los datos. Recuerda adjuntar los documentos antes de pulsar Enviar.</p>
+        <div class="success-email" id="eSuccessEmail"></div>
+        <p style="font-size:12px;color:var(--texto-suave);margin-bottom:20px">Si el correo no se abrió, copia la dirección e introduce los datos manualmente.</p>
+        <button class="btn-reiniciar" onclick="location.reload()">Volver al inicio</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /formEntrenador -->
+
 </body>
 </html>
