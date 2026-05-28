@@ -800,14 +800,32 @@ input[type="file"] { display: none; }
         <input type="text" id="jDni" placeholder="12345678A">
       </div>
     </div>
-    <div class="field-row full">
+    <div class="field-row">
       <div class="field">
-        <label>Alergias / Condiciones médicas relevantes</label>
+        <label>Talla de ropa <span class="req">*</span></label>
+        <select id="jTalla">
+          <option value="">Seleccionar</option>
+          <option>2 años</option>
+          <option>4 años</option>
+          <option>6 años</option>
+          <option>8 años</option>
+          <option>10 años</option>
+          <option>12 años</option>
+          <option>14 años</option>
+          <option>XS</option>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Alergias / Condiciones médicas</label>
         <input type="text" id="jSalud" placeholder="Indicar si las hay, o dejar vacío">
       </div>
     </div>
 
-    <div class="msg-error" id="err1">Rellena el nombre, apellidos, fecha de nacimiento y DNI / NIE del jugador.</div>
+    <div class="msg-error" id="err1">Rellena el nombre, apellidos, fecha de nacimiento, DNI / NIE y talla del jugador.</div>
     <div class="nav">
       <button class="bback" onclick="ir(0)">← Atrás</button>
       <button class="bnext" onclick="ir(2)">Siguiente</button>
@@ -1004,18 +1022,27 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- ══════════ ÉXITO ══════════ -->
-  <div id="success">
+  <!-- ══════════ PANTALLA FINAL JUGADOR ══════════ -->
+  <div id="success" style="display:none">
     <div class="success-card">
-      <div class="success-icon">✅</div>
-      <div class="success-title">¡Inscripción enviada!</div>
+      <div class="success-icon" style="background:#e67e00;border-color:var(--amarillo)">📧</div>
+      <div class="success-title" style="color:#b85c00">¡Revisa tu correo antes de enviar!</div>
       <p class="success-desc">
-        Tu aplicación de correo se ha abierto con todos los datos. Recuerda adjuntar los documentos antes de pulsar Enviar.
+        Se ha abierto la aplicación de correo con todos los datos del formulario ya escritos.<br><br>
+        <strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong>
       </p>
-      <div class="success-email" id="successEmailInfo"></div>
-      <p style="font-size:12px;color:var(--texto-suave);margin-bottom:20px">
-        Si el correo no se abrió, copia la dirección anterior y envía los datos manualmente.
-      </p>
+      <div style="text-align:left;background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin:12px 0 18px">
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🪪</span> <strong>DNI / NIE del jugador</strong></div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🪪</span> <strong>DNI / NIE del tutor legal</strong></div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🏥</span> <strong>Certificado médico</strong> <span style="font-size:11px;color:var(--texto-suave)">(si lo tienes)</span></div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>📷</span> <strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
+        </div>
+      </div>
+      <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:11px 14px;font-size:12px;color:#7a5a00;margin-bottom:18px;line-height:1.6">
+        📨 Envía el correo a <strong id="successEmailInfo" style="color:var(--azul)"></strong>.<br>
+        Si el correo no se abrió, abre tu app de correo manualmente y adjunta los archivos a esa dirección.
+      </div>
       <button class="btn-reiniciar" onclick="reiniciar()">Nueva inscripción</button>
     </div>
   </div>
@@ -1084,7 +1111,7 @@ function validar(p){
     return true;
   }
   if(p===1){
-    const ok = req('jNombre')&req('jApellidos')&req('jFecha')&req('jDni');
+    const ok = req('jNombre')&req('jApellidos')&req('jFecha')&req('jDni')&req('jTalla');
     if(!ok) document.getElementById('err1').classList.add('visible');
     return !!ok;
   }
@@ -1145,6 +1172,7 @@ function construirResumen(){
     ['Fecha nacimiento',v('jFecha')],
     ['DNI / NIE',v('jDni')||'—'],
     ['Categoría', cat],
+    ['Talla', v('jTalla')||'—'],
     ['Condiciones médicas',v('jSalud')||'—'],
   ];
   const tut = [
@@ -1185,6 +1213,7 @@ Nombre:           ${v('jNombre')} ${v('jApellidos')}
 Fecha nacimiento: ${v('jFecha')}
 DNI / NIE:        ${v('jDni')||'No indicado'}
 Categoría:        ${cat}
+Talla:            ${v('jTalla')||'—'}
 Condiciones med.: ${v('jSalud')||'—'}
 
 ──────────────────────────
@@ -1272,7 +1301,7 @@ function evalidar(p) {
     .forEach(e => e.classList.remove('error'));
   document.querySelectorAll('#formEntrenador .msg-error').forEach(e => e.classList.remove('visible'));
   if (p === 1) {
-    const ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat');
+    const ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla');
     if (!ok) document.getElementById('eerr1').classList.add('visible');
     return !!ok;
   }
@@ -1292,6 +1321,7 @@ function econstruirResumen() {
     ['Teléfono', ev('eTel')],
     ['Email', ev('eEmail')],
     ['Categoría', ev('eCat')],
+    ['Talla', ev('eTalla')],
   ];
   const form = [
     ['Titulación', ev('eTitulo')],
@@ -1317,6 +1347,7 @@ Fecha nacimiento: ${ev('eFecha')}
 Teléfono:         ${ev('eTel')}
 Email:            ${ev('eEmail')}
 Categoría:        ${ev('eCat')}
+Talla:            ${ev('eTalla')||'—'}
 
 ──────────────────────────
  FORMACIÓN Y EXPERIENCIA
@@ -1391,7 +1422,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
           <input type="email" id="eEmail" placeholder="email@ejemplo.com">
         </div>
       </div>
-      <div class="field-row full">
+      <div class="field-row">
         <div class="field">
           <label>Categoría que entrenaría <span class="req">*</span></label>
           <select id="eCat">
@@ -1404,6 +1435,17 @@ Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
             <option>Cadete</option>
             <option>Juvenil</option>
             <option>Varias / Por determinar</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Talla de ropa <span class="req">*</span></label>
+          <select id="eTalla">
+            <option value="">Seleccionar</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+            <option>XXL</option>
           </select>
         </div>
       </div>
@@ -1538,15 +1580,28 @@ Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
 
   </div><!-- /content entrenador -->
 
-  <!-- ÉXITO ENTRENADOR -->
+  <!-- PANTALLA FINAL ENTRENADOR -->
   <div id="eSuccess" style="display:none">
     <div class="content">
       <div class="success-card">
-        <div class="success-icon">✅</div>
-        <div class="success-title">¡Solicitud enviada!</div>
-        <p class="success-desc">Tu aplicación de correo se ha abierto con todos los datos. Recuerda adjuntar los documentos antes de pulsar Enviar.</p>
-        <div class="success-email" id="eSuccessEmail"></div>
-        <p style="font-size:12px;color:var(--texto-suave);margin-bottom:20px">Si el correo no se abrió, copia la dirección e introduce los datos manualmente.</p>
+        <div class="success-icon" style="background:#e67e00;border-color:var(--amarillo)">📧</div>
+        <div class="success-title" style="color:#b85c00">¡Revisa tu correo antes de enviar!</div>
+        <p class="success-desc">
+          Se ha abierto la aplicación de correo con todos los datos del formulario ya escritos.<br><br>
+          <strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong>
+        </p>
+        <div style="text-align:left;background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin:12px 0 18px">
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🪪</span> <strong>DNI / NIE</strong></div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🎓</span> <strong>Titulación federativa</strong> <span style="font-size:11px;color:var(--texto-suave)">(si dispones de ella)</span></div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>📷</span> <strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>📄</span> <strong>Currículum deportivo</strong> <span style="font-size:11px;color:var(--texto-suave)">(opcional)</span></div>
+          </div>
+        </div>
+        <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:11px 14px;font-size:12px;color:#7a5a00;margin-bottom:18px;line-height:1.6">
+          📨 Envía el correo a <strong id="eSuccessEmail" style="color:var(--azul)"></strong>.<br>
+          Si el correo no se abrió, abre tu app de correo manualmente y adjunta los archivos a esa dirección.
+        </div>
         <button class="btn-reiniciar" onclick="location.reload()">Volver al inicio</button>
       </div>
     </div>
