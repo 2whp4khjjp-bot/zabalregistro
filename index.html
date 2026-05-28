@@ -64,18 +64,14 @@ body {
   flex: 1;
 }
 .topbar-escudo {
-  width: 46px;
-  height: 46px;
-  background: var(--amarillo);
-  border-radius: 50%;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
-  border: 2px solid rgba(255,255,255,0.3);
 }
-.topbar-escudo img { width: 100%; height: 100%; object-fit: contain; }
+.topbar-escudo img { width: 54px; height: 54px; object-fit: contain; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.3)); }
 .escudo-fallback {
   font-size: 20px;
   font-weight: 900;
@@ -719,6 +715,12 @@ input[type="file"] { display: none; }
 
 <!-- ══════════ PANTALLA SELECTOR ══════════ -->
 <div id="selector">
+  <div style="margin-bottom:18px">
+    <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png"
+         alt="Escudo Atlético Zabal Linense"
+         style="width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(26,58,107,0.18))"
+         onerror="this.style.display='none'">
+  </div>
   <div class="selector-title">Atlético Zabal Linense · Temporada 2025–26</div>
   <div class="selector-sub">¿Qué tipo de inscripción<br>quieres realizar?</div>
   <div class="selector-btns">
