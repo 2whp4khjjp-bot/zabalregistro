@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atlético Zabal Linense — Inscripción</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
 <style>
 :root {
   --azul:        #1a3a6b;
@@ -733,13 +734,20 @@ input[type="file"] { display: none; }
   <div style="font-size:13px;font-weight:600;color:var(--texto-med);margin-bottom:14px;text-align:center;letter-spacing:.02em">Selecciona el tipo de registro</div>
   <div class="selector-btns">
     <div class="sel-btn jugador" onclick="elegirTipo('jugador')">
-      <div class="sel-icon"><i class="ti ti-shirt-sport" aria-hidden="true"></i></div>
+      <div class="sel-icon"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 16L16 10C16 10 18 16 29 16C40 16 42 10 42 10L52 16L46 26H40V50H18V26H12L6 16Z" stroke="#1a3a6b" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+</svg></div>
       <div class="sel-label">Jugador</div>
       <div class="sel-desc">Inscripción de un jugador para la temporada</div>
       <span class="sel-pill">Registro de jugador</span>
     </div>
     <div class="sel-btn entrenador" onclick="elegirTipo('entrenador')">
-      <div class="sel-icon"><i class="ti ti-id-badge" aria-hidden="true"></i></div>
+      <div class="sel-icon"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="8" width="38" height="48" rx="4" stroke="#7a5a00" stroke-width="2.8" fill="none"/>
+  <rect x="20" y="6" width="18" height="8" rx="3" stroke="#7a5a00" stroke-width="2.5" fill="none"/>
+  <circle cx="29" cy="26" r="7" stroke="#7a5a00" stroke-width="2.5" fill="none"/>
+  <path d="M17 44c0-6.627 5.373-8 12-8s12 1.373 12 8" stroke="#7a5a00" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg></div>
       <div class="sel-label">Entrenador</div>
       <div class="sel-desc">Inscripción de un nuevo entrenador del club</div>
       <span class="sel-pill">Registro de entrenador</span>
