@@ -1407,26 +1407,7 @@ let CONFIG_LOADED  = false;
 let paso = 0, cat = '';
 const docsState = { dniNino:null, dniPadre:null, certMed:null, foto:null };
 
-/* ══════════ arranque ══════════ */
-// Aplicar valores locales INMEDIATAMENTE (no esperar al fetch)
-aplicarTemporada();
-document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
-if (document.getElementById('eEmailDestSpan'))
-  document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
-
-// Intentar actualizar desde config.json en segundo plano
-fetch('config.json?v=' + Date.now())
-  .then(r => r.ok ? r.json() : Promise.reject())
-  .then(cfg => {
-    if (!localStorage.getItem(EMAIL_KEY) && cfg.emailDestino) EMAIL_DEST = cfg.emailDestino;
-    if (!localStorage.getItem(TEMP_KEY)  && cfg.temporada)  TEMPORADA  = cfg.temporada.replace('-', '\u2013');
-    CONFIG_LOADED = true;
-    aplicarTemporada();
-    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
-    if (document.getElementById('eEmailDestSpan'))
-      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
-  })
-  .catch(() => { /* config.json no disponible, se usan valores locales */ });
+/* arranque: ver DOMContentLoaded abajo */
 
 /* ══════════ categoría y tipo ══════════ */
 function selCat(c){
@@ -1796,11 +1777,35 @@ function limpiarMsgs() {
 
 // Inyectar botones de ayuda
 document.addEventListener('DOMContentLoaded', function() {
-  ['ayudaBtnJugador','ayudaBtnEntrenador','ayudaBtnPaso3'].forEach(id => {
-    const el = document.getElementById(id);
+
+  /* ══════════ ARRANQUE ══════════ */
+  aplicarTemporada();
+  var esp = document.getElementById('emailDestSpan');
+  if (esp) esp.textContent = EMAIL_DEST;
+  var eesp = document.getElementById('eEmailDestSpan');
+  if (eesp) eesp.textContent = EMAIL_DEST;
+
+  // Intentar actualizar desde config.json en segundo plano
+  fetch('config.json?v=' + Date.now())
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+    .then(function(cfg){
+      if (!localStorage.getItem(EMAIL_KEY) && cfg.emailDestino) EMAIL_DEST = cfg.emailDestino;
+      if (!localStorage.getItem(TEMP_KEY)  && cfg.temporada)   TEMPORADA  = cfg.temporada.replace('-', '–');
+      aplicarTemporada();
+      var e1 = document.getElementById('emailDestSpan');
+      if (e1) e1.textContent = EMAIL_DEST;
+      var e2 = document.getElementById('eEmailDestSpan');
+      if (e2) e2.textContent = EMAIL_DEST;
+    })
+    .catch(function(){ /* config.json no disponible */ });
+
+  /* ══════════ BOTONES AYUDA ══════════ */
+  ['ayudaBtnJugador','ayudaBtnEntrenador','ayudaBtnPaso3'].forEach(function(id) {
+    var el = document.getElementById(id);
     if (el) el.innerHTML = btnAyudaHTML();
   });
-  // Cerrar modal admin al pulsar fuera
+
+  /* ══════════ MODAL ADMIN ══════════ */
   var overlay = document.getElementById('adminOverlay');
   if (overlay) {
     overlay.addEventListener('click', function(e) {
