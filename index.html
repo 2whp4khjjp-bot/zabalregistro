@@ -675,6 +675,121 @@ input[type="file"] { display: none; }
   color: #7a5a00;
 }
 
+
+/* ══════════ MODAL ADMIN ══════════ */
+.admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,20,40,0.55);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.admin-overlay.visible { display: flex; }
+.admin-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(26,58,107,0.25);
+  overflow: hidden;
+}
+.admin-modal-header {
+  background: #1a3a6b;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.admin-modal-header h2 {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+.admin-modal-header .admin-close {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1;
+}
+.admin-modal-body { padding: 22px; }
+.admin-section {
+  margin-bottom: 20px;
+}
+.admin-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #5070a0;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: 8px;
+}
+.admin-input {
+  width: 100%;
+  background: #f3f6fb;
+  border: 1px solid #c8d8ee;
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  color: #0f1e35;
+  outline: none;
+  transition: border-color .15s;
+}
+.admin-input:focus { border-color: #1a3a6b; background: #fff; }
+.admin-save-btn {
+  background: #1a3a6b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+  transition: background .15s;
+}
+.admin-save-btn:hover { background: #2254a0; }
+.admin-save-btn em { color: #f5c800; font-style: normal; }
+.admin-pwd-section { margin-bottom: 18px; }
+.admin-locked { display: none; }
+.admin-locked.visible { display: block; }
+.admin-unlocked { display: none; }
+.admin-unlocked.visible { display: block; }
+.admin-msg {
+  font-size: 12px;
+  border-radius: 7px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  display: none;
+}
+.admin-msg.ok  { background: #d4eaff; color: #1a3a6b; display: block; }
+.admin-msg.err { background: #fff0f0; color: #c0392b; display: block; }
+.admin-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  color: #b0b8c8;
+  font-family: 'Outfit', sans-serif;
+  padding: 0;
+  letter-spacing: .04em;
+}
+.admin-trigger:hover { color: #5070a0; }
+
 /* ══════════ FOOTER ══════════ */
 .footer {
   text-align: center;
@@ -712,7 +827,7 @@ input[type="file"] { display: none; }
     </div>
     <div class="topbar-texts">
       <div class="topbar-club">Atlético Zabal Linense</div>
-      <div class="topbar-season">Inscripción Temporada 2025–26</div>
+      <div class="topbar-season" id="topbarSeason">Inscripción Temporada 2025–26</div>
     </div>
     <div class="topbar-badge">Registro</div>
   </div>
@@ -726,7 +841,7 @@ input[type="file"] { display: none; }
          style="width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(26,58,107,0.18))"
          onerror="this.style.display='none'">
   </div>
-  <div class="selector-title">Temporada 2025–26</div>
+  <div class="selector-title" id="selectorSeason">Temporada 2025–26</div>
   <div class="selector-sub" style="font-size:18px;font-weight:700;color:var(--azul);max-width:480px">Bienvenidos a la página de registro del<br>Atlético Zabal Linense</div>
   <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:11px 16px;font-size:13px;color:#7a5a00;margin-bottom:28px;max-width:480px;width:100%;text-align:left;line-height:1.6">
     <strong>📌 Antes de comenzar</strong>, ten a mano el <strong>DNI del jugador</strong> y el <strong>DNI del tutor legal</strong>.
@@ -1013,17 +1128,7 @@ input[type="file"] { display: none; }
     <div class="resumen-section" id="resumenTutor"></div>
 
     <div class="email-display">
-      Enviar a: <span id="emailDestSpan" onclick="toggleAdmin()">cargando...</span>
-    </div>
-
-    <div class="admin-panel" id="adminPanel">
-      <div style="font-size:12px;font-weight:600;color:var(--texto-med)">Contraseña de administrador</div>
-      <input type="password" id="adminPwd" placeholder="Contraseña">
-      <button onclick="verificarAdmin()">Verificar</button>
-      <div id="adminEmailWrap" style="display:none;display:flex;flex-direction:column;gap:6px">
-        <input type="email" id="nuevoEmail" placeholder="Nuevo correo del club">
-        <button onclick="guardarEmail()">Guardar correo</button>
-      </div>
+      Enviar a: <span id="emailDestSpan">cargando...</span>
     </div>
 
     <div class="progress-wrap" id="progressWrap">
@@ -1065,22 +1170,49 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <div class="footer">Atlético Zabal Linense · Gestión telemática · v2026-05-29</div>
+  <div class="footer">
+    Atlético Zabal Linense · Gestión telemática · v2026-05-29<br>
+    <button class="admin-trigger" onclick="abrirAdmin()" style="margin-top:6px">⚙ Administración</button>
+  </div>
 </div><!-- /content -->
 
 <script>
 /* ══════════ CONFIG ══════════ */
 const CLUB_NOMBRE  = 'Atlético Zabal Linense';
 const EMAIL_KEY    = 'zabal_email_destino';
+const TEMP_KEY     = 'zabal_temporada';
 const ADMIN_PWD    = '1234admin';
 let EMAIL_DEST     = localStorage.getItem(EMAIL_KEY) || 'direcciondeportivazabal@gmail.com';
+let TEMPORADA      = localStorage.getItem(TEMP_KEY)  || '2025–26';
+let CONFIG_LOADED  = false;
 
 /* ══════════ estado ══════════ */
 let paso = 0, cat = '';
 const docsState = { dniNino:null, dniPadre:null, certMed:null, foto:null };
 
 /* ══════════ arranque ══════════ */
-document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+/* Carga config.json del servidor; si no existe o falla, usa localStorage */
+fetch('config.json?v=' + Date.now())
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(cfg => {
+    // El servidor manda la verdad — solo sobreescribe si NO hay override local
+    if (!localStorage.getItem(EMAIL_KEY)) EMAIL_DEST = cfg.emailDestino || EMAIL_DEST;
+    else EMAIL_DEST = localStorage.getItem(EMAIL_KEY);
+    if (!localStorage.getItem(TEMP_KEY))  TEMPORADA  = (cfg.temporada  || TEMPORADA).replace('-', '\u2013');
+    else TEMPORADA = localStorage.getItem(TEMP_KEY);
+    CONFIG_LOADED = true;
+    aplicarTemporada();
+    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+    if (document.getElementById('eEmailDestSpan'))
+      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+  })
+  .catch(() => {
+    // Sin config.json: usar valores actuales (localStorage o hardcoded)
+    aplicarTemporada();
+    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+    if (document.getElementById('eEmailDestSpan'))
+      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+  });
 
 /* ══════════ categoría y tipo ══════════ */
 function selCat(c){
@@ -1155,33 +1287,7 @@ function docSubido(id, input){
   }
 }
 
-/* ══════════ admin ══════════ */
-let adminVerif = false;
-function toggleAdmin(){
-  const p = document.getElementById('adminPanel');
-  p.classList.toggle('visible');
-}
-function verificarAdmin(){
-  const pwd = document.getElementById('adminPwd').value;
-  if(pwd === ADMIN_PWD){
-    adminVerif = true;
-    document.getElementById('adminEmailWrap').style.display = 'flex';
-    document.getElementById('nuevoEmail').value = EMAIL_DEST;
-    alert('Contraseña correcta. Puedes cambiar el correo.');
-  } else {
-    alert('Contraseña incorrecta.');
-  }
-}
-function guardarEmail(){
-  if(!adminVerif){ alert('Verifica la contraseña primero.'); return; }
-  const ne = document.getElementById('nuevoEmail').value.trim();
-  if(!ne){ alert('Introduce un correo válido.'); return; }
-  EMAIL_DEST = ne;
-  localStorage.setItem(EMAIL_KEY, ne);
-  document.getElementById('emailDestSpan').textContent = ne;
-  document.getElementById('adminPanel').classList.remove('visible');
-  alert('Correo actualizado: '+ne);
-}
+
 
 /* ══════════ resumen ══════════ */
 function construirResumen(){
@@ -1203,7 +1309,28 @@ function construirResumen(){
   ];
   document.getElementById('resumenJugador').innerHTML = seccion('Jugador', jug);
   document.getElementById('resumenTutor').innerHTML   = seccion('Tutor', tut);
-  document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+  /* Carga config.json del servidor; si no existe o falla, usa localStorage */
+fetch('config.json?v=' + Date.now())
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(cfg => {
+    // El servidor manda la verdad — solo sobreescribe si NO hay override local
+    if (!localStorage.getItem(EMAIL_KEY)) EMAIL_DEST = cfg.emailDestino || EMAIL_DEST;
+    else EMAIL_DEST = localStorage.getItem(EMAIL_KEY);
+    if (!localStorage.getItem(TEMP_KEY))  TEMPORADA  = (cfg.temporada  || TEMPORADA).replace('-', '\u2013');
+    else TEMPORADA = localStorage.getItem(TEMP_KEY);
+    CONFIG_LOADED = true;
+    aplicarTemporada();
+    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+    if (document.getElementById('eEmailDestSpan'))
+      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+  })
+  .catch(() => {
+    // Sin config.json: usar valores actuales (localStorage o hardcoded)
+    aplicarTemporada();
+    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+    if (document.getElementById('eEmailDestSpan'))
+      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+  });
 }
 
 function seccion(titulo, filas){
@@ -1390,6 +1517,90 @@ Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
   document.getElementById('eSuccessEmail').textContent = dest;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+
+/* ══════════ ADMIN MODAL ══════════ */
+let adminVerificado = false;
+
+function aplicarTemporada() {
+  document.querySelectorAll('[data-temporada]').forEach(el => {
+    el.textContent = TEMPORADA;
+  });
+  document.getElementById('topbarSeason').textContent = 'Inscripción Temporada ' + TEMPORADA;
+  document.getElementById('selectorSeason').textContent = 'Temporada ' + TEMPORADA;
+}
+
+function abrirAdmin() {
+  document.getElementById('adminOverlay').classList.add('visible');
+  document.getElementById('adminTempInput').value = TEMPORADA;
+  document.getElementById('adminEmailInput').value = EMAIL_DEST;
+  actualizarPreview();
+  if (adminVerificado) mostrarConfig();
+}
+function actualizarPreview() {
+  const pre = document.getElementById('adminConfigPreview');
+  if (!pre) return;
+  pre.textContent = JSON.stringify({ temporada: TEMPORADA, emailDestino: EMAIL_DEST }, null, 2);
+}
+
+function cerrarAdmin() {
+  document.getElementById('adminOverlay').classList.remove('visible');
+  document.getElementById('adminPwdInput').value = '';
+  limpiarMsgs();
+}
+
+function verificarPwd() {
+  const pwd = document.getElementById('adminPwdInput').value;
+  const msg = document.getElementById('adminPwdMsg');
+  if (pwd === ADMIN_PWD) {
+    adminVerificado = true;
+    mostrarConfig();
+    msg.className = 'admin-msg';
+  } else {
+    msg.textContent = 'Contraseña incorrecta.';
+    msg.className = 'admin-msg err';
+  }
+}
+
+function mostrarConfig() {
+  document.getElementById('adminLocked').classList.remove('visible');
+  document.getElementById('adminUnlocked').classList.add('visible');
+  document.getElementById('adminConfig').style.display = 'block';
+}
+
+function guardarTemporada() {
+  const val = document.getElementById('adminTempInput').value.trim();
+  const msg = document.getElementById('adminTempMsg');
+  if (!val) { msg.textContent = 'Introduce una temporada válida.'; msg.className = 'admin-msg err'; return; }
+  TEMPORADA = val;
+  localStorage.setItem(TEMP_KEY, val);
+  actualizarPreview();
+  aplicarTemporada();
+  msg.innerHTML = '✅ Actualizado en este dispositivo.<br><strong>Para aplicarlo a todos los usuarios</strong>, edita <code>config.json</code> en GitHub con el valor: <strong>' + val + '</strong>';
+  msg.className = 'admin-msg ok';
+}
+
+function guardarCorreo() {
+  const val = document.getElementById('adminEmailInput').value.trim();
+  const msg = document.getElementById('adminEmailMsg');
+  if (!val) { msg.textContent = 'Introduce un correo válido.'; msg.className = 'admin-msg err'; return; }
+  EMAIL_DEST = val;
+  localStorage.setItem(EMAIL_KEY, val);
+  actualizarPreview();
+  document.getElementById('emailDestSpan').textContent = val;
+  if (document.getElementById('eEmailDestSpan')) document.getElementById('eEmailDestSpan').textContent = val;
+  msg.innerHTML = '✅ Actualizado en este dispositivo.<br><strong>Para aplicarlo a todos los usuarios</strong>, edita <code>config.json</code> en GitHub con el valor: <strong>' + val + '</strong>';
+  msg.className = 'admin-msg ok';
+}
+
+function limpiarMsgs() {
+  document.querySelectorAll('.admin-msg').forEach(m => m.className = 'admin-msg');
+}
+
+// Cerrar al pulsar fuera del modal
+document.getElementById('adminOverlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarAdmin();
+});
 
 </script>
 
@@ -1586,7 +1797,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
       <div class="resumen-section" id="eResumenDatos"></div>
       <div class="resumen-section" id="eResumenForm"></div>
       <div class="email-display">
-        Enviar a: <span id="eEmailDestSpan" onclick="toggleAdmin()">cargando...</span>
+        Enviar a: <span id="eEmailDestSpan" >cargando...</span>
       </div>
       <button class="bcta" onclick="enviarEntrenador()">
         Abrir correo y enviar <span class="acento">→</span>
@@ -1626,5 +1837,56 @@ Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
   </div>
 </div><!-- /formEntrenador -->
 
+
+<!-- ══════════ MODAL ADMIN ══════════ -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+    <div class="admin-modal-header">
+      <h2>⚙ Panel de administración</h2>
+      <button class="admin-close" onclick="cerrarAdmin()">✕</button>
+    </div>
+    <div class="admin-modal-body">
+
+      <!-- BLOQUE CONTRASEÑA -->
+      <div class="admin-pwd-section">
+        <div class="admin-section-title">Contraseña de acceso</div>
+        <div id="adminLocked" class="admin-locked visible">
+          <input class="admin-input" type="password" id="adminPwdInput" placeholder="Introduce la contraseña" onkeydown="if(event.key==='Enter')verificarPwd()">
+          <button class="admin-save-btn" onclick="verificarPwd()" style="margin-top:8px">Acceder</button>
+          <div class="admin-msg" id="adminPwdMsg"></div>
+        </div>
+        <div id="adminUnlocked" class="admin-unlocked">
+          <div style="font-size:12px;color:#1a8a2e;font-weight:600">✅ Sesión iniciada como administrador</div>
+        </div>
+      </div>
+
+      <!-- CONFIGURACIÓN (visible tras verificar) -->
+      <div id="adminConfig" style="display:none">
+
+        <div class="admin-section">
+          <div class="admin-section-title">Temporada activa</div>
+          <input class="admin-input" type="text" id="adminTempInput" placeholder="Ej. 2025–26">
+          <button class="admin-save-btn" onclick="guardarTemporada()">Guardar temporada <em>→</em></button>
+          <div class="admin-msg" id="adminTempMsg"></div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-section-title">Correo de destino</div>
+          <input class="admin-input" type="email" id="adminEmailInput" placeholder="correo@club.es">
+          <button class="admin-save-btn" onclick="guardarCorreo()">Guardar correo <em>→</em></button>
+          <div class="admin-msg" id="adminEmailMsg"></div>
+        </div>
+
+        <div style="background:#f3f6fb;border:0.5px solid #c8d8ee;border-radius:10px;padding:14px 16px">
+          <div style="font-size:11px;font-weight:700;color:#5070a0;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">🌐 Para actualizar en el servidor</div>
+          <p style="font-size:12px;color:#3a5070;line-height:1.6;margin-bottom:10px">Edita el archivo <strong>config.json</strong> en tu repositorio de GitHub con los valores actuales:</p>
+          <pre id="adminConfigPreview" style="background:#1a3a6b;color:#f5c800;border-radius:7px;padding:10px 12px;font-size:11px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;word-break:break-all"></pre>
+          <p style="font-size:11px;color:#7090b8;margin-top:8px;line-height:1.5">En GitHub: ve al archivo <code>config.json</code> → pulsa el lápiz ✏️ → edita los valores → <em>Commit changes</em>. En 1–2 minutos estará activo para todos.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
