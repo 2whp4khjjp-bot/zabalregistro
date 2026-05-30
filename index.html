@@ -581,11 +581,9 @@ input[type="file"] { display: none; }
 
 
 /* ══════════ PANTALLA SELECTOR ══════════ */
-.oculto { display: none !important; }
-#selector.oculto { display: none !important; }
+
 #selector {
   min-height: calc(100vh - 74px);
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1048,7 +1046,7 @@ input[type="file"] { display: none; }
 </div>
 
 <!-- ══════════ PANTALLA SELECTOR ══════════ -->
-<div id="selector">
+<div id="selector" style="display:flex">
   <div style="margin-bottom:18px">
     <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png"
          alt="Escudo Atlético Zabal Linense"
@@ -1593,7 +1591,7 @@ window.ir = _ir_wrap;
 
 /* ══════════ SELECTOR INICIAL ══════════ */
 function elegirTipo(tipo) {
-  document.getElementById('selector').classList.add('oculto');
+  document.getElementById('selector').style.display = 'none';
   document.getElementById('fabAyuda').style.display = 'flex';
   if (tipo === 'jugador') {
     document.getElementById('tabsWrap').style.display = 'flex';
@@ -1610,7 +1608,7 @@ function volverSelector() {
   document.getElementById('tabsWrap').style.display = 'none';
   document.getElementById('formEntrenador').style.display = 'none';
   document.getElementById('fabAyuda').style.display = 'none';
-  document.getElementById('selector').classList.remove('oculto');
+  document.getElementById('selector').style.display = 'flex';
   window.scrollTo({top:0});
 }
 
@@ -1834,7 +1832,7 @@ function abrirFaq() {
   _faqOrigen = document.getElementById('selector').style.display !== 'none' ? 'selector'
              : document.getElementById('mainContent').style.display !== 'none' ? 'jugador'
              : 'entrenador';
-  document.getElementById('selector').classList.add('oculto');
+  document.getElementById('selector').style.display = 'none';
   document.getElementById('tabsWrap').style.display      = 'none';
   document.getElementById('mainContent').style.display   = 'none';
   document.getElementById('formEntrenador').style.display= 'none';
@@ -1854,7 +1852,7 @@ function cerrarFaq() {
   } else if (_faqOrigen === 'entrenador') {
     document.getElementById('formEntrenador').style.display = 'block';
   } else {
-    document.getElementById('selector').classList.remove('oculto');
+    document.getElementById('selector').style.display = 'flex';
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
