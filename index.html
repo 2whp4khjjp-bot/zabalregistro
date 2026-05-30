@@ -1800,15 +1800,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const el = document.getElementById(id);
     if (el) el.innerHTML = btnAyudaHTML();
   });
+  // Cerrar modal admin al pulsar fuera
+  var overlay = document.getElementById('adminOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) cerrarAdmin();
+    });
+  }
 });
 
-// Cerrar al pulsar fuera del modal
-document.getElementById('adminOverlay').addEventListener('click', function(e) {
-  if (e.target === this) cerrarAdmin();
-});
+// Cerrar al pulsar fuera del modal (se registra cuando el DOM está listo)
 
 
-const YOUTUBE_URL = 'https://www.youtube.com/watch?v=PENDIENTE'; // ← cambia esto cuando tengas el vídeo
+var YOUTUBE_URL = 'https://www.youtube.com/watch?v=PENDIENTE'; // ← cambia esto cuando tengas el vídeo
 
 function btnAyudaHTML() {
   return `<a href="${YOUTUBE_URL}" target="_blank" rel="noopener" class="btn-ayuda">
