@@ -790,6 +790,217 @@ input[type="file"] { display: none; }
 }
 .admin-trigger:hover { color: #5070a0; }
 
+
+/* ══════════ BOTÓN AYUDA YOUTUBE ══════════ */
+.btn-ayuda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid #e8ecf4;
+  border-radius: var(--radio);
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--azul);
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+  margin-top: 10px;
+}
+.btn-ayuda:hover {
+  border-color: #ff0000;
+  box-shadow: 0 2px 10px rgba(255,0,0,0.10);
+}
+.btn-ayuda-icon {
+  width: 32px;
+  height: 32px;
+  background: #ff0000;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.btn-ayuda-icon svg { width: 18px; height: 18px; }
+.btn-ayuda-texts { text-align: left; }
+.btn-ayuda-title { font-size: 13px; font-weight: 700; color: var(--azul); }
+.btn-ayuda-sub   { font-size: 11px; color: var(--texto-suave); font-weight: 400; }
+
+
+/* ══════════ PÁGINA FAQs ══════════ */
+#paginaFaq {
+  display: none;
+  min-height: 100vh;
+  background: var(--fondo);
+}
+.faq-topbar {
+  background: var(--azul);
+  display: flex;
+  align-items: stretch;
+}
+.faq-topbar-stripe { width: 6px; background: var(--amarillo); flex-shrink: 0; }
+.faq-topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  flex: 1;
+}
+.faq-back-btn {
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.faq-back-btn:hover { background: rgba(255,255,255,0.22); }
+.faq-topbar-title { color: #fff; font-size: 15px; font-weight: 700; flex: 1; }
+.faq-content { max-width: 640px; margin: 0 auto; padding: 24px 16px 60px; }
+.faq-hero {
+  text-align: center;
+  padding: 10px 0 28px;
+}
+.faq-hero-icon {
+  width: 56px; height: 56px;
+  background: var(--azul);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+  border: 3px solid var(--amarillo);
+}
+.faq-hero-icon svg { width: 28px; height: 28px; }
+.faq-hero h1 { font-size: 20px; font-weight: 800; color: var(--azul); margin-bottom: 6px; }
+.faq-hero p  { font-size: 13px; color: var(--texto-med); line-height: 1.5; }
+
+.faq-section-title {
+  font-size: 11px; font-weight: 700; color: var(--azul);
+  text-transform: uppercase; letter-spacing: .08em;
+  margin: 24px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.faq-section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--borde);
+}
+
+.faq-item {
+  background: var(--blanco);
+  border: 0.5px solid var(--borde);
+  border-radius: var(--radio);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.faq-item:hover { border-color: var(--azul-med); }
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  gap: 12px;
+  user-select: none;
+}
+.faq-q-text {
+  font-size: 14px; font-weight: 600; color: var(--texto); flex: 1; line-height: 1.4;
+}
+.faq-chevron {
+  width: 22px; height: 22px; flex-shrink: 0;
+  background: var(--azul-palido); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s, background .15s;
+  font-size: 11px; color: var(--azul); font-weight: 700;
+}
+.faq-item.open .faq-chevron {
+  transform: rotate(180deg);
+  background: var(--azul); color: #fff;
+}
+.faq-a {
+  display: none;
+  padding: 0 16px 16px;
+  font-size: 13px; color: var(--texto-med); line-height: 1.7;
+  border-top: 0.5px solid var(--borde);
+}
+.faq-item.open .faq-a { display: block; }
+.faq-a strong { color: var(--azul); }
+.faq-a ul { padding-left: 18px; margin: 6px 0; }
+.faq-a ul li { margin-bottom: 4px; }
+.faq-a .faq-tag {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  border-radius: 5px; padding: 2px 8px; margin: 2px 2px 0 0;
+}
+.faq-tag.obl { background: var(--completado-bg); color: var(--azul); }
+.faq-tag.opt { background: var(--amarillo-bg); color: #7a5a00; }
+
+.faq-yt-card {
+  background: #fff;
+  border: 2px solid #ffcfcf;
+  border-radius: var(--radio-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  text-decoration: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.faq-yt-card:hover {
+  border-color: #ff0000;
+  box-shadow: 0 2px 14px rgba(255,0,0,0.1);
+}
+.faq-yt-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: #ff0000;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.faq-yt-icon svg { width: 24px; height: 24px; }
+.faq-yt-texts .faq-yt-title { font-size: 14px; font-weight: 700; color: var(--azul); }
+.faq-yt-texts .faq-yt-sub   { font-size: 12px; color: var(--texto-suave); margin-top: 3px; }
+
+/* ══════════ BOTÓN AYUDA FLOTANTE ══════════ */
+.fab-ayuda {
+  position: fixed;
+  bottom: 22px;
+  right: 18px;
+  z-index: 200;
+  background: var(--azul);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 18px 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(26,58,107,0.3);
+  transition: background .15s, transform .15s;
+  border: 2px solid var(--amarillo);
+}
+.fab-ayuda:hover { background: var(--azul-med); transform: translateY(-2px); }
+.fab-ayuda svg { width: 18px; height: 18px; }
+
+/* ══════════ FOOTER ACTUALIZADO ══════════ */
+.footer-credits {
+  font-size: 10px;
+  color: #b0bac8;
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
+.footer-credits span { color: var(--azul-med); font-weight: 600; }
+
 /* ══════════ FOOTER ══════════ */
 .footer {
   text-align: center;
@@ -830,6 +1041,7 @@ input[type="file"] { display: none; }
       <div class="topbar-season" id="topbarSeason">Inscripción Temporada 2025–26</div>
     </div>
     <div class="topbar-badge">Registro</div>
+    <button onclick="abrirFaq()" style="background:rgba(255,255,255,0.12);border:none;border-radius:8px;padding:6px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-left:8px;white-space:nowrap">❓ Ayuda</button>
   </div>
 </div>
 
@@ -867,7 +1079,7 @@ input[type="file"] { display: none; }
       <div class="sel-desc">Inscripción de un nuevo entrenador del club</div>
       <span class="sel-pill">Registro de entrenador</span>
     </div>
-  </div>
+    <button onclick="abrirFaq()" style="margin-top:22px;background:none;border:1.5px solid var(--borde);border-radius:50px;padding:9px 22px;font-size:13px;font-weight:600;color:var(--texto-med);cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:8px;transition:border-color .15s" onmouseover="this.style.borderColor='#1a3a6b'" onmouseout="this.style.borderColor='#d0d8e8'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ¿Tienes dudas? Ver preguntas frecuentes</button>
 </div>
 
 <!-- TABS -->
@@ -1110,6 +1322,7 @@ input[type="file"] { display: none; }
       </div>
     </div>
 
+    <div id="ayudaBtnPaso3"></div>
     <div class="nav" style="margin-top:20px">
       <button class="bback" onclick="ir(2)">← Atrás</button>
       <button class="bnext" onclick="ir(4)">Continuar</button>
@@ -1166,6 +1379,8 @@ input[type="file"] { display: none; }
         📨 Envía el correo a <strong id="successEmailInfo" style="color:var(--azul)"></strong>.<br>
         Si el correo no se abrió, abre tu app de correo manualmente y adjunta los archivos a esa dirección.
       </div>
+      <div id="ayudaBtnJugador"></div>
+      <button onclick="abrirFaq()" style="background:none;border:1.5px solid var(--borde);border-radius:var(--radio);padding:10px;font-size:13px;font-weight:600;color:var(--texto-med);cursor:pointer;font-family:'Outfit',sans-serif;width:100%;margin-bottom:10px" >❓ Ver preguntas frecuentes</button>
       <button class="btn-reiniciar" onclick="reiniciar()">Nueva inscripción</button>
     </div>
   </div>
@@ -1173,6 +1388,7 @@ input[type="file"] { display: none; }
   <div class="footer">
     Atlético Zabal Linense · Gestión telemática · v2026-05-29<br>
     <button class="admin-trigger" onclick="abrirAdmin()" style="margin-top:6px">⚙ Administración</button>
+    <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
   </div>
 </div><!-- /content -->
 
@@ -1597,10 +1813,75 @@ function limpiarMsgs() {
   document.querySelectorAll('.admin-msg').forEach(m => m.className = 'admin-msg');
 }
 
+// Inyectar botones de ayuda
+document.addEventListener('DOMContentLoaded', function() {
+  ['ayudaBtnJugador','ayudaBtnEntrenador','ayudaBtnPaso3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = btnAyudaHTML();
+  });
+});
+
 // Cerrar al pulsar fuera del modal
 document.getElementById('adminOverlay').addEventListener('click', function(e) {
   if (e.target === this) cerrarAdmin();
 });
+
+
+const YOUTUBE_URL = 'https://www.youtube.com/watch?v=PENDIENTE'; // ← cambia esto cuando tengas el vídeo
+
+function btnAyudaHTML() {
+  return `<a href="${YOUTUBE_URL}" target="_blank" rel="noopener" class="btn-ayuda">
+    <div class="btn-ayuda-icon">
+      <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/>
+      </svg>
+    </div>
+    <div class="btn-ayuda-texts">
+      <div class="btn-ayuda-title">¿Tienes dudas? Ver vídeo explicativo</div>
+      <div class="btn-ayuda-sub">Guía paso a paso para completar la inscripción</div>
+    </div>
+  </a>`;
+}
+
+
+/* ══════════ FAQs ══════════ */
+let _faqOrigen = null;
+
+function abrirFaq() {
+  _faqOrigen = document.getElementById('selector').style.display !== 'none' ? 'selector'
+             : document.getElementById('mainContent').style.display !== 'none' ? 'jugador'
+             : 'entrenador';
+  document.getElementById('selector').style.display      = 'none';
+  document.getElementById('tabsWrap').style.display      = 'none';
+  document.getElementById('mainContent').style.display   = 'none';
+  document.getElementById('formEntrenador').style.display= 'none';
+  document.getElementById('fabAyuda').style.display      = 'none';
+  document.getElementById('paginaFaq').style.display     = 'block';
+  // Actualizar URL YouTube en la FAQ
+  document.getElementById('faqYtCard').href = YOUTUBE_URL;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cerrarFaq() {
+  document.getElementById('paginaFaq').style.display = 'none';
+  document.getElementById('fabAyuda').style.display  = 'flex';
+  if (_faqOrigen === 'jugador') {
+    document.getElementById('tabsWrap').style.display    = 'flex';
+    document.getElementById('mainContent').style.display = 'block';
+  } else if (_faqOrigen === 'entrenador') {
+    document.getElementById('formEntrenador').style.display = 'block';
+  } else {
+    document.getElementById('selector').style.display = 'flex';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleFaq(qEl) {
+  const item = qEl.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
 
 </script>
 
@@ -1831,6 +2112,8 @@ document.getElementById('adminOverlay').addEventListener('click', function(e) {
           📨 Envía el correo a <strong id="eSuccessEmail" style="color:var(--azul)"></strong>.<br>
           Si el correo no se abrió, abre tu app de correo manualmente y adjunta los archivos a esa dirección.
         </div>
+        <div id="ayudaBtnEntrenador"></div>
+        <button onclick="abrirFaq()" style="background:none;border:1.5px solid var(--borde);border-radius:var(--radio);padding:10px;font-size:13px;font-weight:600;color:var(--texto-med);cursor:pointer;font-family:'Outfit',sans-serif;width:100%;margin-bottom:10px">❓ Ver preguntas frecuentes</button>
         <button class="btn-reiniciar" onclick="location.reload()">Volver al inicio</button>
       </div>
     </div>
@@ -1888,5 +2171,234 @@ document.getElementById('adminOverlay').addEventListener('click', function(e) {
     </div>
   </div>
 </div>
+
+<!-- FAB AYUDA -->
+<button class="fab-ayuda" id="fabAyuda" onclick="abrirFaq()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <line x1="12" y1="17" x2="12.01" y2="17"/>
+  </svg>
+  Ayuda
+</button>
+
+<!-- ══════════ PÁGINA FAQ ══════════ -->
+<div id="paginaFaq">
+  <div class="faq-topbar">
+    <div class="faq-topbar-stripe"></div>
+    <div class="faq-topbar-inner">
+      <button class="faq-back-btn" onclick="cerrarFaq()">← Volver</button>
+      <div class="faq-topbar-title">Centro de ayuda</div>
+    </div>
+  </div>
+
+  <div class="faq-content">
+    <div class="faq-hero">
+      <div class="faq-hero-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <h1>Preguntas frecuentes</h1>
+      <p>Todo lo que necesitas saber sobre el proceso de inscripción<br>en el Atlético Zabal Linense</p>
+    </div>
+
+    <!-- SECCIÓN: GENERAL -->
+    <div class="faq-section-title">General</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Para qué sirve esta página?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Esta página te permite <strong>registrar a un jugador o a un entrenador</strong> en el Atlético Zabal Linense de forma telemática. El formulario recoge todos los datos necesarios y, al finalizar, abre tu aplicación de correo con todo ya escrito para que solo tengas que adjuntar los documentos y pulsar Enviar.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Qué necesito tener a mano antes de empezar?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Antes de comenzar el formulario ten preparado:
+        <ul>
+          <li><strong>DNI o NIE del jugador</strong> (o del entrenador)</li>
+          <li><strong>DNI o NIE del tutor legal</strong> (padre, madre o tutor)</li>
+          <li>Los <strong>documentos en formato foto o PDF</strong> para adjuntarlos al correo</li>
+        </ul>
+        Si no tienes algún documento a mano puedes completar el formulario igualmente y adjuntar los archivos más tarde antes de enviar el correo.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Es segura esta página?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Sí. Esta página <strong>no almacena ningún dato en ningún servidor</strong>. Toda la información que introduces se usa únicamente para generar el correo electrónico que tú mismo envías. Los datos viajan directamente desde tu dispositivo al correo del club, sin intermediarios.
+      </div>
+    </div>
+
+    <!-- SECCIÓN: DOCUMENTOS -->
+    <div class="faq-section-title">Documentos</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Qué documentos necesito para inscribir a un jugador?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        <ul>
+          <li>🪪 <strong>DNI / NIE del jugador</strong> <span class="faq-tag obl">Obligatorio</span></li>
+          <li>🪪 <strong>DNI / NIE del tutor legal</strong> <span class="faq-tag obl">Obligatorio</span></li>
+          <li>📷 <strong>Foto tipo DNI del jugador</strong> — fondo liso <span class="faq-tag obl">Obligatorio</span></li>
+          <li>🏥 <strong>Certificado médico</strong> <span class="faq-tag opt">Opcional</span></li>
+        </ul>
+        Los archivos pueden ser <strong>fotos tomadas con el móvil</strong> o PDFs. No es necesario escanear.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Qué documentos necesito para inscribir a un entrenador?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        <ul>
+          <li>🪪 <strong>DNI / NIE</strong> <span class="faq-tag obl">Obligatorio</span></li>
+          <li>📷 <strong>Foto tipo DNI</strong> — fondo liso <span class="faq-tag obl">Obligatorio</span></li>
+          <li>🎓 <strong>Titulación federativa</strong> <span class="faq-tag opt">Si dispones de ella</span></li>
+          <li>📄 <strong>Currículum deportivo</strong> <span class="faq-tag opt">Opcional</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Cómo tiene que ser la foto tipo DNI?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        La foto debe ser de <strong>cara, mirando al frente</strong>, con <strong>fondo liso</strong> (cualquier color uniforme vale, no tiene que ser blanco). Puede ser una foto hecha con el móvil siempre que se vea bien el rostro. No hace falta ir a una fotografía profesional.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">No tengo el certificado médico, ¿puedo inscribirme igualmente?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Sí. El certificado médico es <strong>opcional</strong> en el momento del registro. Sin embargo, el club lleva un registro de qué jugadores tienen el certificado en vigor, por lo que te recomendamos aportarlo en cuanto puedas. Puedes enviarlo más adelante en un correo aparte a <strong>direcciondeportivazabal@gmail.com</strong>.
+      </div>
+    </div>
+
+    <!-- SECCIÓN: PROCESO -->
+    <div class="faq-section-title">Proceso de inscripción</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Cómo funciona el proceso paso a paso?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        <ol style="padding-left:18px;margin:4px 0">
+          <li style="margin-bottom:6px">Rellena el formulario con los datos del jugador o entrenador.</li>
+          <li style="margin-bottom:6px">Al pulsar <strong>"Abrir correo y enviar"</strong>, se abre tu app de correo con todo ya escrito.</li>
+          <li style="margin-bottom:6px"><strong>Adjunta los documentos</strong> requeridos al correo.</li>
+          <li style="margin-bottom:6px">Pulsa <strong>Enviar</strong>.</li>
+          <li style="margin-bottom:6px">Recibirás una confirmación automática de que el correo ha llegado.</li>
+          <li style="margin-bottom:6px">En <strong>24–48 horas</strong> el club revisará la documentación y te enviará un segundo correo confirmando la inscripción.</li>
+          <li>En ese correo se indicarán los días y horarios para <strong>acudir a las oficinas a firmar</strong> la documentación oficial.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">He terminado el formulario pero no se ha abierto el correo, ¿qué hago?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Esto puede ocurrir en algunos dispositivos. En ese caso:
+        <ul>
+          <li>Abre tu aplicación de correo manualmente (Gmail, Outlook, Mail…)</li>
+          <li>Crea un correo nuevo dirigido a <strong>direcciondeportivazabal@gmail.com</strong></li>
+          <li>En el asunto indica: <em>Inscripción [nombre del jugador] — [categoría]</em></li>
+          <li>Adjunta los documentos solicitados</li>
+          <li>Envía el correo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Cuánto tarda el club en confirmar la inscripción?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        El club revisa la documentación en un plazo de <strong>24 a 48 horas</strong>. Si toda la documentación está correcta, recibirás un correo de confirmación con las instrucciones para acudir a firmar en las oficinas del club.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿Tengo que ir presencialmente a las oficinas?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Sí. Una vez aprobada la documentación online, es necesario <strong>acudir a las oficinas del club</strong> para firmar la documentación oficial. En el correo de confirmación se indicarán los días y horarios de atención.
+      </div>
+    </div>
+
+    <!-- SECCIÓN: CATEGORÍAS -->
+    <div class="faq-section-title">Categorías</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <div class="faq-q-text">¿En qué categoría se inscribe mi hijo?</div>
+        <div class="faq-chevron">▾</div>
+      </div>
+      <div class="faq-a">
+        Las categorías se asignan por año de nacimiento:
+        <ul>
+          <li><strong>Bebé</strong> — nacidos en 2021 o posterior</li>
+          <li><strong>Prebenjamín</strong> — nacidos en 2019–2020</li>
+          <li><strong>Benjamín</strong> — nacidos en 2017–2018</li>
+          <li><strong>Alevín</strong> — nacidos en 2015–2016</li>
+          <li><strong>Infantil</strong> — nacidos en 2013–2014</li>
+          <li><strong>Cadete</strong> — nacidos en 2011–2012</li>
+          <li><strong>Juvenil</strong> — nacidos en 2008–2010</li>
+        </ul>
+        Si tienes dudas sobre la categoría, contacta con el club antes de enviar el formulario.
+      </div>
+    </div>
+
+    <!-- VÍDEO YOUTUBE -->
+    <a href="https://www.youtube.com/watch?v=PENDIENTE" target="_blank" rel="noopener" class="faq-yt-card" id="faqYtCard">
+      <div class="faq-yt-icon">
+        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/>
+        </svg>
+      </div>
+      <div class="faq-yt-texts">
+        <div class="faq-yt-title">Ver vídeo explicativo completo</div>
+        <div class="faq-yt-sub">Guía paso a paso en YouTube · Próximamente disponible</div>
+      </div>
+    </a>
+
+    <div style="background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin-top:18px;text-align:center">
+      <div style="font-size:13px;color:var(--texto-med);margin-bottom:4px">¿No encuentras respuesta a tu pregunta?</div>
+      <div style="font-size:13px;font-weight:600;color:var(--azul)">📧 direcciondeportivazabal@gmail.com</div>
+    </div>
+
+  </div><!-- /faq-content -->
+</div><!-- /paginaFaq -->
+
 </body>
 </html>
