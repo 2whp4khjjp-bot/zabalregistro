@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atlético Zabal Linense — Inscripción</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
 <style>
+/* ══ VARIABLES ══════════════════════════════════════════════ */
 :root {
   --azul:        #1a3a6b;
   --azul-med:    #2254a0;
@@ -16,7 +16,6 @@
   --amarillo-bg: #fff8cc;
   --amarillo-borde: #f0d040;
   --completado-bg: #d4eaff;
-  --completado-txt: #1a3a6b;
   --pendiente-txt: #7a6000;
   --blanco:      #ffffff;
   --fondo:       #f0f5fb;
@@ -25,1084 +24,306 @@
   --texto:       #0f1e35;
   --texto-med:   #3a5070;
   --texto-suave: #6a88a8;
-  --exito:       #0f7a3c;
-  --exito-bg:    #e0f5ea;
-  --error-bg:    #fff0f0;
-  --error-txt:   #c0392b;
   --radio:       10px;
   --radio-lg:    14px;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--texto); min-height:100vh; }
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background: var(--fondo);
-  color: var(--texto);
-  min-height: 100vh;
-}
+/* ══ VISTAS (sistema de navegación) ═══════════════════════ */
+.vista { display:none; }
+.vista.activa { display:block; }
+#vistaSelector.activa { display:flex; }
 
-/* ══════════ TOPBAR ══════════ */
-.topbar {
-  background: var(--azul);
-  display: flex;
-  align-items: stretch;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(26,58,107,0.25);
-}
-.topbar-stripe {
-  width: 6px;
-  background: var(--amarillo);
-  flex-shrink: 0;
-}
-.topbar-inner {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 20px;
-  flex: 1;
-}
-.topbar-escudo {
-  width: 54px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.topbar-escudo img { width: 54px; height: 54px; object-fit: contain; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.3)); }
-.escudo-fallback {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--azul);
-}
-.topbar-texts { flex: 1; }
-.topbar-club {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.topbar-season {
-  color: #a8c0df;
-  font-size: 11px;
-  margin-top: 1px;
-}
-.topbar-badge {
-  background: var(--amarillo);
-  color: var(--azul);
-  font-size: 10px;
-  font-weight: 800;
-  border-radius: 20px;
-  padding: 4px 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
+/* ══ TOPBAR ════════════════════════════════════════════════ */
+.topbar { background:var(--azul); display:flex; align-items:stretch; position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(26,58,107,.25); }
+.topbar-stripe { width:6px; background:var(--amarillo); flex-shrink:0; }
+.topbar-inner { display:flex; align-items:center; gap:14px; padding:14px 20px; flex:1; }
+.topbar-escudo { width:54px; height:54px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.topbar-escudo img { width:54px; height:54px; object-fit:contain; filter:drop-shadow(0 1px 4px rgba(0,0,0,.3)); }
+.topbar-texts { flex:1; }
+.topbar-club { color:#fff; font-size:16px; font-weight:700; line-height:1.2; }
+.topbar-season { color:#a8c0df; font-size:11px; margin-top:1px; }
+.topbar-badge { background:var(--amarillo); color:var(--azul); font-size:10px; font-weight:800; border-radius:20px; padding:4px 10px; text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
+.topbar-btn { background:rgba(255,255,255,.12); border:none; border-radius:8px; padding:6px 12px; color:#fff; font-size:12px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; margin-left:8px; white-space:nowrap; }
+.topbar-btn:hover { background:rgba(255,255,255,.22); }
 
-/* ══════════ TABS NAVEGACIÓN ══════════ */
-.tabs-wrap {
-  background: var(--blanco);
-  border-bottom: 0.5px solid var(--borde);
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.tabs-wrap::-webkit-scrollbar { display: none; }
-.tab {
-  flex: 1;
-  min-width: 80px;
-  padding: 12px 8px 10px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--texto-suave);
-  border-bottom: 3px solid transparent;
-  cursor: default;
-  user-select: none;
-  transition: color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-.tab.done {
-  color: var(--azul-med);
-}
-.tab.active {
-  color: var(--azul);
-  border-bottom-color: var(--amarillo);
-}
-.tab-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--fondo);
-  border: 1.5px solid var(--borde);
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--texto-suave);
-  margin-right: 5px;
-  vertical-align: middle;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-.tab.active .tab-num {
-  background: var(--azul);
-  border-color: var(--azul);
-  color: #fff;
-}
-.tab.done .tab-num {
-  background: var(--completado-bg);
-  border-color: var(--azul-med);
-  color: var(--azul);
-}
+/* ══ PANTALLA SELECTOR ═════════════════════════════════════ */
+#vistaSelector { min-height:calc(100vh - 74px); flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; background:var(--fondo); }
+.sel-escudo { margin-bottom:18px; }
+.sel-escudo img { width:110px; height:110px; object-fit:contain; filter:drop-shadow(0 2px 8px rgba(26,58,107,.18)); }
+.sel-title { font-size:13px; font-weight:700; color:var(--texto-suave); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; text-align:center; }
+.sel-sub { font-size:18px; font-weight:700; color:var(--azul); max-width:480px; text-align:center; margin-bottom:16px; line-height:1.4; }
+.sel-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:11px 16px; font-size:13px; color:#7a5a00; margin-bottom:28px; max-width:480px; width:100%; text-align:left; line-height:1.6; }
+.sel-label { font-size:13px; font-weight:600; color:var(--texto-med); margin-bottom:14px; text-align:center; letter-spacing:.02em; }
+.sel-btns { display:grid; grid-template-columns:1fr 1fr; gap:14px; width:100%; max-width:480px; }
+@media(max-width:420px){ .sel-btns { grid-template-columns:1fr; } }
+.sel-btn { background:var(--blanco); border:2px solid var(--borde); border-radius:16px; padding:28px 16px 22px; text-align:center; cursor:pointer; transition:border-color .18s, box-shadow .18s, transform .15s; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.sel-btn:hover { border-color:var(--azul); box-shadow:0 4px 20px rgba(26,58,107,.13); transform:translateY(-2px); }
+.sel-btn-icon { width:64px; height:64px; display:flex; align-items:center; justify-content:center; }
+.sel-btn-icon svg { width:56px; height:56px; }
+.sel-btn-label { font-size:20px; font-weight:800; color:var(--azul); }
+.sel-btn.entrenador .sel-btn-label { color:#7a5a00; }
+.sel-btn-desc { font-size:12px; color:var(--texto-suave); line-height:1.5; }
+.sel-pill { display:inline-block; font-size:11px; font-weight:700; border-radius:20px; padding:4px 12px; margin-top:4px; }
+.sel-btn.jugador .sel-pill { background:var(--completado-bg); color:var(--azul); }
+.sel-btn.entrenador .sel-pill { background:#fff3c4; color:#7a5a00; }
+.sel-ayuda-btn { margin-top:22px; background:none; border:1.5px solid var(--borde); border-radius:50px; padding:9px 22px; font-size:13px; font-weight:600; color:var(--texto-med); cursor:pointer; font-family:'Outfit',sans-serif; display:flex; align-items:center; gap:8px; transition:border-color .15s; }
+.sel-ayuda-btn:hover { border-color:var(--azul); }
 
-/* ══════════ CONTENIDO ══════════ */
-.content {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 24px 16px 60px;
-}
+/* ══ TABS ══════════════════════════════════════════════════ */
+.tabs-wrap { background:var(--blanco); border-bottom:.5px solid var(--borde); display:flex; overflow-x:auto; scrollbar-width:none; }
+.tabs-wrap::-webkit-scrollbar { display:none; }
+.tab { flex:1; min-width:70px; padding:12px 8px 10px; text-align:center; font-size:12px; font-weight:600; color:var(--texto-suave); border-bottom:3px solid transparent; cursor:default; user-select:none; transition:color .2s, border-color .2s; white-space:nowrap; }
+.tab.inicio { flex:none; padding:12px 14px 10px; cursor:pointer; }
+.tab.inicio:hover { color:var(--azul); }
+.tab.active { color:var(--azul); border-bottom-color:var(--amarillo); }
+.tab.done { color:var(--azul-med); }
+.tab-num { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--fondo); border:1.5px solid var(--borde); font-size:11px; font-weight:700; color:var(--texto-suave); margin-right:5px; vertical-align:middle; transition:background .2s, color .2s, border-color .2s; }
+.tab.active .tab-num { background:var(--azul); border-color:var(--azul); color:#fff; }
+.tab.done .tab-num { background:var(--completado-bg); border-color:var(--azul-med); color:var(--azul); }
 
-.card {
-  background: var(--blanco);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio-lg);
-  padding: 24px;
-  display: none;
-  animation: fadeUp 0.25s ease;
-}
-.card.show { display: block; }
+/* ══ CONTENIDO GENERAL ═════════════════════════════════════ */
+.content { max-width:640px; margin:0 auto; padding:24px 16px 60px; }
+.card { background:var(--blanco); border:.5px solid var(--borde); border-radius:var(--radio-lg); padding:24px; display:none; animation:fadeUp .25s ease; }
+.card.show { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.card-title { font-size:17px; font-weight:700; color:var(--azul); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.card-title-icon { width:32px; height:32px; background:var(--azul-palido); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.card-desc { font-size:13px; color:var(--texto-med); margin-bottom:22px; margin-left:40px; line-height:1.5; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* ══ CAMPOS ════════════════════════════════════════════════ */
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.field-row.full { grid-template-columns:1fr; }
+@media(max-width:480px){ .field-row { grid-template-columns:1fr; } }
+.field { display:flex; flex-direction:column; gap:5px; }
+.field label { font-size:11px; font-weight:700; color:var(--texto-med); text-transform:uppercase; letter-spacing:.06em; }
+.req { color:var(--azul-med); margin-left:2px; }
+.field input, .field select { background:var(--fondo-card); border:1px solid var(--borde); border-radius:var(--radio); padding:10px 13px; font-size:14px; font-family:'Outfit',sans-serif; color:var(--texto); outline:none; transition:border-color .15s, background .15s; width:100%; }
+.field input:focus, .field select:focus { border-color:var(--azul-med); background:var(--blanco); }
+.field input.error { border-color:#e05050; background:#fff0f0; }
 
-.card-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--azul);
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-title-icon {
-  width: 32px;
-  height: 32px;
-  background: var(--azul-palido);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.card-desc {
-  font-size: 13px;
-  color: var(--texto-med);
-  margin-bottom: 22px;
-  margin-left: 40px;
-  line-height: 1.5;
-}
+/* ══ NAVEGACIÓN BOTONES ════════════════════════════════════ */
+.nav { display:flex; justify-content:space-between; align-items:center; margin-top:22px; gap:10px; }
+.bnext { background:var(--azul); color:#fff; border:none; border-radius:var(--radio); padding:12px 26px; font-size:14px; font-weight:700; font-family:'Outfit',sans-serif; cursor:pointer; flex:1; transition:background .15s; }
+.bnext::after { content:' →'; color:var(--amarillo); }
+.bnext:hover { background:var(--azul-med); }
+.bback { background:transparent; border:1px solid var(--borde); border-radius:var(--radio); padding:12px 20px; font-size:14px; font-weight:500; font-family:'Outfit',sans-serif; color:var(--texto-med); cursor:pointer; transition:border-color .15s, color .15s; }
+.bback:hover { border-color:var(--azul-med); color:var(--azul); }
+.bcta { background:var(--azul); color:#fff; border:none; border-radius:var(--radio); padding:13px; font-size:15px; font-weight:700; font-family:'Outfit',sans-serif; cursor:pointer; width:100%; margin-top:6px; transition:background .15s; }
+.bcta .acento { color:var(--amarillo); }
+.bcta:hover { background:var(--azul-med); }
 
-/* ══════════ CAMPOS ══════════ */
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-.field-row.full { grid-template-columns: 1fr; }
-@media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+/* ══ CONSENTIMIENTO ════════════════════════════════════════ */
+.consent-box { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:14px 16px; margin-bottom:14px; }
+.consent-title { font-size:12px; font-weight:700; color:var(--azul); margin-bottom:8px; }
+.consent-text { font-size:12px; color:var(--texto-med); line-height:1.6; margin-bottom:10px; }
+.consent-opciones { display:flex; flex-direction:column; gap:8px; }
+.consent-opciones label { display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:13px; color:var(--texto); font-weight:500; }
+.consent-opciones input[type=radio] { margin-top:2px; accent-color:var(--azul); }
 
-.field { display: flex; flex-direction: column; gap: 5px; }
-.field label {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--texto-med);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.field label .req { color: var(--azul-med); margin-left: 2px; }
+/* ══ DOCUMENTOS (infografía) ═══════════════════════════════ */
+.docs-lista { background:var(--azul-palido); border:.5px solid var(--borde); border-radius:var(--radio); padding:14px 16px; margin-bottom:18px; }
+.docs-lista-titulo { font-size:11px; font-weight:700; color:var(--azul); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
+.doc-fila { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--texto); margin-bottom:8px; }
+.doc-fila:last-child { margin-bottom:0; }
+.doc-fila-emoji { font-size:17px; }
+.doc-tag { display:inline-block; font-size:11px; font-weight:700; border-radius:5px; padding:2px 8px; margin-left:4px; }
+.doc-tag.obl { background:var(--completado-bg); color:var(--azul); }
+.doc-tag.opt { background:var(--amarillo-bg); color:#7a5a00; border:.5px solid var(--amarillo-borde); }
 
-.field input,
-.field select {
-  background: var(--fondo-card);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  padding: 10px 13px;
-  font-size: 14px;
-  font-family: 'Outfit', sans-serif;
-  color: var(--texto);
-  outline: none;
-  transition: border-color 0.15s, background 0.15s;
-}
-.field input:focus,
-.field select:focus {
-  border-color: var(--azul-med);
-  background: var(--blanco);
-}
-.field input.error { border-color: #e05050; background: var(--error-bg); }
+.proceso-titulo { font-size:11px; font-weight:700; color:var(--azul); text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px; }
+.proceso-paso { display:flex; gap:12px; margin-bottom:14px; align-items:flex-start; }
+.proceso-num { width:36px; height:36px; background:var(--azul); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px; font-weight:800; color:var(--amarillo); }
+.proceso-cuerpo { flex:1; border:.5px solid var(--borde); border-radius:var(--radio); padding:12px 14px; }
+.proceso-cuerpo.amarillo { background:var(--amarillo-bg); border-color:var(--amarillo-borde); }
+.proceso-cuerpo.azul { background:var(--completado-bg); border-color:#b0d0f0; }
+.proceso-cuerpo.default { background:var(--fondo-card); }
+.proceso-ptitulo { font-size:13px; font-weight:700; color:var(--azul); margin-bottom:3px; }
+.proceso-pdesc { font-size:12px; color:var(--texto-med); line-height:1.5; }
+.proceso-separador { display:flex; justify-content:center; margin:-6px 0 8px; }
+.proceso-linea { width:2px; height:18px; background:var(--borde); }
 
-/* ══════════ DOCUMENTOS ══════════ */
-.doc-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+/* ══ RESUMEN ════════════════════════════════════════════════ */
+.resumen-section { background:var(--fondo-card); border:.5px solid var(--borde); border-radius:var(--radio); margin-bottom:14px; overflow:hidden; }
+.resumen-head { background:var(--azul-palido); padding:9px 14px; font-size:11px; font-weight:700; color:var(--azul); text-transform:uppercase; letter-spacing:.06em; border-bottom:.5px solid var(--borde); }
+.resumen-row { display:flex; padding:9px 14px; font-size:13px; border-bottom:.5px solid var(--borde); }
+.resumen-row:last-child { border-bottom:none; }
+.resumen-label { color:var(--texto-suave); min-width:140px; flex-shrink:0; }
+.resumen-val { color:var(--texto); font-weight:500; }
+.email-display { font-size:12px; color:var(--texto-suave); text-align:center; margin-bottom:12px; }
+.email-display span { color:var(--azul-med); font-weight:600; }
 
-.doc-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--fondo-card);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio);
-  padding: 12px 14px;
-  transition: border-color 0.15s;
-}
-.doc-item:hover { border-color: var(--azul-claro); }
+/* ══ CATEGORÍAS ════════════════════════════════════════════ */
+.cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+.cat-btn { background:var(--fondo-card); border:1.5px solid var(--borde); border-radius:var(--radio); padding:14px 10px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s; font-family:'Outfit',sans-serif; }
+.cat-btn:hover { border-color:var(--azul-med); background:var(--azul-palido); }
+.cat-btn.selected { border-color:var(--azul); background:var(--completado-bg); }
+.cat-btn .cat-name { font-size:14px; font-weight:700; color:var(--azul); }
+.cat-btn .cat-age { display:block; font-size:11px; color:var(--texto-suave); margin-top:3px; }
 
-.doc-icon-wrap {
-  width: 36px;
-  height: 36px;
-  background: var(--azul-palido);
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  flex-shrink: 0;
-}
-.doc-info { flex: 1; min-width: 0; }
-.doc-name { font-size: 13px; font-weight: 600; color: var(--texto); }
-.doc-req  { font-size: 11px; color: var(--texto-suave); margin-top: 2px; }
+/* ══ PANTALLA FINAL ════════════════════════════════════════ */
+.success-card { background:var(--blanco); border:.5px solid var(--borde); border-radius:var(--radio-lg); padding:40px 28px; text-align:center; }
+.success-icon { width:72px; height:72px; background:#e67e00; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 20px; border:4px solid var(--amarillo); }
+.success-title { font-size:22px; font-weight:800; color:#b85c00; margin-bottom:8px; }
+.success-desc { font-size:14px; color:var(--texto-med); margin-bottom:14px; line-height:1.6; }
+.success-docs { text-align:left; background:var(--azul-palido); border:.5px solid var(--borde); border-radius:var(--radio); padding:14px 16px; margin:12px 0 18px; }
+.success-docs .doc-fila { margin-bottom:9px; }
+.success-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:11px 14px; font-size:12px; color:#7a5a00; margin-bottom:18px; line-height:1.6; }
+.btn-reiniciar { background:var(--azul); color:#fff; border:none; border-radius:var(--radio); padding:12px 28px; font-size:14px; font-weight:700; font-family:'Outfit',sans-serif; cursor:pointer; }
 
-.doc-status {
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 6px;
-  padding: 4px 10px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.doc-status.pendiente {
-  background: var(--amarillo-bg);
-  color: var(--pendiente-txt);
-  border: 0.5px solid var(--amarillo-borde);
-}
-.doc-status.subido {
-  background: var(--completado-bg);
-  color: var(--completado-txt);
-}
+/* ══ FAQs ══════════════════════════════════════════════════ */
+#vistaFaq.activa { display:block; }
+.faq-topbar { background:var(--azul); display:flex; align-items:stretch; }
+.faq-topbar-stripe { width:6px; background:var(--amarillo); flex-shrink:0; }
+.faq-topbar-inner { display:flex; align-items:center; gap:12px; padding:14px 20px; flex:1; }
+.faq-back { background:rgba(255,255,255,.12); border:none; border-radius:8px; padding:7px 14px; color:#fff; font-size:13px; font-weight:600; font-family:'Outfit',sans-serif; cursor:pointer; white-space:nowrap; }
+.faq-back:hover { background:rgba(255,255,255,.22); }
+.faq-topbar-title { color:#fff; font-size:15px; font-weight:700; flex:1; }
+.faq-content { max-width:640px; margin:0 auto; padding:24px 16px 60px; }
+.faq-hero { text-align:center; padding:10px 0 28px; }
+.faq-hero-icon { width:56px; height:56px; background:var(--azul); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; border:3px solid var(--amarillo); font-size:26px; }
+.faq-hero h1 { font-size:20px; font-weight:800; color:var(--azul); margin-bottom:6px; }
+.faq-hero p { font-size:13px; color:var(--texto-med); line-height:1.5; }
+.faq-section-title { font-size:11px; font-weight:700; color:var(--azul); text-transform:uppercase; letter-spacing:.08em; margin:24px 0 10px; display:flex; align-items:center; gap:8px; }
+.faq-section-title::after { content:''; flex:1; height:1px; background:var(--borde); }
+.faq-item { background:var(--blanco); border:.5px solid var(--borde); border-radius:var(--radio); margin-bottom:8px; overflow:hidden; }
+.faq-item:hover { border-color:var(--azul-med); }
+.faq-q { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; gap:12px; user-select:none; }
+.faq-q-text { font-size:14px; font-weight:600; color:var(--texto); flex:1; line-height:1.4; }
+.faq-chevron { width:22px; height:22px; flex-shrink:0; background:var(--azul-palido); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:transform .2s, background .15s; font-size:11px; color:var(--azul); font-weight:700; }
+.faq-item.open .faq-chevron { transform:rotate(180deg); background:var(--azul); color:#fff; }
+.faq-a { display:none; padding:0 16px 16px; font-size:13px; color:var(--texto-med); line-height:1.7; border-top:.5px solid var(--borde); }
+.faq-item.open .faq-a { display:block; }
+.faq-a strong { color:var(--azul); }
+.faq-a ul, .faq-a ol { padding-left:18px; margin:6px 0; }
+.faq-a li { margin-bottom:4px; }
+.faq-tag { display:inline-block; font-size:11px; font-weight:700; border-radius:5px; padding:2px 8px; }
+.faq-tag.obl { background:var(--completado-bg); color:var(--azul); }
+.faq-tag.opt { background:var(--amarillo-bg); color:#7a5a00; }
+.faq-yt { background:#fff; border:2px solid #ffcfcf; border-radius:var(--radio-lg); padding:20px; display:flex; align-items:center; gap:16px; margin-top:24px; text-decoration:none; transition:border-color .15s, box-shadow .15s; }
+.faq-yt:hover { border-color:#ff0000; box-shadow:0 2px 14px rgba(255,0,0,.1); }
+.faq-yt-icon { width:48px; height:48px; border-radius:10px; background:#ff0000; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.faq-yt-title { font-size:14px; font-weight:700; color:var(--azul); }
+.faq-yt-sub { font-size:12px; color:var(--texto-suave); margin-top:3px; }
+.faq-contacto { background:var(--fondo-card); border:.5px solid var(--borde); border-radius:var(--radio); padding:14px 16px; margin-top:18px; text-align:center; }
 
-.doc-upload-btn {
-  background: var(--azul-palido);
-  border: 1px solid var(--borde);
-  border-radius: 7px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--azul);
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  font-family: 'Outfit', sans-serif;
-  transition: background 0.15s;
-}
-.doc-upload-btn:hover { background: var(--azul-claro); }
+/* ══ PANEL ADMIN ═══════════════════════════════════════════ */
+.admin-overlay { display:none; position:fixed; inset:0; background:rgba(10,20,40,.55); z-index:999; align-items:center; justify-content:center; padding:20px; }
+.admin-overlay.abierto { display:flex; }
+.admin-modal { background:#fff; border-radius:16px; width:100%; max-width:400px; box-shadow:0 8px 40px rgba(26,58,107,.25); overflow:hidden; }
+.admin-header { background:var(--azul); padding:18px 22px; display:flex; align-items:center; justify-content:space-between; }
+.admin-header h2 { color:#fff; font-size:15px; font-weight:700; }
+.admin-close { background:rgba(255,255,255,.15); border:none; border-radius:6px; width:30px; height:30px; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; }
+.admin-body { padding:22px; }
+.admin-section { margin-bottom:20px; }
+.admin-stitle { font-size:11px; font-weight:700; color:#5070a0; text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px; }
+.admin-input { width:100%; background:#f3f6fb; border:1px solid var(--borde); border-radius:8px; padding:10px 13px; font-size:14px; font-family:'Outfit',sans-serif; color:var(--texto); outline:none; }
+.admin-input:focus { border-color:var(--azul); background:#fff; }
+.admin-btn { background:var(--azul); color:#fff; border:none; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:600; font-family:'Outfit',sans-serif; cursor:pointer; width:100%; margin-top:8px; }
+.admin-btn:hover { background:var(--azul-med); }
+.admin-msg { font-size:12px; border-radius:7px; padding:8px 12px; margin-top:8px; display:none; }
+.admin-msg.ok  { background:var(--completado-bg); color:var(--azul); display:block; }
+.admin-msg.err { background:#fff0f0; color:#c0392b; display:block; }
+.admin-preview { background:var(--azul); color:var(--amarillo); border-radius:7px; padding:10px 12px; font-size:11px; line-height:1.6; overflow-x:auto; white-space:pre-wrap; word-break:break-all; margin-top:10px; font-family:monospace; }
+.admin-trigger { background:none; border:none; cursor:pointer; font-size:11px; color:#b0b8c8; font-family:'Outfit',sans-serif; padding:0; letter-spacing:.04em; }
+.admin-trigger:hover { color:#5070a0; }
 
-input[type="file"] { display: none; }
+/* ══ FAB ════════════════════════════════════════════════════ */
+.fab { position:fixed; bottom:22px; right:18px; z-index:200; background:var(--azul); color:#fff; border:2px solid var(--amarillo); border-radius:50px; padding:10px 18px 10px 14px; font-size:13px; font-weight:700; font-family:'Outfit',sans-serif; cursor:pointer; display:none; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(26,58,107,.3); transition:background .15s, transform .15s; }
+.fab:hover { background:var(--azul-med); transform:translateY(-2px); }
 
-.attach-note {
-  background: var(--fondo-card);
-  border: 0.5px solid var(--borde);
-  border-left: 4px solid var(--amarillo);
-  border-radius: 0 var(--radio) var(--radio) 0;
-  padding: 12px 15px;
-  font-size: 12px;
-  color: var(--texto-med);
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
+/* ══ MSGS ERROR ════════════════════════════════════════════ */
+.msg-error { background:#fff0f0; color:#c0392b; border:.5px solid #f5c0c0; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:12px; display:none; }
+.msg-error.visible { display:block; }
 
-/* ══════════ RESUMEN ══════════ */
-.resumen-section {
-  background: var(--fondo-card);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio);
-  margin-bottom: 14px;
-  overflow: hidden;
-}
-.resumen-head {
-  background: var(--azul-palido);
-  padding: 9px 14px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--azul);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-bottom: 0.5px solid var(--borde);
-}
-.resumen-body { padding: 0; }
-.resumen-row {
-  display: flex;
-  padding: 9px 14px;
-  font-size: 13px;
-  border-bottom: 0.5px solid var(--borde);
-}
-.resumen-row:last-child { border-bottom: none; }
-.resumen-label { color: var(--texto-suave); min-width: 130px; flex-shrink: 0; }
-.resumen-val   { color: var(--texto); font-weight: 500; }
+/* ══ FOOTER ════════════════════════════════════════════════ */
+.footer { text-align:center; padding:14px 0 30px; font-size:10px; color:var(--texto-suave); letter-spacing:.05em; }
+.footer-credits { font-size:10px; color:#b0bac8; margin-top:6px; letter-spacing:.04em; }
+.footer-credits span { color:var(--azul-med); font-weight:600; }
 
-/* ══════════ ÉXITO ══════════ */
-#success {
-  display: none;
-  animation: fadeUp 0.3s ease;
-}
-.success-card {
-  background: var(--blanco);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio-lg);
-  padding: 40px 28px;
-  text-align: center;
-}
-.success-icon {
-  width: 72px;
-  height: 72px;
-  background: var(--azul);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  margin: 0 auto 20px;
-  border: 4px solid var(--amarillo);
-}
-.success-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--azul);
-  margin-bottom: 8px;
-}
-.success-desc {
-  font-size: 14px;
-  color: var(--texto-med);
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-.success-email {
-  font-size: 13px;
-  color: var(--azul-med);
-  font-weight: 600;
-  background: var(--completado-bg);
-  border-radius: 8px;
-  padding: 8px 16px;
-  display: inline-block;
-  margin: 10px 0 24px;
-}
-.btn-reiniciar {
-  background: var(--azul);
-  color: #fff;
-  border: none;
-  border-radius: var(--radio);
-  padding: 12px 28px;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-}
-
-/* ══════════ BOTONES NAV ══════════ */
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 22px;
-  gap: 10px;
-}
-.bnext {
-  background: var(--azul);
-  color: #fff;
-  border: none;
-  border-radius: var(--radio);
-  padding: 12px 26px;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-  flex: 1;
-  transition: background 0.15s;
-  position: relative;
-}
-.bnext::after {
-  content: ' →';
-  color: var(--amarillo);
-}
-.bnext:hover { background: var(--azul-med); }
-.bnext:disabled { background: #b0bec5; cursor: not-allowed; }
-.bnext:disabled::after { color: rgba(255,255,255,0.4); }
-
-.bback {
-  background: transparent;
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: 'Outfit', sans-serif;
-  color: var(--texto-med);
-  cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-}
-.bback:hover { border-color: var(--azul-med); color: var(--azul); }
-
-.bcta {
-  background: var(--azul);
-  color: #fff;
-  border: none;
-  border-radius: var(--radio);
-  padding: 13px;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 6px;
-  transition: background 0.15s;
-}
-.bcta .acento { color: var(--amarillo); }
-.bcta:hover { background: var(--azul-med); }
-
-/* ══════════ ADMIN EMAIL ══════════ */
-.admin-panel {
-  display: none;
-  background: var(--fondo-card);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio);
-  padding: 14px;
-  margin-bottom: 16px;
-  gap: 8px;
-  flex-direction: column;
-}
-.admin-panel.visible { display: flex; }
-.admin-panel input {
-  background: var(--blanco);
-  border: 1px solid var(--borde);
-  border-radius: 8px;
-  padding: 9px 12px;
-  font-size: 13px;
-  font-family: 'Outfit', sans-serif;
-  color: var(--texto);
-  outline: none;
-}
-.admin-panel button {
-  background: var(--azul);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 9px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-}
-.email-display {
-  font-size: 12px;
-  color: var(--texto-suave);
-  text-align: center;
-  margin-bottom: 8px;
-}
-.email-display span {
-  color: var(--azul-med);
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* ══════════ PROGRESO GDRIVE ══════════ */
-.progress-wrap {
-  display: none;
-  margin-bottom: 16px;
-  background: var(--fondo-card);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio);
-  padding: 14px;
-}
-.progress-wrap.visible { display: block; }
-.progress-label { font-size: 12px; color: var(--texto-med); margin-bottom: 8px; }
-.progress-bar-bg {
-  background: var(--azul-claro);
-  border-radius: 20px;
-  height: 6px;
-  overflow: hidden;
-}
-.progress-bar {
-  background: var(--azul);
-  height: 100%;
-  border-radius: 20px;
-  transition: width 0.3s ease;
-  width: 0%;
-}
-
-/* ══════════ CATEGORÍA SELECTOR ══════════ */
-.cat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.cat-btn {
-  background: var(--fondo-card);
-  border: 1.5px solid var(--borde);
-  border-radius: var(--radio);
-  padding: 14px 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  font-family: 'Outfit', sans-serif;
-}
-.cat-btn:hover { border-color: var(--azul-med); background: var(--azul-palido); }
-.cat-btn.selected {
-  border-color: var(--azul);
-  background: var(--completado-bg);
-}
-.cat-btn .cat-age {
-  display: block;
-  font-size: 11px;
-  color: var(--texto-suave);
-  margin-top: 3px;
-}
-.cat-btn .cat-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--azul);
-}
-
-
-/* ══════════ PANTALLA SELECTOR ══════════ */
-
-#selector {
-  min-height: calc(100vh - 74px);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 20px;
-  background: var(--fondo);
-}
-.selector-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--texto-suave);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  margin-bottom: 8px;
-  text-align: center;
-}
-.selector-sub {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--texto);
-  text-align: center;
-  margin-bottom: 32px;
-  line-height: 1.4;
-}
-.selector-btns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  width: 100%;
-  max-width: 560px;
-}
-@media (max-width: 420px) {
-  .selector-btns { grid-template-columns: 1fr; max-width: 320px; }
-}
-.sel-btn {
-  background: var(--blanco);
-  border: 2px solid var(--borde);
-  border-radius: 16px;
-  padding: 32px 20px 28px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color .18s, box-shadow .18s, transform .15s;
-  font-family: 'Outfit', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.sel-btn:hover {
-  border-color: var(--azul);
-  box-shadow: 0 4px 20px rgba(26,58,107,.13);
-  transform: translateY(-2px);
-}
-.sel-btn.jugador:hover { border-color: var(--azul); }
-.sel-btn.entrenador:hover { border-color: #b08000; }
-.sel-icon {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 56px;
-}
-.sel-label {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--azul);
-  letter-spacing: -.01em;
-}
-.sel-btn.entrenador .sel-label { color: #7a5a00; }
-.sel-desc {
-  font-size: 12px;
-  color: var(--texto-suave);
-  line-height: 1.5;
-}
-.sel-pill {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 20px;
-  padding: 4px 12px;
-  margin-top: 4px;
-}
-.sel-btn.jugador .sel-pill {
-  background: var(--completado-bg);
-  color: var(--azul);
-}
-.sel-btn.entrenador .sel-pill {
-  background: #fff3c4;
-  color: #7a5a00;
-}
-
-
-/* ══════════ MODAL ADMIN ══════════ */
-.admin-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(10,20,40,0.55);
-  z-index: 999;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.admin-overlay.visible { display: flex; }
-.admin-modal {
-  background: #fff;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 40px rgba(26,58,107,0.25);
-  overflow: hidden;
-}
-.admin-modal-header {
-  background: #1a3a6b;
-  padding: 18px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.admin-modal-header h2 {
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-}
-.admin-modal-header .admin-close {
-  background: rgba(255,255,255,0.15);
-  border: none;
-  border-radius: 6px;
-  width: 30px;
-  height: 30px;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Outfit', sans-serif;
-  line-height: 1;
-}
-.admin-modal-body { padding: 22px; }
-.admin-section {
-  margin-bottom: 20px;
-}
-.admin-section-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #5070a0;
-  text-transform: uppercase;
-  letter-spacing: .07em;
-  margin-bottom: 8px;
-}
-.admin-input {
-  width: 100%;
-  background: #f3f6fb;
-  border: 1px solid #c8d8ee;
-  border-radius: 8px;
-  padding: 10px 13px;
-  font-size: 14px;
-  font-family: 'Outfit', sans-serif;
-  color: #0f1e35;
-  outline: none;
-  transition: border-color .15s;
-}
-.admin-input:focus { border-color: #1a3a6b; background: #fff; }
-.admin-save-btn {
-  background: #1a3a6b;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 8px;
-  transition: background .15s;
-}
-.admin-save-btn:hover { background: #2254a0; }
-.admin-save-btn em { color: #f5c800; font-style: normal; }
-.admin-pwd-section { margin-bottom: 18px; }
-.admin-locked { display: none; }
-.admin-locked.visible { display: block; }
-.admin-unlocked { display: none; }
-.admin-unlocked.visible { display: block; }
-.admin-msg {
-  font-size: 12px;
-  border-radius: 7px;
-  padding: 8px 12px;
-  margin-top: 8px;
-  display: none;
-}
-.admin-msg.ok  { background: #d4eaff; color: #1a3a6b; display: block; }
-.admin-msg.err { background: #fff0f0; color: #c0392b; display: block; }
-.admin-trigger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 11px;
-  color: #b0b8c8;
-  font-family: 'Outfit', sans-serif;
-  padding: 0;
-  letter-spacing: .04em;
-}
-.admin-trigger:hover { color: #5070a0; }
-
-
-/* ══════════ BOTÓN AYUDA YOUTUBE ══════════ */
-.btn-ayuda {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: #fff;
-  border: 2px solid #e8ecf4;
-  border-radius: var(--radio);
-  padding: 12px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--azul);
-  cursor: pointer;
-  text-decoration: none;
-  font-family: 'Outfit', sans-serif;
-  transition: border-color .15s, box-shadow .15s;
-  width: 100%;
-  margin-top: 10px;
-}
-.btn-ayuda:hover {
-  border-color: #ff0000;
-  box-shadow: 0 2px 10px rgba(255,0,0,0.10);
-}
-.btn-ayuda-icon {
-  width: 32px;
-  height: 32px;
-  background: #ff0000;
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.btn-ayuda-icon svg { width: 18px; height: 18px; }
-.btn-ayuda-texts { text-align: left; }
-.btn-ayuda-title { font-size: 13px; font-weight: 700; color: var(--azul); }
-.btn-ayuda-sub   { font-size: 11px; color: var(--texto-suave); font-weight: 400; }
-
-
-/* ══════════ PÁGINA FAQs ══════════ */
-#paginaFaq {
-  display: none;
-  min-height: 100vh;
-  background: var(--fondo);
-}
-.faq-topbar {
-  background: var(--azul);
-  display: flex;
-  align-items: stretch;
-}
-.faq-topbar-stripe { width: 6px; background: var(--amarillo); flex-shrink: 0; }
-.faq-topbar-inner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 20px;
-  flex: 1;
-}
-.faq-back-btn {
-  background: rgba(255,255,255,0.12);
-  border: none;
-  border-radius: 8px;
-  padding: 7px 14px;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background .15s;
-}
-.faq-back-btn:hover { background: rgba(255,255,255,0.22); }
-.faq-topbar-title { color: #fff; font-size: 15px; font-weight: 700; flex: 1; }
-.faq-content { max-width: 640px; margin: 0 auto; padding: 24px 16px 60px; }
-.faq-hero {
-  text-align: center;
-  padding: 10px 0 28px;
-}
-.faq-hero-icon {
-  width: 56px; height: 56px;
-  background: var(--azul);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 14px;
-  border: 3px solid var(--amarillo);
-}
-.faq-hero-icon svg { width: 28px; height: 28px; }
-.faq-hero h1 { font-size: 20px; font-weight: 800; color: var(--azul); margin-bottom: 6px; }
-.faq-hero p  { font-size: 13px; color: var(--texto-med); line-height: 1.5; }
-
-.faq-section-title {
-  font-size: 11px; font-weight: 700; color: var(--azul);
-  text-transform: uppercase; letter-spacing: .08em;
-  margin: 24px 0 10px;
-  display: flex; align-items: center; gap: 8px;
-}
-.faq-section-title::after {
-  content: ''; flex: 1; height: 1px; background: var(--borde);
-}
-
-.faq-item {
-  background: var(--blanco);
-  border: 0.5px solid var(--borde);
-  border-radius: var(--radio);
-  margin-bottom: 8px;
-  overflow: hidden;
-  transition: border-color .15s;
-}
-.faq-item:hover { border-color: var(--azul-med); }
-.faq-q {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  cursor: pointer;
-  gap: 12px;
-  user-select: none;
-}
-.faq-q-text {
-  font-size: 14px; font-weight: 600; color: var(--texto); flex: 1; line-height: 1.4;
-}
-.faq-chevron {
-  width: 22px; height: 22px; flex-shrink: 0;
-  background: var(--azul-palido); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform .2s, background .15s;
-  font-size: 11px; color: var(--azul); font-weight: 700;
-}
-.faq-item.open .faq-chevron {
-  transform: rotate(180deg);
-  background: var(--azul); color: #fff;
-}
-.faq-a {
-  display: none;
-  padding: 0 16px 16px;
-  font-size: 13px; color: var(--texto-med); line-height: 1.7;
-  border-top: 0.5px solid var(--borde);
-}
-.faq-item.open .faq-a { display: block; }
-.faq-a strong { color: var(--azul); }
-.faq-a ul { padding-left: 18px; margin: 6px 0; }
-.faq-a ul li { margin-bottom: 4px; }
-.faq-a .faq-tag {
-  display: inline-block; font-size: 11px; font-weight: 700;
-  border-radius: 5px; padding: 2px 8px; margin: 2px 2px 0 0;
-}
-.faq-tag.obl { background: var(--completado-bg); color: var(--azul); }
-.faq-tag.opt { background: var(--amarillo-bg); color: #7a5a00; }
-
-.faq-yt-card {
-  background: #fff;
-  border: 2px solid #ffcfcf;
-  border-radius: var(--radio-lg);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 24px;
-  text-decoration: none;
-  transition: border-color .15s, box-shadow .15s;
-}
-.faq-yt-card:hover {
-  border-color: #ff0000;
-  box-shadow: 0 2px 14px rgba(255,0,0,0.1);
-}
-.faq-yt-icon {
-  width: 48px; height: 48px; border-radius: 10px;
-  background: #ff0000;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.faq-yt-icon svg { width: 24px; height: 24px; }
-.faq-yt-texts .faq-yt-title { font-size: 14px; font-weight: 700; color: var(--azul); }
-.faq-yt-texts .faq-yt-sub   { font-size: 12px; color: var(--texto-suave); margin-top: 3px; }
-
-/* ══════════ BOTÓN AYUDA FLOTANTE ══════════ */
-.fab-ayuda {
-  position: fixed;
-  bottom: 22px;
-  right: 18px;
-  z-index: 200;
-  background: var(--azul);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  padding: 10px 18px 10px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: 'Outfit', sans-serif;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 16px rgba(26,58,107,0.3);
-  transition: background .15s, transform .15s;
-  border: 2px solid var(--amarillo);
-}
-.fab-ayuda:hover { background: var(--azul-med); transform: translateY(-2px); }
-.fab-ayuda svg { width: 18px; height: 18px; }
-
-/* ══════════ FOOTER ACTUALIZADO ══════════ */
-.footer-credits {
-  font-size: 10px;
-  color: #b0bac8;
-  margin-top: 6px;
-  letter-spacing: .04em;
-}
-.footer-credits span { color: var(--azul-med); font-weight: 600; }
-
-/* ══════════ FOOTER ══════════ */
-.footer {
-  text-align: center;
-  padding: 14px 0 30px;
-  font-size: 10px;
-  color: var(--texto-suave);
-  letter-spacing: 0.05em;
-}
-
-/* ══════════ VALIDACIÓN ══════════ */
-.msg-error {
-  background: var(--error-bg);
-  color: var(--error-txt);
-  border: 0.5px solid #f5c0c0;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 13px;
-  margin-bottom: 12px;
-  display: none;
-}
-.msg-error.visible { display: block; }
+/* ══ YOUTUBE BTN ════════════════════════════════════════════ */
+.btn-yt { display:flex; align-items:center; gap:10px; background:#fff; border:2px solid #e8ecf4; border-radius:var(--radio); padding:12px 18px; font-size:13px; font-weight:600; color:var(--azul); cursor:pointer; text-decoration:none; font-family:'Outfit',sans-serif; transition:border-color .15s, box-shadow .15s; width:100%; margin-top:10px; }
+.btn-yt:hover { border-color:#ff0000; box-shadow:0 2px 10px rgba(255,0,0,.1); }
+.btn-yt-icon { width:32px; height:32px; background:#ff0000; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.btn-yt-texts { text-align:left; }
+.btn-yt-title { font-size:13px; font-weight:700; color:var(--azul); }
+.btn-yt-sub { font-size:11px; color:var(--texto-suave); }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- ══ TOPBAR ══════════════════════════════════════════════ -->
 <div class="topbar">
   <div class="topbar-stripe"></div>
   <div class="topbar-inner">
-    <div class="topbar-escudo" id="escudoWrap">
-      <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png"
-           alt="Escudo Atlético Zabal"
-           onerror="this.style.display='none';document.getElementById('escudoFallback').style.display='flex'">
-      <div class="escudo-fallback" id="escudoFallback" style="display:none">Z</div>
+    <div class="topbar-escudo">
+      <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png" alt="Escudo" onerror="this.style.display='none'">
     </div>
     <div class="topbar-texts">
       <div class="topbar-club">Atlético Zabal Linense</div>
       <div class="topbar-season" id="topbarSeason">Inscripción Temporada 2025–26</div>
     </div>
     <div class="topbar-badge">Registro</div>
-    <button onclick="abrirFaq()" style="background:rgba(255,255,255,0.12);border:none;border-radius:8px;padding:6px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-left:8px;white-space:nowrap">❓ Ayuda</button>
+    <button class="topbar-btn" onclick="mostrarVista('vistaFaq')">❓ Ayuda</button>
   </div>
 </div>
 
-<!-- ══════════ PANTALLA SELECTOR ══════════ -->
-<div id="selector" style="display:flex">
-  <div style="margin-bottom:18px">
-    <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png"
-         alt="Escudo Atlético Zabal Linense"
-         style="width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(26,58,107,0.18))"
-         onerror="this.style.display='none'">
+<!-- ══ VISTA: SELECTOR ═════════════════════════════════════ -->
+<div id="vistaSelector" class="vista activa">
+  <div class="sel-escudo">
+    <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png" alt="Escudo Atlético Zabal" onerror="this.style.display='none'">
   </div>
-  <div class="selector-title" id="selectorSeason">Temporada 2025–26</div>
-  <div class="selector-sub" style="font-size:18px;font-weight:700;color:var(--azul);max-width:480px">Bienvenidos a la página de registro del<br>Atlético Zabal Linense</div>
-  <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:11px 16px;font-size:13px;color:#7a5a00;margin-bottom:28px;max-width:480px;width:100%;text-align:left;line-height:1.6">
-    <strong>📌 Antes de comenzar</strong>, ten a mano el <strong>DNI del jugador</strong> y el <strong>DNI del tutor legal</strong>.
-  </div>
-  <div style="font-size:13px;font-weight:600;color:var(--texto-med);margin-bottom:14px;text-align:center;letter-spacing:.02em">Selecciona el tipo de registro</div>
-  <div class="selector-btns">
-    <div class="sel-btn jugador" onclick="elegirTipo('jugador')">
-      <div class="sel-icon"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M6 16L16 10C16 10 18 16 29 16C40 16 42 10 42 10L52 16L46 26H40V50H18V26H12L6 16Z" stroke="#1a3a6b" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
-</svg></div>
-      <div class="sel-label">Jugador</div>
-      <div class="sel-desc">Inscripción de un jugador para la temporada</div>
+  <div class="sel-title" id="selectorSeason">Temporada 2025–26</div>
+  <div class="sel-sub">Bienvenidos a la página de registro del<br>Atlético Zabal Linense</div>
+  <div class="sel-aviso"><strong>📌 Antes de comenzar</strong>, ten a mano el <strong>DNI del jugador</strong> y el <strong>DNI del tutor legal</strong>.</div>
+  <div class="sel-label">Selecciona el tipo de registro</div>
+  <div class="sel-btns">
+    <div class="sel-btn jugador" onclick="iniciarJugador()">
+      <div class="sel-btn-icon">
+        <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 16L16 10C16 10 18 16 29 16C40 16 42 10 42 10L52 16L46 26H40V50H18V26H12L6 16Z" stroke="#1a3a6b" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sel-btn-label">Jugador</div>
+      <div class="sel-btn-desc">Inscripción de un jugador para la temporada</div>
       <span class="sel-pill">Registro de jugador</span>
     </div>
-    <div class="sel-btn entrenador" onclick="elegirTipo('entrenador')">
-      <div class="sel-icon"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="10" y="8" width="38" height="48" rx="4" stroke="#7a5a00" stroke-width="2.8" fill="none"/>
-  <rect x="20" y="6" width="18" height="8" rx="3" stroke="#7a5a00" stroke-width="2.5" fill="none"/>
-  <circle cx="29" cy="26" r="7" stroke="#7a5a00" stroke-width="2.5" fill="none"/>
-  <path d="M17 44c0-6.627 5.373-8 12-8s12 1.373 12 8" stroke="#7a5a00" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-</svg></div>
-      <div class="sel-label">Entrenador</div>
-      <div class="sel-desc">Inscripción de un nuevo entrenador del club</div>
+    <div class="sel-btn entrenador" onclick="iniciarEntrenador()">
+      <div class="sel-btn-icon">
+        <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="8" width="38" height="48" rx="4" stroke="#7a5a00" stroke-width="2.8"/>
+          <rect x="20" y="6" width="18" height="8" rx="3" stroke="#7a5a00" stroke-width="2.5"/>
+          <circle cx="29" cy="26" r="7" stroke="#7a5a00" stroke-width="2.5"/>
+          <path d="M17 44c0-6.627 5.373-8 12-8s12 1.373 12 8" stroke="#7a5a00" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sel-btn-label">Entrenador</div>
+      <div class="sel-btn-desc">Inscripción de un nuevo entrenador del club</div>
       <span class="sel-pill">Registro de entrenador</span>
     </div>
-    <button onclick="abrirFaq()" style="margin-top:22px;background:none;border:1.5px solid var(--borde);border-radius:50px;padding:9px 22px;font-size:13px;font-weight:600;color:var(--texto-med);cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:8px;transition:border-color .15s" onmouseover="this.style.borderColor='#1a3a6b'" onmouseout="this.style.borderColor='#d0d8e8'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ¿Tienes dudas? Ver preguntas frecuentes</button>
+  </div>
+  <button class="sel-ayuda-btn" onclick="mostrarVista('vistaFaq')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    ¿Tienes dudas? Ver preguntas frecuentes
+  </button>
 </div>
 
-<!-- TABS -->
-<div class="tabs-wrap" id="tabsWrap" style="display:none">
-  <div class="tab" onclick="volverSelector()" style="flex:none;padding:12px 14px 10px;color:var(--texto-suave);cursor:pointer;font-size:12px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap">← Inicio</div>
-  <div class="tab active" id="tab1"><span class="tab-num">1</span>Jugador</div>
-  <div class="tab"        id="tab2"><span class="tab-num">2</span>Tutor</div>
-  <div class="tab"        id="tab3"><span class="tab-num">3</span>Documentos</div>
-  <div class="tab"        id="tab4"><span class="tab-num">4</span>Enviar</div>
-</div>
+<!-- ══ VISTA: JUGADOR ══════════════════════════════════════ -->
+<div id="vistaJugador" class="vista">
+  <div class="tabs-wrap">
+    <div class="tab inicio" onclick="mostrarVista('vistaSelector')">← Inicio</div>
+    <div class="tab active" id="jtab1"><span class="tab-num">1</span>Jugador</div>
+    <div class="tab" id="jtab2"><span class="tab-num">2</span>Tutor</div>
+    <div class="tab" id="jtab3"><span class="tab-num">3</span>Documentos</div>
+    <div class="tab" id="jtab4"><span class="tab-num">4</span>Enviar</div>
+  </div>
+  <div class="content">
 
-<div class="content" id="mainContent" style="display:none">
-
-  <!-- ══════════ PASO 0 — PORTADA ══════════ -->
-  <div class="card show" id="p0">
-    <div class="card-title">
-      <div class="card-title-icon">⚽</div>
-      Bienvenido al proceso de inscripción
-    </div>
-    <p class="card-desc">Cumplimenta los datos del jugador y del tutor, adjunta la documentación y envíala directamente al club.</p>
-
-    <div>
-      <p style="font-size:12px;font-weight:700;color:var(--texto-med);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Categoría</p>
+    <!-- PASO 0: Bienvenida + categoría -->
+    <div class="card show" id="jp0">
+      <div class="card-title"><div class="card-title-icon">⚽</div>Bienvenido al proceso de inscripción</div>
+      <p class="card-desc">Selecciona la categoría del jugador para comenzar.</p>
       <div class="cat-grid">
         <div class="cat-btn" id="catBebe" onclick="selCat('Bebé')"><div class="cat-name">Bebé</div><span class="cat-age">Nacidos 2021 o posterior</span></div>
         <div class="cat-btn" id="catPre" onclick="selCat('Prebenjamín')"><div class="cat-name">Prebenjamín</div><span class="cat-age">Nacidos 2019–2020</span></div>
@@ -1112,532 +333,537 @@ input[type="file"] { display: none; }
         <div class="cat-btn" id="catCad" onclick="selCat('Cadete')"><div class="cat-name">Cadete</div><span class="cat-age">Nacidos 2011–2012</span></div>
         <div class="cat-btn" id="catJuv" onclick="selCat('Juvenil')"><div class="cat-name">Juvenil</div><span class="cat-age">Nacidos 2008–2010</span></div>
       </div>
+      <div class="msg-error" id="jerr0">Selecciona la categoría para continuar.</div>
+      <button class="bnext" style="width:100%" onclick="jir(1)">Comenzar inscripción</button>
     </div>
 
-    <div class="msg-error" id="err0">Selecciona la categoría para continuar.</div>
-    <button class="bnext" onclick="ir(1)" style="width:100%">Comenzar inscripción</button>
-  </div>
-
-  <!-- ══════════ PASO 1 — JUGADOR ══════════ -->
-  <div class="card" id="p1">
-    <div class="card-title">
-      <div class="card-title-icon">👤</div>
-      Datos del jugador
-    </div>
-    <p class="card-desc">Información del menor que se inscribe.</p>
-
-    <div class="field-row">
-      <div class="field">
-        <label>Nombre <span class="req">*</span></label>
-        <input type="text" id="jNombre" placeholder="Nombre">
+    <!-- PASO 1: Datos jugador -->
+    <div class="card" id="jp1">
+      <div class="card-title"><div class="card-title-icon">👤</div>Datos del jugador</div>
+      <p class="card-desc">Información del menor que se inscribe.</p>
+      <div class="field-row">
+        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="jNombre" placeholder="Nombre"></div>
+        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="jApellidos" placeholder="Apellidos"></div>
       </div>
-      <div class="field">
-        <label>Apellidos <span class="req">*</span></label>
-        <input type="text" id="jApellidos" placeholder="Apellidos">
+      <div class="field-row">
+        <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="jFecha"></div>
+        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="jDni" placeholder="12345678A"></div>
       </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Fecha de nacimiento <span class="req">*</span></label>
-        <input type="date" id="jFecha">
-      </div>
-      <div class="field">
-        <label>DNI / NIE <span class="req">*</span></label>
-        <input type="text" id="jDni" placeholder="12345678A">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Talla de ropa <span class="req">*</span></label>
-        <select id="jTalla">
-          <option value="">Seleccionar</option>
-          <option>2 años</option>
-          <option>4 años</option>
-          <option>6 años</option>
-          <option>8 años</option>
-          <option>10 años</option>
-          <option>12 años</option>
-          <option>14 años</option>
-          <option>XS</option>
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Alergias / Condiciones médicas</label>
-        <input type="text" id="jSalud" placeholder="Indicar si las hay, o dejar vacío">
-      </div>
-    </div>
-
-    <div class="msg-error" id="err1">Rellena el nombre, apellidos, fecha de nacimiento, DNI / NIE y talla del jugador.</div>
-    <div class="nav">
-      <button class="bback" onclick="ir(0)">← Atrás</button>
-      <button class="bnext" onclick="ir(2)">Siguiente</button>
-    </div>
-  </div>
-
-  <!-- ══════════ PASO 2 — TUTOR ══════════ -->
-  <div class="card" id="p2">
-    <div class="card-title">
-      <div class="card-title-icon">👨‍👩‍👦</div>
-      Datos del tutor legal
-    </div>
-    <p class="card-desc">Padre, madre o tutor legal responsable del jugador.</p>
-
-    <div class="field-row">
-      <div class="field">
-        <label>Nombre <span class="req">*</span></label>
-        <input type="text" id="tNombre" placeholder="Nombre">
-      </div>
-      <div class="field">
-        <label>Apellidos <span class="req">*</span></label>
-        <input type="text" id="tApellidos" placeholder="Apellidos">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>DNI / NIE <span class="req">*</span></label>
-        <input type="text" id="tDni" placeholder="12345678A">
-      </div>
-      <div class="field">
-        <label>Relación con el jugador <span class="req">*</span></label>
-        <select id="tRel">
-          <option value="">Seleccionar</option>
-          <option>Padre</option>
-          <option>Madre</option>
-          <option>Tutor legal</option>
-          <option>Otro</option>
-        </select>
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Teléfono <span class="req">*</span></label>
-        <input type="tel" id="tTel" placeholder="6XX XXX XXX">
-      </div>
-      <div class="field">
-        <label>Correo electrónico <span class="req">*</span></label>
-        <input type="email" id="tEmail" placeholder="email@ejemplo.com">
-      </div>
-    </div>
-
-    <!-- CONSENTIMIENTO IMÁGENES -->
-    <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:14px 16px;margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--azul);margin-bottom:8px;display:flex;align-items:center;gap:7px">
-        <span style="font-size:16px">📸</span> Consentimiento de uso de imágenes <span style="color:#c04000;font-size:12px">*</span>
-      </div>
-      <p style="font-size:12px;color:var(--texto-med);line-height:1.6;margin-bottom:10px">
-        El <strong>Atlético Zabal Linense</strong> puede obtener imágenes fotográficas y/o grabaciones en vídeo del jugador durante partidos, entrenamientos y eventos del club, con fines informativos, deportivos y de difusión en redes sociales y medios de comunicación, sin ánimo de lucro.
-      </p>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
-          <input type="radio" name="consentImg" id="imgSi" value="si" style="margin-top:2px;accent-color:var(--azul)">
-          <span style="font-size:13px;color:var(--texto);font-weight:500">✅ <strong>Autorizo</strong> el uso de imágenes del jugador al Atlético Zabal Linense</span>
-        </label>
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
-          <input type="radio" name="consentImg" id="imgNo" value="no" style="margin-top:2px;accent-color:var(--azul)">
-          <span style="font-size:13px;color:var(--texto);font-weight:500">❌ <strong>No autorizo</strong> el uso de imágenes del jugador</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="msg-error" id="err2">Todos los campos del tutor son obligatorios.</div>
-    <div class="nav">
-      <button class="bback" onclick="ir(1)">← Atrás</button>
-      <button class="bnext" onclick="ir(3)">Siguiente</button>
-    </div>
-  </div>
-
-  <!-- ══════════ PASO 3 — DOCUMENTOS / INFOGRAFÍA ══════════ -->
-  <div class="card" id="p3">
-    <div class="card-title">
-      <div class="card-title-icon">📋</div>
-      Documentación y siguiente paso
-    </div>
-    <p class="card-desc">Revisa qué documentos tendrás que enviar y cómo funciona el proceso de confirmación.</p>
-
-    <!-- LISTA DE DOCUMENTOS NECESARIOS -->
-    <div style="background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin-bottom:18px">
-      <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Documentos que deberás adjuntar al correo</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-          <span style="font-size:17px">🪪</span>
-          <div><strong>DNI / NIE del jugador</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio</span></div>
+      <div class="field-row">
+        <div class="field"><label>Talla de ropa <span class="req">*</span></label>
+          <select id="jTalla">
+            <option value="">Seleccionar</option>
+            <option>2 años</option><option>4 años</option><option>6 años</option>
+            <option>8 años</option><option>10 años</option><option>12 años</option>
+            <option>14 años</option><option>XS</option><option>S</option>
+            <option>M</option><option>L</option><option>XL</option>
+          </select>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-          <span style="font-size:17px">🪪</span>
-          <div><strong>DNI / NIE del tutor legal</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-          <span style="font-size:17px">🏥</span>
-          <div><strong>Certificado médico</strong> <span style="color:var(--texto-suave);font-size:11px;font-weight:600">· Opcional</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-          <span style="font-size:17px">📷</span>
-          <div><strong>Foto tipo DNI del jugador</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio · Fondo liso</span></div>
+        <div class="field"><label>Alergias / Condiciones médicas</label><input type="text" id="jSalud" placeholder="Indicar si las hay, o vacío"></div>
+      </div>
+      <div class="msg-error" id="jerr1">Rellena nombre, apellidos, fecha, DNI y talla.</div>
+      <div class="nav">
+        <button class="bback" onclick="jir(0)">← Atrás</button>
+        <button class="bnext" onclick="jir(2)">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- PASO 2: Datos tutor -->
+    <div class="card" id="jp2">
+      <div class="card-title"><div class="card-title-icon">👨‍👩‍👦</div>Datos del tutor legal</div>
+      <p class="card-desc">Padre, madre o tutor legal responsable del jugador.</p>
+      <div class="field-row">
+        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="tNombre" placeholder="Nombre"></div>
+        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="tApellidos" placeholder="Apellidos"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="tDni" placeholder="12345678A"></div>
+        <div class="field"><label>Relación <span class="req">*</span></label>
+          <select id="tRel"><option value="">Seleccionar</option><option>Padre</option><option>Madre</option><option>Tutor legal</option><option>Otro</option></select>
         </div>
       </div>
-    </div>
-
-    <!-- INFOGRAFÍA DE PASOS -->
-    <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Cómo funciona el proceso</div>
-
-    <!-- Paso A -->
-    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">1</div>
-      <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
-        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Completa el formulario y envía el correo</div>
-        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En el último paso se abrirá tu aplicación de correo con todos los datos ya escritos. <strong>Adjunta los 4 documentos</strong> indicados arriba y pulsa Enviar.</div>
+      <div class="field-row">
+        <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="tTel" placeholder="6XX XXX XXX"></div>
+        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="tEmail" placeholder="email@ejemplo.com"></div>
       </div>
-    </div>
-    <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
-
-    <!-- Paso B -->
-    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">2</div>
-      <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
-        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Confirmación inmediata de recepción</div>
-        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En cuanto el club reciba tu correo, recibirás automáticamente un <strong>correo de confirmación</strong> indicando que la solicitud ha llegado correctamente.</div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
-
-    <!-- Paso C -->
-    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">3</div>
-      <div style="flex:1;background:var(--amarillo-bg);border:0.5px solid var(--amarillo-borde);border-radius:var(--radio);padding:12px 14px">
-        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Revisión en 24–48 horas</div>
-        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">El club revisará toda la documentación. Si todo está correcto, recibirás un segundo correo en un plazo de <strong>24 a 48 horas</strong> confirmando que la inscripción está aprobada.</div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
-
-    <!-- Paso D -->
-    <div style="display:flex;gap:12px;margin-bottom:6px;align-items:flex-start">
-      <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">4</div>
-      <div style="flex:1;background:var(--completado-bg);border:0.5px solid #b0d0f0;border-radius:var(--radio);padding:12px 14px">
-        <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Firma en las oficinas del club</div>
-        <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En el correo de aprobación se indicarán los <strong>días y horarios de atención</strong> en las oficinas del club para firmar la documentación oficial y completar la inscripción.</div>
-      </div>
-    </div>
-
-    <div id="ayudaBtnPaso3"></div>
-    <div class="nav" style="margin-top:20px">
-      <button class="bback" onclick="ir(2)">← Atrás</button>
-      <button class="bnext" onclick="ir(4)">Continuar</button>
-    </div>
-  </div>
-
-  <!-- ══════════ PASO 4 — ENVIAR ══════════ -->
-  <div class="card" id="p4">
-    <div class="card-title">
-      <div class="card-title-icon">📤</div>
-      Revisar y enviar
-    </div>
-    <p class="card-desc">Comprueba los datos y envía la inscripción al club.</p>
-
-    <div class="resumen-section" id="resumenJugador"></div>
-    <div class="resumen-section" id="resumenTutor"></div>
-
-    <div class="email-display">
-      Enviar a: <span id="emailDestSpan">cargando...</span>
-    </div>
-
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-label" id="progressLabel">Preparando...</div>
-      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
-    </div>
-
-    <button class="bcta" onclick="enviarFormulario()">
-      Abrir correo y enviar <span class="acento">→</span>
-    </button>
-
-    <div class="nav" style="margin-top:10px">
-      <button class="bback" onclick="ir(3)">← Atrás</button>
-    </div>
-  </div>
-
-  <!-- ══════════ PANTALLA FINAL JUGADOR ══════════ -->
-  <div id="success" style="display:none">
-    <div class="success-card">
-      <div class="success-icon" style="background:#e67e00;border-color:var(--amarillo)">📧</div>
-      <div class="success-title" style="color:#b85c00">¡Revisa tu correo antes de enviar!</div>
-      <p class="success-desc">
-        Se ha abierto la aplicación de correo con todos los datos del formulario ya escritos.<br><br>
-        <strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong>
-      </p>
-      <div style="text-align:left;background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin:12px 0 18px">
-        <div style="display:flex;flex-direction:column;gap:9px">
-          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🪪</span> <strong>DNI / NIE del jugador</strong></div>
-          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🪪</span> <strong>DNI / NIE del tutor legal</strong></div>
-          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🏥</span> <strong>Certificado médico</strong> <span style="font-size:11px;color:var(--texto-suave)">(si lo tienes)</span></div>
-          <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>📷</span> <strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
+      <!-- Consentimiento imágenes -->
+      <div class="consent-box">
+        <div class="consent-title">📸 Consentimiento de uso de imágenes <span class="req">*</span></div>
+        <p class="consent-text">El <strong>Atlético Zabal Linense</strong> puede obtener imágenes y vídeos del jugador durante partidos, entrenamientos y eventos del club, con fines informativos y de difusión en redes sociales y medios, sin ánimo de lucro.</p>
+        <div class="consent-opciones">
+          <label><input type="radio" name="consentImg" id="imgSi" value="si"> <span>✅ <strong>Autorizo</strong> el uso de imágenes del jugador</span></label>
+          <label><input type="radio" name="consentImg" id="imgNo" value="no"> <span>❌ <strong>No autorizo</strong> el uso de imágenes del jugador</span></label>
         </div>
       </div>
-      <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:11px 14px;font-size:12px;color:#7a5a00;margin-bottom:18px;line-height:1.6">
-        📨 Envía el correo a <strong id="successEmailInfo" style="color:var(--azul)"></strong>.<br>
-        Si el correo no se abrió, abre tu app de correo manualmente y adjunta los archivos a esa dirección.
+      <div class="msg-error" id="jerr2">Todos los campos del tutor son obligatorios.</div>
+      <div class="nav">
+        <button class="bback" onclick="jir(1)">← Atrás</button>
+        <button class="bnext" onclick="jir(3)">Siguiente</button>
       </div>
-      <div id="ayudaBtnJugador"></div>
-      <button onclick="abrirFaq()" style="background:none;border:1.5px solid var(--borde);border-radius:var(--radio);padding:10px;font-size:13px;font-weight:600;color:var(--texto-med);cursor:pointer;font-family:'Outfit',sans-serif;width:100%;margin-bottom:10px" >❓ Ver preguntas frecuentes</button>
-      <button class="btn-reiniciar" onclick="reiniciar()">Nueva inscripción</button>
+    </div>
+
+    <!-- PASO 3: Documentos + infografía -->
+    <div class="card" id="jp3">
+      <div class="card-title"><div class="card-title-icon">📋</div>Documentación y siguiente paso</div>
+      <p class="card-desc">Revisa qué documentos tendrás que enviar y cómo funciona el proceso.</p>
+      <div class="docs-lista">
+        <div class="docs-lista-titulo">Documentos que deberás adjuntar al correo</div>
+        <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE del jugador</strong><span class="doc-tag obl">Obligatorio</span></div></div>
+        <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE del tutor legal</strong><span class="doc-tag obl">Obligatorio</span></div></div>
+        <div class="doc-fila"><span class="doc-fila-emoji">🏥</span><div><strong>Certificado médico</strong><span class="doc-tag opt">Opcional</span></div></div>
+        <div class="doc-fila"><span class="doc-fila-emoji">📷</span><div><strong>Foto tipo DNI del jugador</strong><span class="doc-tag obl">Obligatorio</span> · Fondo liso</div></div>
+      </div>
+      <div class="proceso-titulo">Cómo funciona el proceso</div>
+      <div class="proceso-paso"><div class="proceso-num">1</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Completa el formulario y envía el correo</div><div class="proceso-pdesc">En el último paso se abrirá tu app de correo con todos los datos ya escritos. <strong>Adjunta los 4 documentos</strong> y pulsa Enviar.</div></div></div>
+      <div class="proceso-separador"><div class="proceso-linea"></div></div>
+      <div class="proceso-paso"><div class="proceso-num">2</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Confirmación inmediata de recepción</div><div class="proceso-pdesc">En cuanto el club reciba tu correo recibirás un <strong>correo de confirmación</strong> automático.</div></div></div>
+      <div class="proceso-separador"><div class="proceso-linea"></div></div>
+      <div class="proceso-paso"><div class="proceso-num">3</div><div class="proceso-cuerpo amarillo"><div class="proceso-ptitulo">Revisión en 24–48 horas</div><div class="proceso-pdesc">El club revisará la documentación. Si todo es correcto recibirás un segundo correo en <strong>24 a 48 horas</strong>.</div></div></div>
+      <div class="proceso-separador"><div class="proceso-linea"></div></div>
+      <div class="proceso-paso"><div class="proceso-num">4</div><div class="proceso-cuerpo azul"><div class="proceso-ptitulo">Firma en las oficinas del club</div><div class="proceso-pdesc">El correo de aprobación indicará los <strong>días y horarios</strong> para acudir a firmar la documentación oficial.</div></div></div>
+      <div class="nav" style="margin-top:20px">
+        <button class="bback" onclick="jir(2)">← Atrás</button>
+        <button class="bnext" onclick="jir(4)">Continuar</button>
+      </div>
+    </div>
+
+    <!-- PASO 4: Resumen + envío -->
+    <div class="card" id="jp4">
+      <div class="card-title"><div class="card-title-icon">📤</div>Revisar y enviar</div>
+      <p class="card-desc">Comprueba los datos y envía la inscripción al club.</p>
+      <div class="resumen-section" id="jResJugador"></div>
+      <div class="resumen-section" id="jResTutor"></div>
+      <div class="email-display">Enviar a: <span id="emailDestSpan">direcciondeportivazabal@gmail.com</span></div>
+      <button class="bcta" onclick="enviarJugador()">Abrir correo y enviar <span class="acento">→</span></button>
+      <div class="nav" style="margin-top:10px"><button class="bback" onclick="jir(3)">← Atrás</button></div>
+    </div>
+
+    <!-- PANTALLA FINAL JUGADOR -->
+    <div class="card" id="jFinal">
+      <div class="success-card">
+        <div class="success-icon">📧</div>
+        <div class="success-title">¡Revisa tu correo antes de enviar!</div>
+        <p class="success-desc">Se ha abierto la aplicación de correo con todos los datos ya escritos.<br><br><strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong></p>
+        <div class="success-docs">
+          <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE del jugador</strong></div>
+          <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE del tutor legal</strong></div>
+          <div class="doc-fila"><span class="doc-fila-emoji">🏥</span><strong>Certificado médico</strong> <span style="font-size:11px;color:var(--texto-suave)">(si lo tienes)</span></div>
+          <div class="doc-fila"><span class="doc-fila-emoji">📷</span><strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
+        </div>
+        <div class="success-aviso">📨 Envía el correo a <strong id="jFinalEmail" style="color:var(--azul)"></strong>.<br>Si no se abrió el correo, abre tu app de correo manualmente y envía los archivos a esa dirección.</div>
+        <a href="#" id="jYtBtn" target="_blank" class="btn-yt"><div class="btn-yt-icon"><svg viewBox="0 0 24 24" fill="white"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/></svg></div><div class="btn-yt-texts"><div class="btn-yt-title">¿Tienes dudas? Ver vídeo explicativo</div><div class="btn-yt-sub">Guía paso a paso para completar la inscripción</div></div></a>
+        <br>
+        <button class="btn-reiniciar" onclick="location.reload()">Nueva inscripción</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      Atlético Zabal Linense · Gestión telemática · v2026-05-30<br>
+      <button class="admin-trigger" onclick="abrirAdmin()">⚙ Administración</button>
+      <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
     </div>
   </div>
+</div>
 
-  <div class="footer">
-    Atlético Zabal Linense · Gestión telemática · v2026-05-29<br>
-    <button class="admin-trigger" onclick="abrirAdmin()" style="margin-top:6px">⚙ Administración</button>
-    <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
+<!-- ══ VISTA: ENTRENADOR ═══════════════════════════════════ -->
+<div id="vistaEntrenador" class="vista">
+  <div class="tabs-wrap">
+    <div class="tab inicio" onclick="mostrarVista('vistaSelector')">← Inicio</div>
+    <div class="tab active" id="etab1"><span class="tab-num">1</span>Datos</div>
+    <div class="tab" id="etab2"><span class="tab-num">2</span>Formación</div>
+    <div class="tab" id="etab3"><span class="tab-num">3</span>Proceso</div>
+    <div class="tab" id="etab4"><span class="tab-num">4</span>Enviar</div>
   </div>
-</div><!-- /content -->
+  <div class="content">
+
+    <!-- E-PASO 1 -->
+    <div class="card show" id="ep1">
+      <div class="card-title"><div class="card-title-icon">📋</div>Datos del entrenador</div>
+      <p class="card-desc">Información personal del entrenador que se incorpora al club.</p>
+      <div class="field-row">
+        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="eNombre" placeholder="Nombre"></div>
+        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="eApellidos" placeholder="Apellidos"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="eDni" placeholder="12345678A"></div>
+        <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="eFecha"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="eTel" placeholder="6XX XXX XXX"></div>
+        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="eEmail" placeholder="email@ejemplo.com"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Categoría que entrenaría <span class="req">*</span></label>
+          <select id="eCat"><option value="">Seleccionar</option><option>Bebé</option><option>Prebenjamín</option><option>Benjamín</option><option>Alevín</option><option>Infantil</option><option>Cadete</option><option>Juvenil</option><option>Varias / Por determinar</option></select>
+        </div>
+        <div class="field"><label>Talla de ropa <span class="req">*</span></label>
+          <select id="eTalla"><option value="">Seleccionar</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+        </div>
+      </div>
+      <div class="msg-error" id="eerr1">Rellena todos los campos obligatorios.</div>
+      <div class="nav">
+        <button class="bback" onclick="mostrarVista('vistaSelector')">← Inicio</button>
+        <button class="bnext" onclick="eir(2)">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- E-PASO 2 -->
+    <div class="card" id="ep2">
+      <div class="card-title"><div class="card-title-icon">🎓</div>Formación</div>
+      <p class="card-desc">Titulación federativa del entrenador.</p>
+      <div class="field-row full">
+        <div class="field"><label>Titulación UEFA / RFEF <span class="req">*</span></label>
+          <select id="eTitulo"><option value="">Seleccionar</option><option>Sin titulación</option><option>Monitor</option><option>UEFA C</option><option>UEFA B</option><option>UEFA A</option><option>UEFA Pro</option></select>
+        </div>
+      </div>
+      <div class="msg-error" id="eerr2">Selecciona la titulación.</div>
+      <div class="nav">
+        <button class="bback" onclick="eir(1)">← Atrás</button>
+        <button class="bnext" onclick="eir(3)">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- E-PASO 3 -->
+    <div class="card" id="ep3">
+      <div class="card-title"><div class="card-title-icon">📋</div>Documentación y proceso</div>
+      <p class="card-desc">Documentos a adjuntar y cómo funciona el proceso.</p>
+      <div class="docs-lista">
+        <div class="docs-lista-titulo">Documentos que deberás adjuntar al correo</div>
+        <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE</strong><span class="doc-tag obl">Obligatorio</span></div></div>
+        <div class="doc-fila"><span class="doc-fila-emoji">🎓</span><div><strong>Titulación federativa</strong><span class="doc-tag opt">Si dispones de ella</span></div></div>
+        <div class="doc-fila"><span class="doc-fila-emoji">📷</span><div><strong>Foto tipo DNI</strong><span class="doc-tag obl">Obligatorio</span> · Fondo liso</div></div>
+        <div class="doc-fila"><span class="doc-fila-emoji">📄</span><div><strong>Currículum deportivo</strong><span class="doc-tag opt">Opcional</span></div></div>
+      </div>
+      <div class="proceso-titulo">Cómo funciona el proceso</div>
+      <div class="proceso-paso"><div class="proceso-num">1</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Envía el formulario con los documentos</div><div class="proceso-pdesc">En el último paso se abrirá tu app de correo. Adjunta los documentos y pulsa Enviar.</div></div></div>
+      <div class="proceso-separador"><div class="proceso-linea"></div></div>
+      <div class="proceso-paso"><div class="proceso-num">2</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Confirmación inmediata</div><div class="proceso-pdesc">Recibirás un correo automático confirmando que la solicitud ha llegado.</div></div></div>
+      <div class="proceso-separador"><div class="proceso-linea"></div></div>
+      <div class="proceso-paso"><div class="proceso-num">3</div><div class="proceso-cuerpo amarillo"><div class="proceso-ptitulo">Revisión en 24–48 horas</div><div class="proceso-pdesc">El club revisará tu perfil y recibirás confirmación en <strong>24 a 48 horas</strong>.</div></div></div>
+      <div class="proceso-separador"><div class="proceso-linea"></div></div>
+      <div class="proceso-paso"><div class="proceso-num">4</div><div class="proceso-cuerpo azul"><div class="proceso-ptitulo">Firma en las oficinas del club</div><div class="proceso-pdesc">El correo de aprobación indicará los <strong>días y horarios</strong> para firmar el contrato.</div></div></div>
+      <div class="nav" style="margin-top:20px">
+        <button class="bback" onclick="eir(2)">← Atrás</button>
+        <button class="bnext" onclick="eir(4)">Continuar</button>
+      </div>
+    </div>
+
+    <!-- E-PASO 4 -->
+    <div class="card" id="ep4">
+      <div class="card-title"><div class="card-title-icon">📤</div>Revisar y enviar</div>
+      <p class="card-desc">Comprueba los datos y envía la solicitud al club.</p>
+      <div class="resumen-section" id="eResDatos"></div>
+      <div class="resumen-section" id="eResForm"></div>
+      <div class="email-display">Enviar a: <span id="eEmailDestSpan">direcciondeportivazabal@gmail.com</span></div>
+      <button class="bcta" onclick="enviarEntrenador()">Abrir correo y enviar <span class="acento">→</span></button>
+      <div class="nav" style="margin-top:10px"><button class="bback" onclick="eir(3)">← Atrás</button></div>
+    </div>
+
+    <!-- PANTALLA FINAL ENTRENADOR -->
+    <div class="card" id="eFinal">
+      <div class="success-card">
+        <div class="success-icon">📧</div>
+        <div class="success-title">¡Revisa tu correo antes de enviar!</div>
+        <p class="success-desc">Se ha abierto la aplicación de correo con todos los datos ya escritos.<br><br><strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong></p>
+        <div class="success-docs">
+          <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE</strong></div>
+          <div class="doc-fila"><span class="doc-fila-emoji">🎓</span><strong>Titulación federativa</strong> <span style="font-size:11px;color:var(--texto-suave)">(si dispones)</span></div>
+          <div class="doc-fila"><span class="doc-fila-emoji">📷</span><strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
+          <div class="doc-fila"><span class="doc-fila-emoji">📄</span><strong>Currículum deportivo</strong> <span style="font-size:11px;color:var(--texto-suave)">(opcional)</span></div>
+        </div>
+        <div class="success-aviso">📨 Envía el correo a <strong id="eFinalEmail" style="color:var(--azul)"></strong>.<br>Si no se abrió el correo, abre tu app manualmente y envía los archivos.</div>
+        <br>
+        <button class="btn-reiniciar" onclick="location.reload()">Volver al inicio</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      Atlético Zabal Linense · Gestión telemática · v2026-05-30<br>
+      <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VISTA: FAQs ══════════════════════════════════════════ -->
+<div id="vistaFaq" class="vista">
+  <div class="faq-topbar">
+    <div class="faq-topbar-stripe"></div>
+    <div class="faq-topbar-inner">
+      <button class="faq-back" id="faqBackBtn" onclick="cerrarFaq()">← Volver</button>
+      <div class="faq-topbar-title">Centro de ayuda</div>
+    </div>
+  </div>
+  <div class="faq-content">
+    <div class="faq-hero">
+      <div class="faq-hero-icon">❓</div>
+      <h1>Preguntas frecuentes</h1>
+      <p>Todo lo que necesitas saber sobre el proceso de inscripción<br>en el Atlético Zabal Linense</p>
+    </div>
+    <div class="faq-section-title">General</div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Para qué sirve esta página?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Esta página te permite <strong>registrar a un jugador o a un entrenador</strong> en el Atlético Zabal Linense de forma telemática. El formulario recoge todos los datos y al finalizar abre tu app de correo con todo escrito para que solo adjuntes los documentos y pulses Enviar.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Qué necesito tener a mano antes de empezar?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Ten preparado: <ul><li><strong>DNI o NIE del jugador</strong></li><li><strong>DNI o NIE del tutor legal</strong></li><li>Los <strong>documentos en foto o PDF</strong> para adjuntarlos</li></ul>Si no tienes algún documento puedes completar el formulario y adjuntarlo más tarde.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Es segura esta página?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Sí. Esta página <strong>no almacena ningún dato en ningún servidor</strong>. Toda la información se usa únicamente para generar el correo que tú mismo envías. Los datos van directamente desde tu dispositivo al correo del club.</div></div>
+    <div class="faq-section-title">Documentos</div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Qué documentos necesito para inscribir a un jugador?</div><div class="faq-chevron">▾</div></div><div class="faq-a"><ul><li>🪪 <strong>DNI / NIE del jugador</strong> <span class="faq-tag obl">Obligatorio</span></li><li>🪪 <strong>DNI / NIE del tutor legal</strong> <span class="faq-tag obl">Obligatorio</span></li><li>📷 <strong>Foto tipo DNI</strong> — fondo liso <span class="faq-tag obl">Obligatorio</span></li><li>🏥 <strong>Certificado médico</strong> <span class="faq-tag opt">Opcional</span></li></ul>Los archivos pueden ser fotos hechas con el móvil o PDFs.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Cómo tiene que ser la foto tipo DNI?</div><div class="faq-chevron">▾</div></div><div class="faq-a">La foto debe ser de <strong>cara, mirando al frente</strong>, con <strong>fondo liso</strong> (cualquier color uniforme vale). Puede ser una foto con el móvil siempre que se vea bien el rostro.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">No tengo el certificado médico, ¿puedo inscribirme igualmente?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Sí. El certificado médico es <strong>opcional</strong> en el momento del registro. El club lleva un registro de qué jugadores lo tienen en vigor. Puedes enviarlo más adelante a <strong>direcciondeportivazabal@gmail.com</strong>.</div></div>
+    <div class="faq-section-title">Proceso</div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Cómo funciona el proceso paso a paso?</div><div class="faq-chevron">▾</div></div><div class="faq-a"><ol><li>Rellena el formulario con los datos.</li><li>Al pulsar <strong>"Abrir correo y enviar"</strong> se abre tu app de correo con todo escrito.</li><li><strong>Adjunta los documentos</strong> requeridos.</li><li>Pulsa <strong>Enviar</strong>.</li><li>Recibirás confirmación automática de que llegó.</li><li>En <strong>24–48 horas</strong> el club revisará la documentación.</li><li>Recibirás un correo con los días para <strong>acudir a firmar</strong> en las oficinas.</li></ol></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">He terminado pero no se abrió el correo, ¿qué hago?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Abre tu aplicación de correo manualmente, crea un correo nuevo a <strong>direcciondeportivazabal@gmail.com</strong>, en el asunto indica <em>Inscripción [nombre] — [categoría]</em>, adjunta los documentos y envíalo.</div></div>
+    <div class="faq-section-title">Categorías</div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿En qué categoría se inscribe mi hijo?</div><div class="faq-chevron">▾</div></div><div class="faq-a"><ul><li><strong>Bebé</strong> — nacidos en 2021 o posterior</li><li><strong>Prebenjamín</strong> — nacidos en 2019–2020</li><li><strong>Benjamín</strong> — nacidos en 2017–2018</li><li><strong>Alevín</strong> — nacidos en 2015–2016</li><li><strong>Infantil</strong> — nacidos en 2013–2014</li><li><strong>Cadete</strong> — nacidos en 2011–2012</li><li><strong>Juvenil</strong> — nacidos en 2008–2010</li></ul></div></div>
+    <a href="https://www.youtube.com/watch?v=PENDIENTE" target="_blank" rel="noopener" class="faq-yt" id="faqYtLink">
+      <div class="faq-yt-icon"><svg viewBox="0 0 24 24" fill="white"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/></svg></div>
+      <div><div class="faq-yt-title">Ver vídeo explicativo completo</div><div class="faq-yt-sub">Guía paso a paso · Próximamente disponible</div></div>
+    </a>
+    <div class="faq-contacto">
+      <div style="font-size:13px;color:var(--texto-med);margin-bottom:4px">¿No encuentras respuesta?</div>
+      <div style="font-size:13px;font-weight:600;color:var(--azul)">📧 direcciondeportivazabal@gmail.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FAB ══════════════════════════════════════════════════ -->
+<button class="fab" id="fabAyuda" onclick="mostrarVista('vistaFaq')">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  Ayuda
+</button>
+
+<!-- ══ PANEL ADMIN ══════════════════════════════════════════ -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+    <div class="admin-header">
+      <h2>⚙ Panel de administración</h2>
+      <button class="admin-close" onclick="cerrarAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <div id="adminLockZone">
+        <div class="admin-stitle">Contraseña de acceso</div>
+        <input class="admin-input" type="password" id="adminPwdInput" placeholder="Introduce la contraseña" onkeydown="if(event.key==='Enter')verificarPwd()">
+        <button class="admin-btn" onclick="verificarPwd()">Acceder</button>
+        <div class="admin-msg" id="adminPwdMsg"></div>
+      </div>
+      <div id="adminConfigZone" style="display:none">
+        <div style="font-size:12px;color:#1a8a2e;font-weight:600;margin-bottom:16px">✅ Sesión iniciada como administrador</div>
+        <div class="admin-section">
+          <div class="admin-stitle">Temporada activa</div>
+          <input class="admin-input" type="text" id="adminTempInput" placeholder="Ej. 2025–26">
+          <button class="admin-btn" onclick="guardarTemporada()">Guardar temporada</button>
+          <div class="admin-msg" id="adminTempMsg"></div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-stitle">Correo de destino</div>
+          <input class="admin-input" type="email" id="adminEmailInput" placeholder="correo@club.es">
+          <button class="admin-btn" onclick="guardarCorreo()">Guardar correo</button>
+          <div class="admin-msg" id="adminEmailMsg"></div>
+        </div>
+        <div style="background:#f3f6fb;border:.5px solid var(--borde);border-radius:10px;padding:14px 16px">
+          <div class="admin-stitle">🌐 Para actualizar en el servidor</div>
+          <p style="font-size:12px;color:var(--texto-med);line-height:1.6;margin-bottom:8px">Edita el archivo <strong>config.json</strong> en GitHub con estos valores:</p>
+          <div class="admin-preview" id="adminPreview"></div>
+          <p style="font-size:11px;color:#7090b8;margin-top:8px;line-height:1.5">En GitHub: abre <code>config.json</code> → lápiz ✏️ → edita → <em>Commit changes</em>. En 1–2 min estará activo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-/* ══════════ CONFIG ══════════ */
-const CLUB_NOMBRE  = 'Atlético Zabal Linense';
-const EMAIL_KEY    = 'zabal_email_destino';
-const TEMP_KEY     = 'zabal_temporada';
-const ADMIN_PWD    = '1234admin';
-let EMAIL_DEST     = localStorage.getItem(EMAIL_KEY) || 'direcciondeportivazabal@gmail.com';
-let TEMPORADA      = localStorage.getItem(TEMP_KEY)  || '2025–26';
-let CONFIG_LOADED  = false;
+/* ══ CONFIG ════════════════════════════════════════════════ */
+var EMAIL_DEST = localStorage.getItem('zabal_email') || 'direcciondeportivazabal@gmail.com';
+var TEMPORADA  = localStorage.getItem('zabal_temp')  || '2025\u201326';
+var ADMIN_PWD  = '1234admin';
+var YOUTUBE_URL = 'https://www.youtube.com/watch?v=PENDIENTE';
+var adminOk = false;
+var faqOrigen = 'vistaSelector';
 
-/* ══════════ estado ══════════ */
-let paso = 0, cat = '';
-const docsState = { dniNino:null, dniPadre:null, certMed:null, foto:null };
-
-/* arranque: ver DOMContentLoaded abajo */
-
-/* ══════════ categoría y tipo ══════════ */
-function selCat(c){
-  cat = c;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
-  const map = {Bebé:'catBebe',Prebenjamín:'catPre',Benjamín:'catBen',Alevín:'catAle',Infantil:'catInf',Cadete:'catCad',Juvenil:'catJuv'};
-  const el = document.getElementById(map[c]);
-  if(el) el.classList.add('selected');
-}
-
-/* ══════════ navegación ══════════ */
-function ir(n){
-  if(n > paso && !validar(paso)) return;
-  document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
-  document.getElementById('p'+n).classList.add('show');
-  paso = n;
-  actualizarTabs(n);
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function actualizarTabs(n){
-  const tabs = [null,'tab1','tab2','tab3','tab4'];
-  for(let i=1;i<=4;i++){
-    const t = document.getElementById('tab'+i);
-    if(!t) continue;
-    t.classList.remove('active','done');
-    if(i === n) t.classList.add('active');
-    else if(i < n) t.classList.add('done');
+/* ══ NAVEGACIÓN PRINCIPAL ══════════════════════════════════ */
+function mostrarVista(id) {
+  document.querySelectorAll('.vista').forEach(function(v){ v.classList.remove('activa'); });
+  document.getElementById(id).classList.add('activa');
+  // FAB: visible en formularios, oculto en selector y faq
+  var fab = document.getElementById('fabAyuda');
+  fab.style.display = (id === 'vistaJugador' || id === 'vistaEntrenador') ? 'flex' : 'none';
+  // Guardar origen para el botón volver de FAQ
+  if (id === 'vistaFaq') {
+    // origen ya guardado antes de llamar
+  } else {
+    faqOrigen = id;
   }
+  window.scrollTo({top:0});
 }
 
-/* ══════════ validación ══════════ */
-function v(id){ const el=document.getElementById(id); return el?el.value.trim():''; }
-function req(id){
-  const el=document.getElementById(id);
-  if(!el||!el.value.trim()){ if(el) el.classList.add('error'); return false; }
-  el.classList.remove('error'); return true;
+function cerrarFaq() {
+  mostrarVista(faqOrigen);
 }
-function limpiarErrores(){ document.querySelectorAll('input.error').forEach(e=>e.classList.remove('error')); }
 
-function validar(p){
-  limpiarErrores();
-  document.querySelectorAll('.msg-error').forEach(e=>e.classList.remove('visible'));
-  if(p===0){
-    if(!cat){ document.getElementById('err0').classList.add('visible'); return false; }
+/* ══ JUGADOR ═══════════════════════════════════════════════ */
+var jpaso = 0;
+var cat = '';
+
+function iniciarJugador() {
+  jpaso = 0; cat = '';
+  document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
+  document.getElementById('jp0').classList.add('show');
+  document.querySelectorAll('#vistaJugador .tab').forEach(function(t){ t.classList.remove('active','done'); });
+  document.getElementById('jtab1').classList.add('active');
+  mostrarVista('vistaJugador');
+}
+
+function selCat(c) {
+  cat = c;
+  var mapa = {Bebé:'catBebe',Prebenjamín:'catPre',Benjamín:'catBen',Alevín:'catAle',Infantil:'catInf',Cadete:'catCad',Juvenil:'catJuv'};
+  document.querySelectorAll('.cat-btn').forEach(function(b){ b.classList.remove('selected'); });
+  var el = document.getElementById(mapa[c]);
+  if (el) el.classList.add('selected');
+}
+
+function jir(n) {
+  if (n > jpaso && !jvalidar(jpaso)) return;
+  document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
+  document.getElementById('jp' + n).classList.add('show');
+  jpaso = n;
+  jactualizarTabs(n);
+  if (n === 4) jconstruirResumen();
+  window.scrollTo({top:0});
+}
+
+function jvalidar(p) {
+  document.querySelectorAll('#vistaJugador .msg-error').forEach(function(e){ e.classList.remove('visible'); });
+  document.querySelectorAll('#vistaJugador input.error, #vistaJugador select.error').forEach(function(e){ e.classList.remove('error'); });
+  if (p === 0) {
+    if (!cat) { document.getElementById('jerr0').classList.add('visible'); return false; }
     return true;
   }
-  if(p===1){
-    const ok = req('jNombre')&req('jApellidos')&req('jFecha')&req('jDni')&req('jTalla');
-    if(!ok) document.getElementById('err1').classList.add('visible');
+  if (p === 1) {
+    var ok = jreq('jNombre') & jreq('jApellidos') & jreq('jFecha') & jreq('jDni') & jreq('jTalla');
+    if (!ok) document.getElementById('jerr1').classList.add('visible');
     return !!ok;
   }
-  if(p===2){
-    const consentOk = document.querySelector('input[name="consentImg"]:checked');
-    const ok = req('tNombre')&req('tApellidos')&req('tDni')&req('tTel')&req('tRel')&req('tEmail')&(consentOk?1:0);
-    if(!ok) document.getElementById('err2').classList.add('visible');
+  if (p === 2) {
+    var conOk = document.querySelector('input[name="consentImg"]:checked');
+    var ok = jreq('tNombre') & jreq('tApellidos') & jreq('tDni') & jreq('tRel') & jreq('tTel') & jreq('tEmail') & (conOk ? 1 : 0);
+    if (!ok) document.getElementById('jerr2').classList.add('visible');
     return !!ok;
   }
-  if(p===3){ return true; }
   return true;
 }
 
-/* ══════════ docs ══════════ */
-function docSubido(id, input){
-  if(!input.files||!input.files[0]) return;
-  docsState[id] = { nombre: input.files[0].name, file: input.files[0] };
-  const st = document.getElementById('st_'+id);
-  if(st){
-    st.textContent = '✓ Adjuntado';
-    st.classList.remove('pendiente');
-    st.classList.add('subido');
-  }
-}
-
-
-
-/* ══════════ resumen ══════════ */
-function construirResumen(){
-  const jug = [
-    ['Nombre',v('jNombre')+' '+v('jApellidos')],
-    ['Fecha nacimiento',v('jFecha')],
-    ['DNI / NIE',v('jDni')||'—'],
-    ['Categoría', cat],
-    ['Talla', v('jTalla')||'—'],
-    ['Condiciones médicas',v('jSalud')||'—'],
-  ];
-  const tut = [
-    ['Nombre',v('tNombre')+' '+v('tApellidos')],
-    ['DNI / NIE',v('tDni')],
-    ['Relación',v('tRel')||'—'],
-    ['Teléfono',v('tTel')],
-    ['Email',v('tEmail')||'—'],
-    ['Uso de imágenes', (()=>{ const r=document.querySelector('input[name="consentImg"]:checked'); return r?(r.value==='si'?'✅ Autorizado':'❌ No autorizado'):'—'; })()],
-  ];
-  document.getElementById('resumenJugador').innerHTML = seccion('Jugador', jug);
-  document.getElementById('resumenTutor').innerHTML   = seccion('Tutor', tut);
-}
-
-function seccion(titulo, filas){
-  const rows = filas.map(([l,v])=>`<div class="resumen-row"><span class="resumen-label">${l}</span><span class="resumen-val">${v}</span></div>`).join('');
-  return `<div class="resumen-head">${titulo}</div><div class="resumen-body">${rows}</div>`;
-}
-
-/* ══════════ enviar ══════════ */
-function enviarFormulario(){
-  const dest = EMAIL_DEST;
-  const asunto = `Inscripción ${v('jNombre')} ${v('jApellidos')} — ${cat} ${new Date().getFullYear()}/${new Date().getFullYear()+1}`;
-  const docsSubidos = Object.entries(docsState).map(([id,d])=>{
-    const n={dniNino:'DNI jugador',dniPadre:'DNI tutor',certMed:'Certificado médico',foto:'Foto DNI'};
-    return `${n[id]}: ${d?('✓ ADJUNTADO ('+d.nombre+')'):'✗ PENDIENTE'}`;
-  }).join('\n');
-
-  const cuerpo = `Estimado ${CLUB_NOMBRE},
-
-Le remito la documentación de inscripción para la temporada ${new Date().getFullYear()}/${new Date().getFullYear()+1}.
-
-──────────────────────────
- DATOS DEL JUGADOR
-──────────────────────────
-Nombre:           ${v('jNombre')} ${v('jApellidos')}
-Fecha nacimiento: ${v('jFecha')}
-DNI / NIE:        ${v('jDni')||'No indicado'}
-Categoría:        ${cat}
-Talla:            ${v('jTalla')||'—'}
-Condiciones med.: ${v('jSalud')||'—'}
-
-──────────────────────────
- DATOS DEL TUTOR LEGAL
-──────────────────────────
-Nombre:           ${v('tNombre')} ${v('tApellidos')}
-DNI / NIE:        ${v('tDni')}
-Relación:         ${v('tRel')||'—'}
-Teléfono:         ${v('tTel')}
-Email:            ${v('tEmail')||'—'}
-Uso de imágenes:  ${(()=>{ const r=document.querySelector('input[name="consentImg"]:checked'); return r?(r.value==='si'?'AUTORIZADO':'NO AUTORIZADO'):'—'; })()}
-
-──────────────────────────
-
-Enviado desde el formulario web de inscripción del ${CLUB_NOMBRE}.
-Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
-
-  const mailto = `mailto:${encodeURIComponent(dest)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-  window.location.href = mailto;
-
-  document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
-  document.querySelector('.tabs-wrap').style.display = 'none';
-  document.getElementById('success').style.display = 'block';
-  document.getElementById('successEmailInfo').textContent = dest;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* ══════════ reiniciar ══════════ */
-function reiniciar(){ location.reload(); }
-
-/* ══════════ construir resumen al entrar en paso 4 ══════════ */
-const _ir_orig = ir;
-const _ir_wrap = function(n){
-  if(n===4) setTimeout(construirResumen, 50);
-  _ir_orig(n);
-};
-window.ir = _ir_wrap;
-
-/* ══════════ SELECTOR INICIAL ══════════ */
-function elegirTipo(tipo) {
-  document.getElementById('selector').style.display = 'none';
-  document.getElementById('fabAyuda').style.display = 'flex';
-  if (tipo === 'jugador') {
-    document.getElementById('tabsWrap').style.display = 'flex';
-    document.getElementById('mainContent').style.display = 'block';
-  } else {
-    document.getElementById('formEntrenador').style.display = 'block';
-    if(document.getElementById('eEmailDestSpan'))
-      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
-  }
-  window.scrollTo({top:0});
-}
-function volverSelector() {
-  document.getElementById('mainContent').style.display = 'none';
-  document.getElementById('tabsWrap').style.display = 'none';
-  document.getElementById('formEntrenador').style.display = 'none';
-  document.getElementById('fabAyuda').style.display = 'none';
-  document.getElementById('selector').style.display = 'flex';
-  window.scrollTo({top:0});
-}
-
-/* ══════════ NAVEGACIÓN ENTRENADOR ══════════ */
-let epaso = 1;
-function eir(n) {
-  if (n > epaso && !evalidar(epaso)) return;
-  document.querySelectorAll('#formEntrenador .card').forEach(c => c.classList.remove('show'));
-  document.getElementById('ep' + n).classList.add('show');
-  epaso = n;
-  // actualizar tabs entrenador
-  for (let i = 1; i <= 4; i++) {
-    const t = document.getElementById('etab' + i);
-    if (!t) continue;
-    t.classList.remove('active', 'done');
-    if (i === n) t.classList.add('active');
-    else if (i < n) t.classList.add('done');
-  }
-  if (n === 4) econstruirResumen();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function ev(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
-function ereq(id) {
-  const el = document.getElementById(id);
+function jreq(id) {
+  var el = document.getElementById(id);
   if (!el || !el.value.trim()) { if (el) el.classList.add('error'); return false; }
   el.classList.remove('error'); return true;
 }
 
+function jv(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function jactualizarTabs(n) {
+  // n=0 → tab1 activa (paso 0 es previa al tab1)
+  var mapa = [1,1,2,3,4];
+  var tabActiva = mapa[n] || 1;
+  for (var i = 1; i <= 4; i++) {
+    var t = document.getElementById('jtab' + i);
+    if (!t) continue;
+    t.classList.remove('active', 'done');
+    if (i === tabActiva) t.classList.add('active');
+    else if (i < tabActiva) t.classList.add('done');
+  }
+}
+
+function jconstruirResumen() {
+  var img = document.querySelector('input[name="consentImg"]:checked');
+  var jugador = [
+    ['Nombre', jv('jNombre') + ' ' + jv('jApellidos')],
+    ['Fecha nacimiento', jv('jFecha')],
+    ['DNI / NIE', jv('jDni')],
+    ['Categoría', cat],
+    ['Talla', jv('jTalla')],
+    ['Condiciones médicas', jv('jSalud') || '—'],
+  ];
+  var tutor = [
+    ['Nombre', jv('tNombre') + ' ' + jv('tApellidos')],
+    ['DNI / NIE', jv('tDni')],
+    ['Relación', jv('tRel')],
+    ['Teléfono', jv('tTel')],
+    ['Email', jv('tEmail')],
+    ['Uso de imágenes', img ? (img.value === 'si' ? '✅ Autorizado' : '❌ No autorizado') : '—'],
+  ];
+  document.getElementById('jResJugador').innerHTML = seccion('Jugador', jugador);
+  document.getElementById('jResTutor').innerHTML   = seccion('Tutor', tutor);
+  document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+}
+
+function enviarJugador() {
+  var img = document.querySelector('input[name="consentImg"]:checked');
+  var asunto = 'Inscripci\u00f3n ' + jv('jNombre') + ' ' + jv('jApellidos') + ' \u2014 ' + cat + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
+  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nLe remito la documentaci\u00f3n de inscripci\u00f3n para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL JUGADOR\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('jNombre') + ' ' + jv('jApellidos') + '\nFecha nacimiento: ' + jv('jFecha') + '\nDNI / NIE:        ' + jv('jDni') + '\nCategor\u00eda:        ' + cat + '\nTalla:            ' + jv('jTalla') + '\nCondiciones m\u00e9d.: ' + (jv('jSalud') || '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL TUTOR LEGAL\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('tNombre') + ' ' + jv('tApellidos') + '\nDNI / NIE:        ' + jv('tDni') + '\nRelaci\u00f3n:         ' + jv('tRel') + '\nTel\u00e9fono:         ' + jv('tTel') + '\nEmail:            ' + jv('tEmail') + '\nUso de im\u00e1genes:  ' + (img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
+  window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
+  document.getElementById('jFinalEmail').textContent = EMAIL_DEST;
+  document.getElementById('jYtBtn').href = YOUTUBE_URL;
+  document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
+  document.getElementById('jFinal').classList.add('show');
+  window.scrollTo({top:0});
+}
+
+/* ══ ENTRENADOR ════════════════════════════════════════════ */
+var epaso = 1;
+
+function iniciarEntrenador() {
+  epaso = 1;
+  document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
+  document.getElementById('ep1').classList.add('show');
+  document.querySelectorAll('#vistaEntrenador .tab').forEach(function(t){ t.classList.remove('active','done'); });
+  document.getElementById('etab1').classList.add('active');
+  document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+  mostrarVista('vistaEntrenador');
+}
+
+function eir(n) {
+  if (n > epaso && !evalidar(epaso)) return;
+  document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
+  document.getElementById('ep' + n).classList.add('show');
+  epaso = n;
+  eactualizarTabs(n);
+  if (n === 4) econstruirResumen();
+  window.scrollTo({top:0});
+}
+
 function evalidar(p) {
-  document.querySelectorAll('#formEntrenador input.error, #formEntrenador select.error')
-    .forEach(e => e.classList.remove('error'));
-  document.querySelectorAll('#formEntrenador .msg-error').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('#vistaEntrenador .msg-error').forEach(function(e){ e.classList.remove('visible'); });
+  document.querySelectorAll('#vistaEntrenador input.error, #vistaEntrenador select.error').forEach(function(e){ e.classList.remove('error'); });
   if (p === 1) {
-    const ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla');
+    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla');
     if (!ok) document.getElementById('eerr1').classList.add('visible');
     return !!ok;
   }
   if (p === 2) {
-    const ok = ereq('eTitulo');
+    var ok = ereq('eTitulo');
     if (!ok) document.getElementById('eerr2').classList.add('visible');
     return !!ok;
   }
   return true;
 }
 
+function ereq(id) {
+  var el = document.getElementById(id);
+  if (!el || !el.value.trim()) { if (el) el.classList.add('error'); return false; }
+  el.classList.remove('error'); return true;
+}
+
+function ev(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function eactualizarTabs(n) {
+  for (var i = 1; i <= 4; i++) {
+    var t = document.getElementById('etab' + i);
+    if (!t) continue;
+    t.classList.remove('active', 'done');
+    if (i === n) t.classList.add('active');
+    else if (i < n) t.classList.add('done');
+  }
+}
+
 function econstruirResumen() {
-  const datos = [
+  var datos = [
     ['Nombre', ev('eNombre') + ' ' + ev('eApellidos')],
     ['DNI / NIE', ev('eDni')],
     ['Fecha nacimiento', ev('eFecha')],
@@ -1646,750 +872,110 @@ function econstruirResumen() {
     ['Categoría', ev('eCat')],
     ['Talla', ev('eTalla')],
   ];
-  const form = [
-    ['Titulación', ev('eTitulo')],
-  ];
-  document.getElementById('eResumenDatos').innerHTML = seccion('Datos personales', datos);
-  document.getElementById('eResumenForm').innerHTML  = seccion('Formación', form);
+  var form = [['Titulación', ev('eTitulo')]];
+  document.getElementById('eResDatos').innerHTML = seccion('Datos personales', datos);
+  document.getElementById('eResForm').innerHTML  = seccion('Formación', form);
   document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
 }
 
 function enviarEntrenador() {
-  const dest   = EMAIL_DEST;
-  const asunto = `Solicitud entrenador: ${ev('eNombre')} ${ev('eApellidos')} — ${ev('eCat')} ${new Date().getFullYear()}/${new Date().getFullYear()+1}`;
-  const cuerpo = `Estimado ${CLUB_NOMBRE},
-
-Me pongo en contacto para solicitar mi incorporación como entrenador para la temporada ${new Date().getFullYear()}/${new Date().getFullYear()+1}.
-
-──────────────────────────
- DATOS PERSONALES
-──────────────────────────
-Nombre:           ${ev('eNombre')} ${ev('eApellidos')}
-DNI / NIE:        ${ev('eDni')}
-Fecha nacimiento: ${ev('eFecha')}
-Teléfono:         ${ev('eTel')}
-Email:            ${ev('eEmail')}
-Categoría:        ${ev('eCat')}
-Talla:            ${ev('eTalla')||'—'}
-
-──────────────────────────
- FORMACIÓN Y EXPERIENCIA
-──────────────────────────
-Titulación:       ${ev('eTitulo')}
-
-──────────────────────────
-
-Por favor, adjunto a este correo:
-- DNI / NIE
-- Titulación federativa (si dispongo de ella)
-- Foto tipo DNI (fondo liso)
-- Currículum deportivo (opcional)
-
-Enviado desde el formulario web del ${CLUB_NOMBRE}.
-Fecha: ${new Date().toLocaleDateString('es-ES')}`.trim();
-
-  window.location.href = `mailto:${encodeURIComponent(dest)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-
-  document.getElementById('formEntrenador').querySelectorAll('.card, .tabs-wrap').forEach(el => el.style.display = 'none');
-  document.getElementById('eSuccess').style.display = 'block';
-  document.getElementById('eSuccessEmail').textContent = dest;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  var asunto = 'Solicitud entrenador: ' + ev('eNombre') + ' ' + ev('eApellidos') + ' \u2014 ' + ev('eCat') + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
+  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nMe pongo en contacto para solicitar mi incorporaci\u00f3n como entrenador para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS PERSONALES\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + ev('eNombre') + ' ' + ev('eApellidos') + '\nDNI / NIE:        ' + ev('eDni') + '\nFecha nacimiento: ' + ev('eFecha') + '\nTel\u00e9fono:         ' + ev('eTel') + '\nEmail:            ' + ev('eEmail') + '\nCategor\u00eda:        ' + ev('eCat') + '\nTalla:            ' + ev('eTalla') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n FORMACI\u00d3N\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nTitulaci\u00f3n:       ' + ev('eTitulo') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nAdjunto a este correo: DNI, titulaci\u00f3n (si dispongo), foto tipo DNI y curr\u00edculum (opcional).\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
+  window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
+  document.getElementById('eFinalEmail').textContent = EMAIL_DEST;
+  document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
+  document.getElementById('eFinal').classList.add('show');
+  window.scrollTo({top:0});
 }
 
-
-/* ══════════ ADMIN MODAL ══════════ */
-let adminVerificado = false;
-
-function aplicarTemporada() {
-  document.querySelectorAll('[data-temporada]').forEach(el => {
-    el.textContent = TEMPORADA;
-  });
-  document.getElementById('topbarSeason').textContent = 'Inscripción Temporada ' + TEMPORADA;
-  document.getElementById('selectorSeason').textContent = 'Temporada ' + TEMPORADA;
+/* ══ HELPERS ═══════════════════════════════════════════════ */
+function seccion(titulo, filas) {
+  var rows = filas.map(function(f){ return '<div class="resumen-row"><span class="resumen-label">'+f[0]+'</span><span class="resumen-val">'+f[1]+'</span></div>'; }).join('');
+  return '<div class="resumen-head">'+titulo+'</div>'+rows;
 }
 
+function toggleFaq(qEl) {
+  var item = qEl.closest('.faq-item');
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i){ i.classList.remove('open'); });
+  if (!wasOpen) item.classList.add('open');
+}
+
+/* ══ ADMIN ══════════════════════════════════════════════════ */
 function abrirAdmin() {
-  document.getElementById('adminOverlay').classList.add('visible');
+  document.getElementById('adminOverlay').classList.add('abierto');
   document.getElementById('adminTempInput').value = TEMPORADA;
   document.getElementById('adminEmailInput').value = EMAIL_DEST;
   actualizarPreview();
-  if (adminVerificado) mostrarConfig();
+  if (adminOk) document.getElementById('adminConfigZone').style.display = 'block';
 }
-function actualizarPreview() {
-  const pre = document.getElementById('adminConfigPreview');
-  if (!pre) return;
-  pre.textContent = JSON.stringify({ temporada: TEMPORADA, emailDestino: EMAIL_DEST }, null, 2);
-}
-
 function cerrarAdmin() {
-  document.getElementById('adminOverlay').classList.remove('visible');
+  document.getElementById('adminOverlay').classList.remove('abierto');
   document.getElementById('adminPwdInput').value = '';
-  limpiarMsgs();
+  document.querySelectorAll('.admin-msg').forEach(function(m){ m.className = 'admin-msg'; });
 }
-
 function verificarPwd() {
-  const pwd = document.getElementById('adminPwdInput').value;
-  const msg = document.getElementById('adminPwdMsg');
-  if (pwd === ADMIN_PWD) {
-    adminVerificado = true;
-    mostrarConfig();
-    msg.className = 'admin-msg';
+  var msg = document.getElementById('adminPwdMsg');
+  if (document.getElementById('adminPwdInput').value === ADMIN_PWD) {
+    adminOk = true;
+    document.getElementById('adminLockZone').style.display = 'none';
+    document.getElementById('adminConfigZone').style.display = 'block';
   } else {
     msg.textContent = 'Contraseña incorrecta.';
     msg.className = 'admin-msg err';
   }
 }
-
-function mostrarConfig() {
-  document.getElementById('adminLocked').classList.remove('visible');
-  document.getElementById('adminUnlocked').classList.add('visible');
-  document.getElementById('adminConfig').style.display = 'block';
-}
-
 function guardarTemporada() {
-  const val = document.getElementById('adminTempInput').value.trim();
-  const msg = document.getElementById('adminTempMsg');
+  var val = document.getElementById('adminTempInput').value.trim();
+  var msg = document.getElementById('adminTempMsg');
   if (!val) { msg.textContent = 'Introduce una temporada válida.'; msg.className = 'admin-msg err'; return; }
   TEMPORADA = val;
-  localStorage.setItem(TEMP_KEY, val);
+  localStorage.setItem('zabal_temp', val);
+  document.getElementById('topbarSeason').textContent = 'Inscripci\u00f3n Temporada ' + val;
+  document.getElementById('selectorSeason').textContent = 'Temporada ' + val;
   actualizarPreview();
-  aplicarTemporada();
-  msg.innerHTML = '✅ Actualizado en este dispositivo.<br><strong>Para aplicarlo a todos los usuarios</strong>, edita <code>config.json</code> en GitHub con el valor: <strong>' + val + '</strong>';
+  msg.innerHTML = '✅ Actualizado en este dispositivo. Para aplicarlo a todos edita <strong>config.json</strong> en GitHub con el valor: <strong>' + val + '</strong>';
   msg.className = 'admin-msg ok';
 }
-
 function guardarCorreo() {
-  const val = document.getElementById('adminEmailInput').value.trim();
-  const msg = document.getElementById('adminEmailMsg');
+  var val = document.getElementById('adminEmailInput').value.trim();
+  var msg = document.getElementById('adminEmailMsg');
   if (!val) { msg.textContent = 'Introduce un correo válido.'; msg.className = 'admin-msg err'; return; }
   EMAIL_DEST = val;
-  localStorage.setItem(EMAIL_KEY, val);
-  actualizarPreview();
+  localStorage.setItem('zabal_email', val);
   document.getElementById('emailDestSpan').textContent = val;
-  if (document.getElementById('eEmailDestSpan')) document.getElementById('eEmailDestSpan').textContent = val;
-  msg.innerHTML = '✅ Actualizado en este dispositivo.<br><strong>Para aplicarlo a todos los usuarios</strong>, edita <code>config.json</code> en GitHub con el valor: <strong>' + val + '</strong>';
+  document.getElementById('eEmailDestSpan').textContent = val;
+  actualizarPreview();
+  msg.innerHTML = '✅ Actualizado en este dispositivo. Para aplicarlo a todos edita <strong>config.json</strong> en GitHub con el valor: <strong>' + val + '</strong>';
   msg.className = 'admin-msg ok';
 }
-
-function limpiarMsgs() {
-  document.querySelectorAll('.admin-msg').forEach(m => m.className = 'admin-msg');
+function actualizarPreview() {
+  var pre = document.getElementById('adminPreview');
+  if (pre) pre.textContent = JSON.stringify({ temporada: TEMPORADA, emailDestino: EMAIL_DEST }, null, 2);
 }
 
-// Inyectar botones de ayuda
+/* ══ ARRANQUE ══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
-
-  /* ══════════ ARRANQUE ══════════ */
-  aplicarTemporada();
-  var esp = document.getElementById('emailDestSpan');
-  if (esp) esp.textContent = EMAIL_DEST;
-  var eesp = document.getElementById('eEmailDestSpan');
-  if (eesp) eesp.textContent = EMAIL_DEST;
-
-  // Intentar actualizar desde config.json en segundo plano
-  fetch('config.json?v=' + Date.now())
+  // Leer config.json si existe (GitHub Pages)
+  fetch('config.json?' + Date.now())
     .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
     .then(function(cfg){
-      if (!localStorage.getItem(EMAIL_KEY) && cfg.emailDestino) EMAIL_DEST = cfg.emailDestino;
-      if (!localStorage.getItem(TEMP_KEY)  && cfg.temporada)   TEMPORADA  = cfg.temporada.replace('-', '–');
-      aplicarTemporada();
-      var e1 = document.getElementById('emailDestSpan');
-      if (e1) e1.textContent = EMAIL_DEST;
-      var e2 = document.getElementById('eEmailDestSpan');
-      if (e2) e2.textContent = EMAIL_DEST;
+      if (!localStorage.getItem('zabal_email') && cfg.emailDestino) EMAIL_DEST = cfg.emailDestino;
+      if (!localStorage.getItem('zabal_temp')  && cfg.temporada)   TEMPORADA  = cfg.temporada.replace('-','\u2013');
     })
-    .catch(function(){ /* config.json no disponible */ });
-
-  /* ══════════ BOTONES AYUDA ══════════ */
-  ['ayudaBtnJugador','ayudaBtnEntrenador','ayudaBtnPaso3'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.innerHTML = btnAyudaHTML();
-  });
-
-  /* ══════════ MODAL ADMIN ══════════ */
-  var overlay = document.getElementById('adminOverlay');
-  if (overlay) {
-    overlay.addEventListener('click', function(e) {
-      if (e.target === this) cerrarAdmin();
+    .catch(function(){})
+    .finally(function(){
+      document.getElementById('topbarSeason').textContent = 'Inscripci\u00f3n Temporada ' + TEMPORADA;
+      document.getElementById('selectorSeason').textContent = 'Temporada ' + TEMPORADA;
+      document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
     });
-  }
+
+  // Cerrar admin al pulsar fuera
+  document.getElementById('adminOverlay').addEventListener('click', function(e){
+    if (e.target === this) cerrarAdmin();
+  });
 });
-
-// Cerrar al pulsar fuera del modal (se registra cuando el DOM está listo)
-
-
-var YOUTUBE_URL = 'https://www.youtube.com/watch?v=PENDIENTE'; // ← cambia esto cuando tengas el vídeo
-
-function btnAyudaHTML() {
-  return `<a href="${YOUTUBE_URL}" target="_blank" rel="noopener" class="btn-ayuda">
-    <div class="btn-ayuda-icon">
-      <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-        <path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/>
-      </svg>
-    </div>
-    <div class="btn-ayuda-texts">
-      <div class="btn-ayuda-title">¿Tienes dudas? Ver vídeo explicativo</div>
-      <div class="btn-ayuda-sub">Guía paso a paso para completar la inscripción</div>
-    </div>
-  </a>`;
-}
-
-
-/* ══════════ FAQs ══════════ */
-let _faqOrigen = null;
-
-function abrirFaq() {
-  _faqOrigen = document.getElementById('selector').style.display !== 'none' ? 'selector'
-             : document.getElementById('mainContent').style.display !== 'none' ? 'jugador'
-             : 'entrenador';
-  document.getElementById('selector').style.display = 'none';
-  document.getElementById('tabsWrap').style.display      = 'none';
-  document.getElementById('mainContent').style.display   = 'none';
-  document.getElementById('formEntrenador').style.display= 'none';
-  document.getElementById('fabAyuda').style.display      = 'none';
-  document.getElementById('paginaFaq').style.display     = 'block';
-  // Actualizar URL YouTube en la FAQ
-  document.getElementById('faqYtCard').href = YOUTUBE_URL;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function cerrarFaq() {
-  document.getElementById('paginaFaq').style.display = 'none';
-  document.getElementById('fabAyuda').style.display  = 'flex';
-  if (_faqOrigen === 'jugador') {
-    document.getElementById('tabsWrap').style.display    = 'flex';
-    document.getElementById('mainContent').style.display = 'block';
-  } else if (_faqOrigen === 'entrenador') {
-    document.getElementById('formEntrenador').style.display = 'block';
-  } else {
-    document.getElementById('selector').style.display = 'flex';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function toggleFaq(qEl) {
-  const item = qEl.closest('.faq-item');
-  const wasOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-  if (!wasOpen) item.classList.add('open');
-}
-
 </script>
-
-<!-- ══════════ FORMULARIO ENTRENADOR ══════════ -->
-<div id="formEntrenador" style="display:none">
-  <div class="tabs-wrap" style="display:flex">
-    <div class="tab" onclick="volverSelector()" style="flex:none;padding:12px 14px 10px;color:var(--texto-suave);cursor:pointer;font-size:12px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap">← Inicio</div>
-    <div class="tab active" id="etab1"><span class="tab-num">1</span>Datos</div>
-    <div class="tab"        id="etab2"><span class="tab-num">2</span>Formación</div>
-    <div class="tab"        id="etab3"><span class="tab-num">3</span>Proceso</div>
-    <div class="tab"        id="etab4"><span class="tab-num">4</span>Enviar</div>
-  </div>
-  <div class="content">
-
-    <!-- E-PASO 1 — Datos personales -->
-    <div class="card show" id="ep1">
-      <div class="card-title">
-        <div class="card-title-icon">📋</div>
-        Datos del entrenador
-      </div>
-      <p class="card-desc">Información personal del entrenador que se incorpora al club.</p>
-      <div class="field-row">
-        <div class="field">
-          <label>Nombre <span class="req">*</span></label>
-          <input type="text" id="eNombre" placeholder="Nombre">
-        </div>
-        <div class="field">
-          <label>Apellidos <span class="req">*</span></label>
-          <input type="text" id="eApellidos" placeholder="Apellidos">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>DNI / NIE <span class="req">*</span></label>
-          <input type="text" id="eDni" placeholder="12345678A">
-        </div>
-        <div class="field">
-          <label>Fecha de nacimiento <span class="req">*</span></label>
-          <input type="date" id="eFecha">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Teléfono <span class="req">*</span></label>
-          <input type="tel" id="eTel" placeholder="6XX XXX XXX">
-        </div>
-        <div class="field">
-          <label>Correo electrónico <span class="req">*</span></label>
-          <input type="email" id="eEmail" placeholder="email@ejemplo.com">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Categoría que entrenaría <span class="req">*</span></label>
-          <select id="eCat">
-            <option value="">Seleccionar</option>
-            <option>Bebé</option>
-            <option>Prebenjamín</option>
-            <option>Benjamín</option>
-            <option>Alevín</option>
-            <option>Infantil</option>
-            <option>Cadete</option>
-            <option>Juvenil</option>
-            <option>Varias / Por determinar</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Talla de ropa <span class="req">*</span></label>
-          <select id="eTalla">
-            <option value="">Seleccionar</option>
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-            <option>XL</option>
-            <option>XXL</option>
-          </select>
-        </div>
-      </div>
-      <div class="msg-error" id="eerr1">Rellena todos los campos obligatorios.</div>
-      <div class="nav">
-        <button class="bback" onclick="volverSelector()">← Inicio</button>
-        <button class="bnext" onclick="eir(2)">Siguiente</button>
-      </div>
-    </div>
-
-    <!-- E-PASO 2 — Formación -->
-    <div class="card" id="ep2">
-      <div class="card-title">
-        <div class="card-title-icon">🎓</div>
-        Formación y experiencia
-      </div>
-      <p class="card-desc">Titulación federativa y experiencia previa como entrenador.</p>
-      <div class="field-row full">
-        <div class="field">
-          <label>Titulación UEFA / RFEF <span class="req">*</span></label>
-          <select id="eTitulo">
-            <option value="">Seleccionar</option>
-            <option>Sin titulación</option>
-            <option>Monitor</option>
-            <option>UEFA C</option>
-            <option>UEFA B</option>
-            <option>UEFA A</option>
-            <option>UEFA Pro</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="msg-error" id="eerr2">Selecciona al menos la titulación.</div>
-      <div class="nav">
-        <button class="bback" onclick="eir(1)">← Atrás</button>
-        <button class="bnext" onclick="eir(3)">Siguiente</button>
-      </div>
-    </div>
-
-    <!-- E-PASO 3 — Infografía proceso -->
-    <div class="card" id="ep3">
-      <div class="card-title">
-        <div class="card-title-icon">📋</div>
-        Documentación y proceso
-      </div>
-      <p class="card-desc">Qué documentos deberás adjuntar y cómo funciona el proceso de incorporación.</p>
-
-      <div style="background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin-bottom:18px">
-        <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Documentos que deberás adjuntar al correo</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-            <span style="font-size:17px">🪪</span>
-            <div><strong>DNI / NIE</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-            <span style="font-size:17px">🎓</span>
-            <div><strong>Titulación federativa</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Si dispones de ella</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-            <span style="font-size:17px">📷</span>
-            <div><strong>Foto tipo DNI</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Obligatorio · Fondo liso</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--texto)">
-            <span style="font-size:17px">📄</span>
-            <div><strong>Currículum deportivo</strong> <span style="color:var(--azul-med);font-size:11px;font-weight:600">· Opcional</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Cómo funciona el proceso</div>
-
-      <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">1</div>
-        <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
-          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Envía el formulario con los documentos</div>
-          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">En el último paso se abrirá tu app de correo con todos los datos. Adjunta los documentos y pulsa Enviar.</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
-
-      <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">2</div>
-        <div style="flex:1;background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:12px 14px">
-          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Confirmación inmediata de recepción</div>
-          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">Recibirás un correo automático confirmando que la solicitud ha llegado al club.</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
-
-      <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">3</div>
-        <div style="flex:1;background:var(--amarillo-bg);border:0.5px solid var(--amarillo-borde);border-radius:var(--radio);padding:12px 14px">
-          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Revisión en 24–48 horas</div>
-          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">El club revisará tu perfil. Si todo es correcto, recibirás un segundo correo de confirmación en <strong>24 a 48 horas</strong>.</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:center;margin:-6px 0 8px"><div style="width:2px;height:18px;background:var(--borde)"></div></div>
-
-      <div style="display:flex;gap:12px;margin-bottom:6px;align-items:flex-start">
-        <div style="width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:var(--amarillo)">4</div>
-        <div style="flex:1;background:var(--completado-bg);border:0.5px solid #b0d0f0;border-radius:var(--radio);padding:12px 14px">
-          <div style="font-size:13px;font-weight:700;color:var(--azul);margin-bottom:3px">Firma en las oficinas del club</div>
-          <div style="font-size:12px;color:var(--texto-med);line-height:1.5">El correo de aprobación incluirá los <strong>días y horarios de atención</strong> en las oficinas para firmar el contrato y completar la incorporación.</div>
-        </div>
-      </div>
-
-      <div class="nav" style="margin-top:20px">
-        <button class="bback" onclick="eir(2)">← Atrás</button>
-        <button class="bnext" onclick="eir(4)">Continuar</button>
-      </div>
-    </div>
-
-    <!-- E-PASO 4 — Enviar -->
-    <div class="card" id="ep4">
-      <div class="card-title">
-        <div class="card-title-icon">📤</div>
-        Revisar y enviar
-      </div>
-      <p class="card-desc">Comprueba los datos y envía la solicitud al club.</p>
-      <div class="resumen-section" id="eResumenDatos"></div>
-      <div class="resumen-section" id="eResumenForm"></div>
-      <div class="email-display">
-        Enviar a: <span id="eEmailDestSpan" >cargando...</span>
-      </div>
-      <button class="bcta" onclick="enviarEntrenador()">
-        Abrir correo y enviar <span class="acento">→</span>
-      </button>
-      <div class="nav" style="margin-top:10px">
-        <button class="bback" onclick="eir(3)">← Atrás</button>
-      </div>
-    </div>
-
-  </div><!-- /content entrenador -->
-
-  <!-- PANTALLA FINAL ENTRENADOR -->
-  <div id="eSuccess" style="display:none">
-    <div class="content">
-      <div class="success-card">
-        <div class="success-icon" style="background:#e67e00;border-color:var(--amarillo)">📧</div>
-        <div class="success-title" style="color:#b85c00">¡Revisa tu correo antes de enviar!</div>
-        <p class="success-desc">
-          Se ha abierto la aplicación de correo con todos los datos del formulario ya escritos.<br><br>
-          <strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong>
-        </p>
-        <div style="text-align:left;background:var(--azul-palido);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin:12px 0 18px">
-          <div style="display:flex;flex-direction:column;gap:9px">
-            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🪪</span> <strong>DNI / NIE</strong></div>
-            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>🎓</span> <strong>Titulación federativa</strong> <span style="font-size:11px;color:var(--texto-suave)">(si dispones de ella)</span></div>
-            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>📷</span> <strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
-            <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--texto)"><span>📄</span> <strong>Currículum deportivo</strong> <span style="font-size:11px;color:var(--texto-suave)">(opcional)</span></div>
-          </div>
-        </div>
-        <div style="background:var(--amarillo-bg);border:1px solid var(--amarillo-borde);border-radius:var(--radio);padding:11px 14px;font-size:12px;color:#7a5a00;margin-bottom:18px;line-height:1.6">
-          📨 Envía el correo a <strong id="eSuccessEmail" style="color:var(--azul)"></strong>.<br>
-          Si el correo no se abrió, abre tu app de correo manualmente y adjunta los archivos a esa dirección.
-        </div>
-        <div id="ayudaBtnEntrenador"></div>
-        <button onclick="abrirFaq()" style="background:none;border:1.5px solid var(--borde);border-radius:var(--radio);padding:10px;font-size:13px;font-weight:600;color:var(--texto-med);cursor:pointer;font-family:'Outfit',sans-serif;width:100%;margin-bottom:10px">❓ Ver preguntas frecuentes</button>
-        <button class="btn-reiniciar" onclick="location.reload()">Volver al inicio</button>
-      </div>
-    </div>
-  </div>
-</div><!-- /formEntrenador -->
-
-
-<!-- ══════════ MODAL ADMIN ══════════ -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-modal">
-    <div class="admin-modal-header">
-      <h2>⚙ Panel de administración</h2>
-      <button class="admin-close" onclick="cerrarAdmin()">✕</button>
-    </div>
-    <div class="admin-modal-body">
-
-      <!-- BLOQUE CONTRASEÑA -->
-      <div class="admin-pwd-section">
-        <div class="admin-section-title">Contraseña de acceso</div>
-        <div id="adminLocked" class="admin-locked visible">
-          <input class="admin-input" type="password" id="adminPwdInput" placeholder="Introduce la contraseña" onkeydown="if(event.key==='Enter')verificarPwd()">
-          <button class="admin-save-btn" onclick="verificarPwd()" style="margin-top:8px">Acceder</button>
-          <div class="admin-msg" id="adminPwdMsg"></div>
-        </div>
-        <div id="adminUnlocked" class="admin-unlocked">
-          <div style="font-size:12px;color:#1a8a2e;font-weight:600">✅ Sesión iniciada como administrador</div>
-        </div>
-      </div>
-
-      <!-- CONFIGURACIÓN (visible tras verificar) -->
-      <div id="adminConfig" style="display:none">
-
-        <div class="admin-section">
-          <div class="admin-section-title">Temporada activa</div>
-          <input class="admin-input" type="text" id="adminTempInput" placeholder="Ej. 2025–26">
-          <button class="admin-save-btn" onclick="guardarTemporada()">Guardar temporada <em>→</em></button>
-          <div class="admin-msg" id="adminTempMsg"></div>
-        </div>
-
-        <div class="admin-section">
-          <div class="admin-section-title">Correo de destino</div>
-          <input class="admin-input" type="email" id="adminEmailInput" placeholder="correo@club.es">
-          <button class="admin-save-btn" onclick="guardarCorreo()">Guardar correo <em>→</em></button>
-          <div class="admin-msg" id="adminEmailMsg"></div>
-        </div>
-
-        <div style="background:#f3f6fb;border:0.5px solid #c8d8ee;border-radius:10px;padding:14px 16px">
-          <div style="font-size:11px;font-weight:700;color:#5070a0;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">🌐 Para actualizar en el servidor</div>
-          <p style="font-size:12px;color:#3a5070;line-height:1.6;margin-bottom:10px">Edita el archivo <strong>config.json</strong> en tu repositorio de GitHub con los valores actuales:</p>
-          <pre id="adminConfigPreview" style="background:#1a3a6b;color:#f5c800;border-radius:7px;padding:10px 12px;font-size:11px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;word-break:break-all"></pre>
-          <p style="font-size:11px;color:#7090b8;margin-top:8px;line-height:1.5">En GitHub: ve al archivo <code>config.json</code> → pulsa el lápiz ✏️ → edita los valores → <em>Commit changes</em>. En 1–2 minutos estará activo para todos.</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FAB AYUDA -->
-<button class="fab-ayuda" id="fabAyuda" onclick="abrirFaq()" style="display:none">
-  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-    <line x1="12" y1="17" x2="12.01" y2="17"/>
-  </svg>
-  Ayuda
-</button>
-
-<!-- ══════════ PÁGINA FAQ ══════════ -->
-<div id="paginaFaq">
-  <div class="faq-topbar">
-    <div class="faq-topbar-stripe"></div>
-    <div class="faq-topbar-inner">
-      <button class="faq-back-btn" onclick="cerrarFaq()">← Volver</button>
-      <div class="faq-topbar-title">Centro de ayuda</div>
-    </div>
-  </div>
-
-  <div class="faq-content">
-    <div class="faq-hero">
-      <div class="faq-hero-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-      </div>
-      <h1>Preguntas frecuentes</h1>
-      <p>Todo lo que necesitas saber sobre el proceso de inscripción<br>en el Atlético Zabal Linense</p>
-    </div>
-
-    <!-- SECCIÓN: GENERAL -->
-    <div class="faq-section-title">General</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Para qué sirve esta página?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Esta página te permite <strong>registrar a un jugador o a un entrenador</strong> en el Atlético Zabal Linense de forma telemática. El formulario recoge todos los datos necesarios y, al finalizar, abre tu aplicación de correo con todo ya escrito para que solo tengas que adjuntar los documentos y pulsar Enviar.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Qué necesito tener a mano antes de empezar?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Antes de comenzar el formulario ten preparado:
-        <ul>
-          <li><strong>DNI o NIE del jugador</strong> (o del entrenador)</li>
-          <li><strong>DNI o NIE del tutor legal</strong> (padre, madre o tutor)</li>
-          <li>Los <strong>documentos en formato foto o PDF</strong> para adjuntarlos al correo</li>
-        </ul>
-        Si no tienes algún documento a mano puedes completar el formulario igualmente y adjuntar los archivos más tarde antes de enviar el correo.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Es segura esta página?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Sí. Esta página <strong>no almacena ningún dato en ningún servidor</strong>. Toda la información que introduces se usa únicamente para generar el correo electrónico que tú mismo envías. Los datos viajan directamente desde tu dispositivo al correo del club, sin intermediarios.
-      </div>
-    </div>
-
-    <!-- SECCIÓN: DOCUMENTOS -->
-    <div class="faq-section-title">Documentos</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Qué documentos necesito para inscribir a un jugador?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        <ul>
-          <li>🪪 <strong>DNI / NIE del jugador</strong> <span class="faq-tag obl">Obligatorio</span></li>
-          <li>🪪 <strong>DNI / NIE del tutor legal</strong> <span class="faq-tag obl">Obligatorio</span></li>
-          <li>📷 <strong>Foto tipo DNI del jugador</strong> — fondo liso <span class="faq-tag obl">Obligatorio</span></li>
-          <li>🏥 <strong>Certificado médico</strong> <span class="faq-tag opt">Opcional</span></li>
-        </ul>
-        Los archivos pueden ser <strong>fotos tomadas con el móvil</strong> o PDFs. No es necesario escanear.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Qué documentos necesito para inscribir a un entrenador?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        <ul>
-          <li>🪪 <strong>DNI / NIE</strong> <span class="faq-tag obl">Obligatorio</span></li>
-          <li>📷 <strong>Foto tipo DNI</strong> — fondo liso <span class="faq-tag obl">Obligatorio</span></li>
-          <li>🎓 <strong>Titulación federativa</strong> <span class="faq-tag opt">Si dispones de ella</span></li>
-          <li>📄 <strong>Currículum deportivo</strong> <span class="faq-tag opt">Opcional</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Cómo tiene que ser la foto tipo DNI?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        La foto debe ser de <strong>cara, mirando al frente</strong>, con <strong>fondo liso</strong> (cualquier color uniforme vale, no tiene que ser blanco). Puede ser una foto hecha con el móvil siempre que se vea bien el rostro. No hace falta ir a una fotografía profesional.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">No tengo el certificado médico, ¿puedo inscribirme igualmente?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Sí. El certificado médico es <strong>opcional</strong> en el momento del registro. Sin embargo, el club lleva un registro de qué jugadores tienen el certificado en vigor, por lo que te recomendamos aportarlo en cuanto puedas. Puedes enviarlo más adelante en un correo aparte a <strong>direcciondeportivazabal@gmail.com</strong>.
-      </div>
-    </div>
-
-    <!-- SECCIÓN: PROCESO -->
-    <div class="faq-section-title">Proceso de inscripción</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Cómo funciona el proceso paso a paso?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        <ol style="padding-left:18px;margin:4px 0">
-          <li style="margin-bottom:6px">Rellena el formulario con los datos del jugador o entrenador.</li>
-          <li style="margin-bottom:6px">Al pulsar <strong>"Abrir correo y enviar"</strong>, se abre tu app de correo con todo ya escrito.</li>
-          <li style="margin-bottom:6px"><strong>Adjunta los documentos</strong> requeridos al correo.</li>
-          <li style="margin-bottom:6px">Pulsa <strong>Enviar</strong>.</li>
-          <li style="margin-bottom:6px">Recibirás una confirmación automática de que el correo ha llegado.</li>
-          <li style="margin-bottom:6px">En <strong>24–48 horas</strong> el club revisará la documentación y te enviará un segundo correo confirmando la inscripción.</li>
-          <li>En ese correo se indicarán los días y horarios para <strong>acudir a las oficinas a firmar</strong> la documentación oficial.</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">He terminado el formulario pero no se ha abierto el correo, ¿qué hago?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Esto puede ocurrir en algunos dispositivos. En ese caso:
-        <ul>
-          <li>Abre tu aplicación de correo manualmente (Gmail, Outlook, Mail…)</li>
-          <li>Crea un correo nuevo dirigido a <strong>direcciondeportivazabal@gmail.com</strong></li>
-          <li>En el asunto indica: <em>Inscripción [nombre del jugador] — [categoría]</em></li>
-          <li>Adjunta los documentos solicitados</li>
-          <li>Envía el correo</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Cuánto tarda el club en confirmar la inscripción?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        El club revisa la documentación en un plazo de <strong>24 a 48 horas</strong>. Si toda la documentación está correcta, recibirás un correo de confirmación con las instrucciones para acudir a firmar en las oficinas del club.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿Tengo que ir presencialmente a las oficinas?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Sí. Una vez aprobada la documentación online, es necesario <strong>acudir a las oficinas del club</strong> para firmar la documentación oficial. En el correo de confirmación se indicarán los días y horarios de atención.
-      </div>
-    </div>
-
-    <!-- SECCIÓN: CATEGORÍAS -->
-    <div class="faq-section-title">Categorías</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <div class="faq-q-text">¿En qué categoría se inscribe mi hijo?</div>
-        <div class="faq-chevron">▾</div>
-      </div>
-      <div class="faq-a">
-        Las categorías se asignan por año de nacimiento:
-        <ul>
-          <li><strong>Bebé</strong> — nacidos en 2021 o posterior</li>
-          <li><strong>Prebenjamín</strong> — nacidos en 2019–2020</li>
-          <li><strong>Benjamín</strong> — nacidos en 2017–2018</li>
-          <li><strong>Alevín</strong> — nacidos en 2015–2016</li>
-          <li><strong>Infantil</strong> — nacidos en 2013–2014</li>
-          <li><strong>Cadete</strong> — nacidos en 2011–2012</li>
-          <li><strong>Juvenil</strong> — nacidos en 2008–2010</li>
-        </ul>
-        Si tienes dudas sobre la categoría, contacta con el club antes de enviar el formulario.
-      </div>
-    </div>
-
-    <!-- VÍDEO YOUTUBE -->
-    <a href="https://www.youtube.com/watch?v=PENDIENTE" target="_blank" rel="noopener" class="faq-yt-card" id="faqYtCard">
-      <div class="faq-yt-icon">
-        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-          <path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/>
-        </svg>
-      </div>
-      <div class="faq-yt-texts">
-        <div class="faq-yt-title">Ver vídeo explicativo completo</div>
-        <div class="faq-yt-sub">Guía paso a paso en YouTube · Próximamente disponible</div>
-      </div>
-    </a>
-
-    <div style="background:var(--fondo-card);border:0.5px solid var(--borde);border-radius:var(--radio);padding:14px 16px;margin-top:18px;text-align:center">
-      <div style="font-size:13px;color:var(--texto-med);margin-bottom:4px">¿No encuentras respuesta a tu pregunta?</div>
-      <div style="font-size:13px;font-weight:600;color:var(--azul)">📧 direcciondeportivazabal@gmail.com</div>
-    </div>
-
-  </div><!-- /faq-content -->
-</div><!-- /paginaFaq -->
-
 </body>
 </html>
