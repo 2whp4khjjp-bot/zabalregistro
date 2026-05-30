@@ -581,7 +581,8 @@ input[type="file"] { display: none; }
 
 
 /* ══════════ PANTALLA SELECTOR ══════════ */
-.oculto { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
+.oculto { display: none !important; }
+#selector.oculto { display: none !important; }
 #selector {
   min-height: calc(100vh - 74px);
   display: flex;
@@ -1597,23 +1598,20 @@ function elegirTipo(tipo) {
   if (tipo === 'jugador') {
     document.getElementById('tabsWrap').style.display = 'flex';
     document.getElementById('mainContent').style.display = 'block';
-    document.getElementById('mainContent').style.visibility = 'visible';
-    document.getElementById('mainContent').style.height = 'auto';
   } else {
     document.getElementById('formEntrenador').style.display = 'block';
-    document.getElementById('formEntrenador').style.visibility = 'visible';
-    document.getElementById('formEntrenador').style.height = 'auto';
-    document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+    if(document.getElementById('eEmailDestSpan'))
+      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
   }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0});
 }
 function volverSelector() {
-  document.getElementById('formEntrenador').style.display = 'none';
-  document.getElementById('tabsWrap').style.display = 'none';
   document.getElementById('mainContent').style.display = 'none';
-  document.getElementById('selector').classList.remove('oculto');
+  document.getElementById('tabsWrap').style.display = 'none';
+  document.getElementById('formEntrenador').style.display = 'none';
   document.getElementById('fabAyuda').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('selector').classList.remove('oculto');
+  window.scrollTo({top:0});
 }
 
 /* ══════════ NAVEGACIÓN ENTRENADOR ══════════ */
