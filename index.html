@@ -581,6 +581,7 @@ input[type="file"] { display: none; }
 
 
 /* ══════════ PANTALLA SELECTOR ══════════ */
+.oculto { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
 #selector {
   min-height: calc(100vh - 74px);
   display: flex;
@@ -1084,6 +1085,7 @@ input[type="file"] { display: none; }
 
 <!-- TABS -->
 <div class="tabs-wrap" id="tabsWrap" style="display:none">
+  <div class="tab" onclick="volverSelector()" style="flex:none;padding:12px 14px 10px;color:var(--texto-suave);cursor:pointer;font-size:12px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap">← Inicio</div>
   <div class="tab active" id="tab1"><span class="tab-num">1</span>Jugador</div>
   <div class="tab"        id="tab2"><span class="tab-num">2</span>Tutor</div>
   <div class="tab"        id="tab3"><span class="tab-num">3</span>Documentos</div>
@@ -1407,28 +1409,25 @@ let paso = 0, cat = '';
 const docsState = { dniNino:null, dniPadre:null, certMed:null, foto:null };
 
 /* ══════════ arranque ══════════ */
-/* Carga config.json del servidor; si no existe o falla, usa localStorage */
+// Aplicar valores locales INMEDIATAMENTE (no esperar al fetch)
+aplicarTemporada();
+document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
+if (document.getElementById('eEmailDestSpan'))
+  document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
+
+// Intentar actualizar desde config.json en segundo plano
 fetch('config.json?v=' + Date.now())
   .then(r => r.ok ? r.json() : Promise.reject())
   .then(cfg => {
-    // El servidor manda la verdad — solo sobreescribe si NO hay override local
-    if (!localStorage.getItem(EMAIL_KEY)) EMAIL_DEST = cfg.emailDestino || EMAIL_DEST;
-    else EMAIL_DEST = localStorage.getItem(EMAIL_KEY);
-    if (!localStorage.getItem(TEMP_KEY))  TEMPORADA  = (cfg.temporada  || TEMPORADA).replace('-', '\u2013');
-    else TEMPORADA = localStorage.getItem(TEMP_KEY);
+    if (!localStorage.getItem(EMAIL_KEY) && cfg.emailDestino) EMAIL_DEST = cfg.emailDestino;
+    if (!localStorage.getItem(TEMP_KEY)  && cfg.temporada)  TEMPORADA  = cfg.temporada.replace('-', '\u2013');
     CONFIG_LOADED = true;
     aplicarTemporada();
     document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
     if (document.getElementById('eEmailDestSpan'))
       document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
   })
-  .catch(() => {
-    // Sin config.json: usar valores actuales (localStorage o hardcoded)
-    aplicarTemporada();
-    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
-    if (document.getElementById('eEmailDestSpan'))
-      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
-  });
+  .catch(() => { /* config.json no disponible, se usan valores locales */ });
 
 /* ══════════ categoría y tipo ══════════ */
 function selCat(c){
@@ -1525,28 +1524,6 @@ function construirResumen(){
   ];
   document.getElementById('resumenJugador').innerHTML = seccion('Jugador', jug);
   document.getElementById('resumenTutor').innerHTML   = seccion('Tutor', tut);
-  /* Carga config.json del servidor; si no existe o falla, usa localStorage */
-fetch('config.json?v=' + Date.now())
-  .then(r => r.ok ? r.json() : Promise.reject())
-  .then(cfg => {
-    // El servidor manda la verdad — solo sobreescribe si NO hay override local
-    if (!localStorage.getItem(EMAIL_KEY)) EMAIL_DEST = cfg.emailDestino || EMAIL_DEST;
-    else EMAIL_DEST = localStorage.getItem(EMAIL_KEY);
-    if (!localStorage.getItem(TEMP_KEY))  TEMPORADA  = (cfg.temporada  || TEMPORADA).replace('-', '\u2013');
-    else TEMPORADA = localStorage.getItem(TEMP_KEY);
-    CONFIG_LOADED = true;
-    aplicarTemporada();
-    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
-    if (document.getElementById('eEmailDestSpan'))
-      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
-  })
-  .catch(() => {
-    // Sin config.json: usar valores actuales (localStorage o hardcoded)
-    aplicarTemporada();
-    document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
-    if (document.getElementById('eEmailDestSpan'))
-      document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
-  });
 }
 
 function seccion(titulo, filas){
@@ -1615,20 +1592,28 @@ window.ir = _ir_wrap;
 
 /* ══════════ SELECTOR INICIAL ══════════ */
 function elegirTipo(tipo) {
-  document.getElementById('selector').style.display = 'none';
+  document.getElementById('selector').classList.add('oculto');
+  document.getElementById('fabAyuda').style.display = 'flex';
   if (tipo === 'jugador') {
     document.getElementById('tabsWrap').style.display = 'flex';
     document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('mainContent').style.visibility = 'visible';
+    document.getElementById('mainContent').style.height = 'auto';
   } else {
     document.getElementById('formEntrenador').style.display = 'block';
+    document.getElementById('formEntrenador').style.visibility = 'visible';
+    document.getElementById('formEntrenador').style.height = 'auto';
     document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function volverSelector() {
   document.getElementById('formEntrenador').style.display = 'none';
   document.getElementById('tabsWrap').style.display = 'none';
   document.getElementById('mainContent').style.display = 'none';
-  document.getElementById('selector').style.display = 'flex';
+  document.getElementById('selector').classList.remove('oculto');
+  document.getElementById('fabAyuda').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* ══════════ NAVEGACIÓN ENTRENADOR ══════════ */
@@ -1851,7 +1836,7 @@ function abrirFaq() {
   _faqOrigen = document.getElementById('selector').style.display !== 'none' ? 'selector'
              : document.getElementById('mainContent').style.display !== 'none' ? 'jugador'
              : 'entrenador';
-  document.getElementById('selector').style.display      = 'none';
+  document.getElementById('selector').classList.add('oculto');
   document.getElementById('tabsWrap').style.display      = 'none';
   document.getElementById('mainContent').style.display   = 'none';
   document.getElementById('formEntrenador').style.display= 'none';
@@ -1871,7 +1856,7 @@ function cerrarFaq() {
   } else if (_faqOrigen === 'entrenador') {
     document.getElementById('formEntrenador').style.display = 'block';
   } else {
-    document.getElementById('selector').style.display = 'flex';
+    document.getElementById('selector').classList.remove('oculto');
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1888,6 +1873,7 @@ function toggleFaq(qEl) {
 <!-- ══════════ FORMULARIO ENTRENADOR ══════════ -->
 <div id="formEntrenador" style="display:none">
   <div class="tabs-wrap" style="display:flex">
+    <div class="tab" onclick="volverSelector()" style="flex:none;padding:12px 14px 10px;color:var(--texto-suave);cursor:pointer;font-size:12px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap">← Inicio</div>
     <div class="tab active" id="etab1"><span class="tab-num">1</span>Datos</div>
     <div class="tab"        id="etab2"><span class="tab-num">2</span>Formación</div>
     <div class="tab"        id="etab3"><span class="tab-num">3</span>Proceso</div>
@@ -2173,7 +2159,7 @@ function toggleFaq(qEl) {
 </div>
 
 <!-- FAB AYUDA -->
-<button class="fab-ayuda" id="fabAyuda" onclick="abrirFaq()">
+<button class="fab-ayuda" id="fabAyuda" onclick="abrirFaq()" style="display:none">
   <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
     <circle cx="12" cy="12" r="10"/>
     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
