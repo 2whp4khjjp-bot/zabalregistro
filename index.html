@@ -510,13 +510,6 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
         <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="eEmail" placeholder="email@ejemplo.com"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Sección <span class="req">*</span></label>
-          <select id="eGenero" onchange="generoE=this.value">
-            <option value="">Seleccionar</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
-          </select>
-        </div>
         <div class="field"><label>Categoría que entrenaría <span class="req">*</span></label>
           <select id="eCat"><option value="">Seleccionar</option><option>Bebé</option><option>Prebenjamín</option><option>Benjamín</option><option>Alevín</option><option>Infantil</option><option>Cadete</option><option>Juvenil</option><option>Varias / Por determinar</option></select>
         </div>
@@ -525,6 +518,10 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       <div class="seccion-row">
         <div class="seccion-btn" id="jBtnM" onclick="selSeccionJ('M')">♂ Masculino</div>
         <div class="seccion-btn" id="jBtnF" onclick="selSeccionJ('F')">♀ Femenino</div>
+      <div class="seccion-label">Sección <span class="req">*</span></div>
+      <div class="seccion-row">
+        <div class="seccion-btn" id="eBtnM" onclick="selSeccionE('M')">♂ Masculino</div>
+        <div class="seccion-btn" id="eBtnF" onclick="selSeccionE('F')">♀ Femenino</div>
       </div>
       <div class="field-row">
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
@@ -750,6 +747,12 @@ function iniciarJugador() {
 
 function textoGenero(g) { return g === 'M' ? 'Masculino' : g === 'F' ? 'Femenino' : '—'; }
 
+function selSeccionE(g) {
+  generoE = g;
+  document.getElementById('eBtnM').classList.remove('sel-m','sel-f');
+  document.getElementById('eBtnF').classList.remove('sel-m','sel-f');
+  document.getElementById(g === 'M' ? 'eBtnM' : 'eBtnF').classList.add(g === 'M' ? 'sel-m' : 'sel-f');
+}
 function selSeccionJ(g) {
   generoJ = g;
   document.getElementById('jBtnM').classList.remove('sel-m','sel-f');
@@ -860,7 +863,8 @@ var generoE = ''; // M o F
 
 function iniciarEntrenador() {
   epaso = 1; generoE = '';
-  var sg = document.getElementById('eGenero'); if (sg) sg.value = '';
+  var bm = document.getElementById('eBtnM'); if (bm) bm.classList.remove('sel-m','sel-f');
+  var bf = document.getElementById('eBtnF'); if (bf) bf.classList.remove('sel-m','sel-f');
   document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
   document.getElementById('ep1').classList.add('show');
   document.querySelectorAll('#vistaEntrenador .tab').forEach(function(t){ t.classList.remove('active','done'); });
@@ -884,8 +888,8 @@ function evalidar(p) {
   document.querySelectorAll('#vistaEntrenador input.error, #vistaEntrenador select.error').forEach(function(e){ e.classList.remove('error'); });
   if (p === 1) {
     generoE = document.getElementById('eGenero') ? document.getElementById('eGenero').value : generoE;
-    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla') & ereq('eGenero');
-    if (!ok) document.getElementById('eerr1').classList.add('visible');
+    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla') & (generoE ? 1 : 0);
+    if (!ok) { var m = document.getElementById('eerr1'); m.textContent = !generoE ? 'Selecciona la sección y rellena todos los campos obligatorios.' : 'Rellena todos los campos obligatorios.'; m.classList.add('visible'); }
     return !!ok;
   }
   if (p === 2) {
