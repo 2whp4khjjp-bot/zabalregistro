@@ -233,6 +233,15 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
 .fab { position:fixed; bottom:22px; right:18px; z-index:200; background:var(--azul); color:#fff; border:2px solid var(--amarillo); border-radius:50px; padding:10px 18px 10px 14px; font-size:13px; font-weight:700; font-family:'Outfit',sans-serif; cursor:pointer; display:none; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(26,58,107,.3); transition:background .15s, transform .15s; }
 .fab:hover { background:var(--azul-med); transform:translateY(-2px); }
 
+
+/* ══ BOTONES SECCIÓN M/F ═══════════════════════════════════ */
+.seccion-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.seccion-btn { background:var(--fondo-card); border:1.5px solid var(--borde); border-radius:var(--radio); padding:11px 10px; text-align:center; cursor:pointer; font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; color:var(--texto-med); transition:border-color .15s, background .15s, color .15s; user-select:none; }
+.seccion-btn:hover { border-color:var(--azul-med); background:var(--azul-palido); color:var(--azul); }
+.seccion-btn.sel-m { border-color:var(--azul); background:var(--completado-bg); color:var(--azul); }
+.seccion-btn.sel-f { border-color:#a0287a; background:#fce8f5; color:#a0287a; }
+.seccion-label { font-size:11px; font-weight:700; color:var(--texto-med); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+
 /* ══ MSGS ERROR ════════════════════════════════════════════ */
 .msg-error { background:#fff0f0; color:#c0392b; border:.5px solid #f5c0c0; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:12px; display:none; }
 .msg-error.visible { display:block; }
@@ -348,6 +357,11 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       <div class="field-row">
         <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="jFecha"></div>
         <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="jDni" placeholder="12345678A"></div>
+      </div>
+      <div class="seccion-label">Sección <span class="req">*</span></div>
+      <div class="seccion-row">
+        <div class="seccion-btn" id="jBtnM" onclick="selSeccionJ('M')">♂ Masculino</div>
+        <div class="seccion-btn" id="jBtnF" onclick="selSeccionJ('F')">♀ Femenino</div>
       </div>
       <div class="field-row">
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
@@ -493,9 +507,23 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
         <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="eEmail" placeholder="email@ejemplo.com"></div>
       </div>
       <div class="field-row">
+        <div class="field"><label>Sección <span class="req">*</span></label>
+          <select id="eGenero" onchange="generoE=this.value">
+            <option value="">Seleccionar</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
         <div class="field"><label>Categoría que entrenaría <span class="req">*</span></label>
           <select id="eCat"><option value="">Seleccionar</option><option>Bebé</option><option>Prebenjamín</option><option>Benjamín</option><option>Alevín</option><option>Infantil</option><option>Cadete</option><option>Juvenil</option><option>Varias / Por determinar</option></select>
         </div>
+      </div>
+      <div class="seccion-label">Sección <span class="req">*</span></div>
+      <div class="seccion-row">
+        <div class="seccion-btn" id="jBtnM" onclick="selSeccionJ('M')">♂ Masculino</div>
+        <div class="seccion-btn" id="jBtnF" onclick="selSeccionJ('F')">♀ Femenino</div>
+      </div>
+      <div class="field-row">
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
           <select id="eTalla"><option value="">Seleccionar</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
         </div>
@@ -511,6 +539,8 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
     <div class="card" id="ep2">
       <div class="card-title"><div class="card-title-icon">🎓</div>Formación</div>
       <p class="card-desc">Titulación federativa del entrenador.</p>
+      </div>
+      </div>
       <div class="field-row full">
         <div class="field"><label>Titulación UEFA / RFEF <span class="req">*</span></label>
           <select id="eTitulo"><option value="">Seleccionar</option><option>Sin titulación</option><option>Monitor</option><option>UEFA C</option><option>UEFA B</option><option>UEFA A</option><option>UEFA Pro</option></select>
@@ -700,14 +730,28 @@ function cerrarFaq() {
 /* ══ JUGADOR ═══════════════════════════════════════════════ */
 var jpaso = 0;
 var cat = '';
+var generoJ = ''; // M o F
 
 function iniciarJugador() {
-  jpaso = 0; cat = '';
+  jpaso = 0; cat = ''; generoJ = '';
+  var bm = document.getElementById('jBtnM'); if (bm) bm.classList.remove('sel-m','sel-f');
+  var bf = document.getElementById('jBtnF'); if (bf) bf.classList.remove('sel-m','sel-f');
   document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
   document.getElementById('jp0').classList.add('show');
   document.querySelectorAll('#vistaJugador .tab').forEach(function(t){ t.classList.remove('active','done'); });
   document.getElementById('jtab1').classList.add('active');
   mostrarVista('vistaJugador');
+}
+
+
+
+function textoGenero(g) { return g === 'M' ? 'Masculino' : g === 'F' ? 'Femenino' : '—'; }
+
+function selSeccionJ(g) {
+  generoJ = g;
+  document.getElementById('jBtnM').classList.remove('sel-m','sel-f');
+  document.getElementById('jBtnF').classList.remove('sel-m','sel-f');
+  document.getElementById(g === 'M' ? 'jBtnM' : 'jBtnF').classList.add(g === 'M' ? 'sel-m' : 'sel-f');
 }
 
 function selCat(c) {
@@ -732,12 +776,12 @@ function jvalidar(p) {
   document.querySelectorAll('#vistaJugador .msg-error').forEach(function(e){ e.classList.remove('visible'); });
   document.querySelectorAll('#vistaJugador input.error, #vistaJugador select.error').forEach(function(e){ e.classList.remove('error'); });
   if (p === 0) {
-    if (!cat) { document.getElementById('jerr0').classList.add('visible'); return false; }
+    if (!cat) { document.getElementById('jerr0').textContent = 'Selecciona la categoría para continuar.'; document.getElementById('jerr0').classList.add('visible'); return false; }
     return true;
   }
   if (p === 1) {
-    var ok = jreq('jNombre') & jreq('jApellidos') & jreq('jFecha') & jreq('jDni') & jreq('jTalla');
-    if (!ok) document.getElementById('jerr1').classList.add('visible');
+    var ok = jreq('jNombre') & jreq('jApellidos') & jreq('jFecha') & jreq('jDni') & jreq('jTalla') & (generoJ ? 1 : 0);
+    if (!ok) { var m = document.getElementById('jerr1'); m.textContent = !generoJ ? 'Selecciona la sección (Masculino / Femenino) y rellena los campos obligatorios.' : 'Rellena nombre, apellidos, fecha, DNI y talla.'; m.classList.add('visible'); }
     return !!ok;
   }
   if (p === 2) {
@@ -776,6 +820,7 @@ function jconstruirResumen() {
     ['Nombre', jv('jNombre') + ' ' + jv('jApellidos')],
     ['Fecha nacimiento', jv('jFecha')],
     ['DNI / NIE', jv('jDni')],
+    ['Sección', textoGenero(generoJ)],
     ['Categoría', cat],
     ['Talla', jv('jTalla')],
     ['Condiciones médicas', jv('jSalud') || '—'],
@@ -795,8 +840,8 @@ function jconstruirResumen() {
 
 function enviarJugador() {
   var img = document.querySelector('input[name="consentImg"]:checked');
-  var asunto = 'Inscripci\u00f3n ' + jv('jNombre') + ' ' + jv('jApellidos') + ' \u2014 ' + cat + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
-  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nLe remito la documentaci\u00f3n de inscripci\u00f3n para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL JUGADOR\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('jNombre') + ' ' + jv('jApellidos') + '\nFecha nacimiento: ' + jv('jFecha') + '\nDNI / NIE:        ' + jv('jDni') + '\nCategor\u00eda:        ' + cat + '\nTalla:            ' + jv('jTalla') + '\nCondiciones m\u00e9d.: ' + (jv('jSalud') || '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL TUTOR LEGAL\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('tNombre') + ' ' + jv('tApellidos') + '\nDNI / NIE:        ' + jv('tDni') + '\nRelaci\u00f3n:         ' + jv('tRel') + '\nTel\u00e9fono:         ' + jv('tTel') + '\nEmail:            ' + jv('tEmail') + '\nUso de im\u00e1genes:  ' + (img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
+  var asunto = 'Inscripci\u00f3n ' + jv('jNombre') + ' ' + jv('jApellidos') + ' \u2014 ' + textoGenero(generoJ) + ' ' + cat + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
+  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nLe remito la documentaci\u00f3n de inscripci\u00f3n para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL JUGADOR\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('jNombre') + ' ' + jv('jApellidos') + '\nFecha nacimiento: ' + jv('jFecha') + '\nDNI / NIE:        ' + jv('jDni') + '\nSecci\u00f3n:          ' + textoGenero(generoJ) + '\nCategor\u00eda:        ' + cat + '\nTalla:            ' + jv('jTalla') + '\nCondiciones m\u00e9d.: ' + (jv('jSalud') || '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL TUTOR LEGAL\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('tNombre') + ' ' + jv('tApellidos') + '\nDNI / NIE:        ' + jv('tDni') + '\nRelaci\u00f3n:         ' + jv('tRel') + '\nTel\u00e9fono:         ' + jv('tTel') + '\nEmail:            ' + jv('tEmail') + '\nUso de im\u00e1genes:  ' + (img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
   window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
   document.getElementById('jFinalEmail').textContent = EMAIL_DEST;
   document.getElementById('jYtBtn').href = YOUTUBE_URL;
@@ -807,9 +852,11 @@ function enviarJugador() {
 
 /* ══ ENTRENADOR ════════════════════════════════════════════ */
 var epaso = 1;
+var generoE = ''; // M o F
 
 function iniciarEntrenador() {
-  epaso = 1;
+  epaso = 1; generoE = '';
+  var sg = document.getElementById('eGenero'); if (sg) sg.value = '';
   document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
   document.getElementById('ep1').classList.add('show');
   document.querySelectorAll('#vistaEntrenador .tab').forEach(function(t){ t.classList.remove('active','done'); });
@@ -832,7 +879,8 @@ function evalidar(p) {
   document.querySelectorAll('#vistaEntrenador .msg-error').forEach(function(e){ e.classList.remove('visible'); });
   document.querySelectorAll('#vistaEntrenador input.error, #vistaEntrenador select.error').forEach(function(e){ e.classList.remove('error'); });
   if (p === 1) {
-    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla');
+    generoE = document.getElementById('eGenero') ? document.getElementById('eGenero').value : generoE;
+    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla') & ereq('eGenero');
     if (!ok) document.getElementById('eerr1').classList.add('visible');
     return !!ok;
   }
@@ -869,6 +917,7 @@ function econstruirResumen() {
     ['Fecha nacimiento', ev('eFecha')],
     ['Teléfono', ev('eTel')],
     ['Email', ev('eEmail')],
+    ['Sección', textoGenero(generoE)],
     ['Categoría', ev('eCat')],
     ['Talla', ev('eTalla')],
   ];
@@ -879,8 +928,8 @@ function econstruirResumen() {
 }
 
 function enviarEntrenador() {
-  var asunto = 'Solicitud entrenador: ' + ev('eNombre') + ' ' + ev('eApellidos') + ' \u2014 ' + ev('eCat') + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
-  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nMe pongo en contacto para solicitar mi incorporaci\u00f3n como entrenador para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS PERSONALES\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + ev('eNombre') + ' ' + ev('eApellidos') + '\nDNI / NIE:        ' + ev('eDni') + '\nFecha nacimiento: ' + ev('eFecha') + '\nTel\u00e9fono:         ' + ev('eTel') + '\nEmail:            ' + ev('eEmail') + '\nCategor\u00eda:        ' + ev('eCat') + '\nTalla:            ' + ev('eTalla') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n FORMACI\u00d3N\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nTitulaci\u00f3n:       ' + ev('eTitulo') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nAdjunto a este correo: DNI, titulaci\u00f3n (si dispongo), foto tipo DNI y curr\u00edculum (opcional).\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
+  var asunto = 'Solicitud entrenador: ' + ev('eNombre') + ' ' + ev('eApellidos') + ' \u2014 ' + textoGenero(generoE) + ' ' + ev('eCat') + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
+  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nMe pongo en contacto para solicitar mi incorporaci\u00f3n como entrenador para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS PERSONALES\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + ev('eNombre') + ' ' + ev('eApellidos') + '\nDNI / NIE:        ' + ev('eDni') + '\nFecha nacimiento: ' + ev('eFecha') + '\nTel\u00e9fono:         ' + ev('eTel') + '\nEmail:            ' + ev('eEmail') + '\nSecci\u00f3n:          ' + textoGenero(generoE) + '\nCategor\u00eda:        ' + ev('eCat') + '\nTalla:            ' + ev('eTalla') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n FORMACI\u00d3N\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nTitulaci\u00f3n:       ' + ev('eTitulo') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nAdjunto a este correo: DNI, titulaci\u00f3n (si dispongo), foto tipo DNI y curr\u00edculum (opcional).\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
   window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
   document.getElementById('eFinalEmail').textContent = EMAIL_DEST;
   document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
