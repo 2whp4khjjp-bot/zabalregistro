@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Atlético Zabal Linense — Inscripción</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -35,40 +35,44 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
 .vista.activa { display:block; }
 #vistaSelector.activa { display:flex; }
 
+
+/* ══ SAFE AREA iPhone ══════════════════════════════════════ */
+body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+.topbar { padding-top: env(safe-area-inset-top); }
+.fab { bottom: calc(22px + env(safe-area-inset-bottom)); right: calc(18px + env(safe-area-inset-right)); }
+
 /* ══ TOPBAR ════════════════════════════════════════════════ */
 .topbar { background:var(--azul); display:flex; align-items:stretch; position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(26,58,107,.25); }
 .topbar-stripe { width:6px; background:var(--amarillo); flex-shrink:0; }
-.topbar-inner { display:flex; align-items:center; gap:14px; padding:14px 20px; flex:1; }
-.topbar-escudo { width:54px; height:54px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.topbar-escudo img { width:54px; height:54px; object-fit:contain; filter:drop-shadow(0 1px 4px rgba(0,0,0,.3)); }
+.topbar-inner { display:flex; align-items:center; gap:10px; padding:10px 16px; flex:1; }
+.topbar-escudo { width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.topbar-escudo img { width:44px; height:44px; object-fit:contain; filter:drop-shadow(0 1px 4px rgba(0,0,0,.3)); }
 .topbar-texts { flex:1; }
-.topbar-club { color:#fff; font-size:16px; font-weight:700; line-height:1.2; }
-.topbar-season { color:#a8c0df; font-size:11px; margin-top:1px; }
+.topbar-club { color:#fff; font-size:15px; font-weight:700; line-height:1.2; }
+.topbar-season { color:#a8c0df; font-size:10px; margin-top:1px; }
 .topbar-badge { background:var(--amarillo); color:var(--azul); font-size:10px; font-weight:800; border-radius:20px; padding:4px 10px; text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
 .topbar-btn { background:rgba(255,255,255,.12); border:none; border-radius:8px; padding:6px 12px; color:#fff; font-size:12px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; margin-left:8px; white-space:nowrap; }
 .topbar-btn:hover { background:rgba(255,255,255,.22); }
 
 /* ══ PANTALLA SELECTOR ═════════════════════════════════════ */
-#vistaSelector { min-height:calc(100vh - 74px); flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; background:var(--fondo); }
-.sel-escudo { margin-bottom:18px; }
-.sel-escudo img { width:110px; height:110px; object-fit:contain; filter:drop-shadow(0 2px 8px rgba(26,58,107,.18)); }
-.sel-title { font-size:13px; font-weight:700; color:var(--texto-suave); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; text-align:center; }
-.sel-sub { font-size:18px; font-weight:700; color:var(--azul); max-width:480px; text-align:center; margin-bottom:16px; line-height:1.4; }
-.sel-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:11px 16px; font-size:13px; color:#7a5a00; margin-bottom:28px; max-width:480px; width:100%; text-align:left; line-height:1.6; }
+#vistaSelector { min-height:calc(100vh - 60px); flex-direction:column; align-items:center; justify-content:center; padding:16px 16px 24px; background:var(--fondo); }
+.sel-title { font-size:11px; font-weight:700; color:var(--texto-suave); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px; text-align:center; }
+.sel-sub { font-size:17px; font-weight:700; color:var(--azul); max-width:480px; text-align:center; margin-bottom:12px; line-height:1.3; }
+.sel-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:10px 14px; font-size:12px; color:#7a5a00; margin-bottom:16px; max-width:480px; width:100%; text-align:left; line-height:1.5; }
 .sel-label { font-size:13px; font-weight:600; color:var(--texto-med); margin-bottom:14px; text-align:center; letter-spacing:.02em; }
-.sel-btns { display:grid; grid-template-columns:1fr 1fr; gap:14px; width:100%; max-width:480px; }
+.sel-btns { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:480px; }
 @media(max-width:420px){ .sel-btns { grid-template-columns:1fr; } }
-.sel-btn { background:var(--blanco); border:2px solid var(--borde); border-radius:16px; padding:28px 16px 22px; text-align:center; cursor:pointer; transition:border-color .18s, box-shadow .18s, transform .15s; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.sel-btn { background:var(--blanco); border:2px solid var(--borde); border-radius:14px; padding:20px 12px 16px; text-align:center; cursor:pointer; transition:border-color .18s, box-shadow .18s, transform .15s; display:flex; flex-direction:column; align-items:center; gap:8px; }
 .sel-btn:hover { border-color:var(--azul); box-shadow:0 4px 20px rgba(26,58,107,.13); transform:translateY(-2px); }
-.sel-btn-icon { width:64px; height:64px; display:flex; align-items:center; justify-content:center; }
-.sel-btn-icon svg { width:56px; height:56px; }
-.sel-btn-label { font-size:20px; font-weight:800; color:var(--azul); }
+.sel-btn-icon { width:52px; height:52px; display:flex; align-items:center; justify-content:center; }
+.sel-btn-icon svg { width:46px; height:46px; }
+.sel-btn-label { font-size:18px; font-weight:800; color:var(--azul); }
 .sel-btn.entrenador .sel-btn-label { color:#7a5a00; }
 .sel-btn-desc { font-size:12px; color:var(--texto-suave); line-height:1.5; }
 .sel-pill { display:inline-block; font-size:11px; font-weight:700; border-radius:20px; padding:4px 12px; margin-top:4px; }
 .sel-btn.jugador .sel-pill { background:var(--completado-bg); color:var(--azul); }
 .sel-btn.entrenador .sel-pill { background:#fff3c4; color:#7a5a00; }
-.sel-ayuda-btn { margin-top:22px; background:none; border:1.5px solid var(--borde); border-radius:50px; padding:9px 22px; font-size:13px; font-weight:600; color:var(--texto-med); cursor:pointer; font-family:'Outfit',sans-serif; display:flex; align-items:center; gap:8px; transition:border-color .15s; }
+.sel-ayuda-btn { margin-top:14px; background:none; border:1.5px solid var(--borde); border-radius:50px; padding:9px 22px; font-size:13px; font-weight:600; color:var(--texto-med); cursor:pointer; font-family:'Outfit',sans-serif; display:flex; align-items:center; gap:8px; transition:border-color .15s; }
 .sel-ayuda-btn:hover { border-color:var(--azul); }
 
 /* ══ TABS ══════════════════════════════════════════════════ */
@@ -242,6 +246,37 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
 .seccion-btn.sel-f { border-color:#a0287a; background:#fce8f5; color:#a0287a; }
 .seccion-label { font-size:11px; font-weight:700; color:var(--texto-med); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
 
+
+/* ══ PANTALLA SECCIÓN ══════════════════════════════════════ */
+#vistaSección { min-height:calc(100vh - 60px); flex-direction:column; align-items:center; justify-content:center; padding:24px 20px 40px; background:var(--fondo); }
+#vistaSección.activa { display:flex; }
+.sec-back { align-self:flex-start; background:none; border:none; font-size:13px; font-weight:600; color:var(--texto-suave); font-family:'Outfit',sans-serif; cursor:pointer; margin-bottom:20px; display:flex; align-items:center; gap:6px; }
+.sec-back:hover { color:var(--azul); }
+
+.sec-title { font-size:18px; font-weight:700; color:var(--azul); text-align:center; margin-bottom:8px; }
+.sec-sub { font-size:13px; color:var(--texto-suave); text-align:center; margin-bottom:28px; }
+.sec-btns { display:flex; flex-direction:column; gap:16px; width:100%; max-width:480px; }
+.sec-btn { border-radius:16px; padding:40px 24px; cursor:pointer; transition:border-color .18s, box-shadow .18s, transform .15s; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; border:2px solid var(--borde); background:var(--blanco); width:100%; }
+.sec-btn:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,.1); }
+.sec-btn.masc { border-color:#c0d4f0; }
+.sec-btn.masc:hover { border-color:var(--azul); }
+.sec-btn.fem  { border-color:#e8c0e0; }
+.sec-btn.fem:hover  { border-color:#a0287a; }
+
+.sec-btn-label { font-size:22px; font-weight:800; text-align:center; }
+.sec-btn.masc .sec-btn-label { color:var(--azul); }
+.sec-btn.fem  .sec-btn-label { color:#a0287a; }
+.sec-btn-desc { display:none; }
+
+
+/* ══ NAV GLOBAL ════════════════════════════════════════════ */
+#navGlobal { background:var(--blanco); border-bottom:.5px solid var(--borde); display:flex; overflow-x:auto; scrollbar-width:none; position:sticky; top:60px; z-index:90; }
+#navGlobal::-webkit-scrollbar { display:none; }
+.nav-crumb { flex:none; padding:12px 14px 10px; font-size:12px; font-weight:600; color:var(--texto-suave); border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; user-select:none; }
+.nav-crumb:hover { color:var(--azul); }
+.nav-crumb.activo { color:var(--azul); border-bottom-color:var(--amarillo); font-weight:700; }
+.nav-crumb.sep { color:var(--borde); padding:12px 4px 10px; cursor:default; }
+
 /* ══ MSGS ERROR ════════════════════════════════════════════ */
 .msg-error { background:#fff0f0; color:#c0392b; border:.5px solid #f5c0c0; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:12px; display:none; }
 .msg-error.visible { display:block; }
@@ -278,17 +313,24 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
   </div>
 </div>
 
+<!-- ══ NAV GLOBAL ════════════════════════════════════════ -->
+<div id="navGlobal">
+  <div class="nav-crumb activo" id="nc0" onclick="mostrarVista('vistaSelector')">Inicio</div>
+  <div class="nav-crumb sep">›</div>
+  <div class="nav-crumb" id="nc1" style="display:none"></div>
+  <div class="nav-crumb sep" id="ncSep1" style="display:none">›</div>
+  <div class="nav-crumb" id="nc2" style="display:none"></div>
+</div>
+
+
 <!-- ══ VISTA: SELECTOR ═════════════════════════════════════ -->
 <div id="vistaSelector" class="vista activa">
-  <div class="sel-escudo">
-    <img src="https://tmssl.akamaized.net/images/wappen/head/98600.png" alt="Escudo Atlético Zabal" onerror="this.style.display='none'">
-  </div>
   <div class="sel-title" id="selectorSeason">Temporada 2025–26</div>
   <div class="sel-sub">Bienvenidos a la página de registro del<br>Atlético Zabal Linense</div>
   <div class="sel-aviso"><strong>📌 Antes de comenzar</strong>, ten a mano el <strong>DNI del jugador</strong> y el <strong>DNI del tutor legal</strong>.</div>
   <div class="sel-label">Selecciona el tipo de registro</div>
   <div class="sel-btns">
-    <div class="sel-btn jugador" onclick="iniciarJugador()">
+    <div class="sel-btn jugador" onclick="irSeccion('jugador')">
       <div class="sel-btn-icon">
         <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 16L16 10C16 10 18 16 29 16C40 16 42 10 42 10L52 16L46 26H40V50H18V26H12L6 16Z" stroke="#1a3a6b" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
@@ -298,7 +340,7 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       <div class="sel-btn-desc">Inscripción de un jugador para la temporada</div>
       <span class="sel-pill">Registro de jugador</span>
     </div>
-    <div class="sel-btn entrenador" onclick="iniciarEntrenador()">
+    <div class="sel-btn entrenador" onclick="irSeccion('entrenador')">
       <div class="sel-btn-icon">
         <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="8" width="38" height="48" rx="4" stroke="#7a5a00" stroke-width="2.8"/>
@@ -318,15 +360,23 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
   </button>
 </div>
 
+<!-- ══ VISTA: SECCIÓN ════════════════════════════════════ -->
+<div id="vistaSección" class="vista">
+  <div class="sec-title">Equipo</div>
+  <div class="sec-btns">
+    <div class="sec-btn masc" onclick="elegirSeccion('M')">
+      <div class="sec-btn-label">Masculino</div>
+    </div>
+    <div class="sec-btn fem" onclick="elegirSeccion('F')">
+      <div class="sec-btn-label">Femenino</div>
+    </div>
+  </div>
+</div>
+
+
 <!-- ══ VISTA: JUGADOR ══════════════════════════════════════ -->
 <div id="vistaJugador" class="vista">
-  <div class="tabs-wrap">
-    <div class="tab inicio" onclick="mostrarVista('vistaSelector')">← Inicio</div>
-    <div class="tab active" id="jtab1"><span class="tab-num">1</span>Jugador</div>
-    <div class="tab" id="jtab2"><span class="tab-num">2</span>Tutor</div>
-    <div class="tab" id="jtab3"><span class="tab-num">3</span>Documentos</div>
-    <div class="tab" id="jtab4"><span class="tab-num">4</span>Enviar</div>
-  </div>
+
   <div class="content">
 
     <!-- PASO 0: Bienvenida + categoría -->
@@ -357,11 +407,6 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       <div class="field-row">
         <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="jFecha"></div>
         <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="jDni" placeholder="12345678A"></div>
-      </div>
-      <div class="seccion-label">Sección <span class="req">*</span></div>
-      <div class="seccion-row">
-        <div class="seccion-btn" id="jBtnM" onclick="selSeccionJ('M')">♂ Masculino</div>
-        <div class="seccion-btn" id="jBtnF" onclick="selSeccionJ('F')">♀ Femenino</div>
       </div>
       <div class="field-row">
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
@@ -474,23 +519,13 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       </div>
     </div>
 
-    <div class="footer">
-      Atlético Zabal Linense · Gestión telemática · v2026-05-30<br>
-      <button class="admin-trigger" onclick="abrirAdmin()">⚙ Administración</button>
-      <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
-    </div>
+
   </div>
 </div>
 
 <!-- ══ VISTA: ENTRENADOR ═══════════════════════════════════ -->
 <div id="vistaEntrenador" class="vista">
-  <div class="tabs-wrap">
-    <div class="tab inicio" onclick="mostrarVista('vistaSelector')">← Inicio</div>
-    <div class="tab active" id="etab1"><span class="tab-num">1</span>Datos</div>
-    <div class="tab" id="etab2"><span class="tab-num">2</span>Formación</div>
-    <div class="tab" id="etab3"><span class="tab-num">3</span>Proceso</div>
-    <div class="tab" id="etab4"><span class="tab-num">4</span>Enviar</div>
-  </div>
+
   <div class="content">
 
     <!-- E-PASO 1 -->
@@ -516,11 +551,6 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
           <select id="eTalla"><option value="">Seleccionar</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
         </div>
-      </div>
-      <div class="seccion-label">Sección <span class="req">*</span></div>
-      <div class="seccion-row">
-        <div class="seccion-btn" id="eBtnM" onclick="selSeccionE('M')">♂ Masculino</div>
-        <div class="seccion-btn" id="eBtnF" onclick="selSeccionE('F')">♀ Femenino</div>
       </div>
       <div class="msg-error" id="eerr1">Rellena todos los campos obligatorios.</div>
       <div class="nav">
@@ -601,10 +631,7 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       </div>
     </div>
 
-    <div class="footer">
-      Atlético Zabal Linense · Gestión telemática · v2026-05-30<br>
-      <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
-    </div>
+
   </div>
 </div>
 
@@ -645,6 +672,14 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
       <div style="font-size:13px;font-weight:600;color:var(--azul)">📧 direcciondeportivazabal@gmail.com</div>
     </div>
   </div>
+</div>
+
+
+<!-- ══ FOOTER GLOBAL ══════════════════════════════════════ -->
+<div class="footer" id="footerGlobal">
+  Atlético Zabal Linense · Gestión telemática · v2026-05-30<br>
+  <button class="admin-trigger" onclick="abrirAdmin()">⚙ Administración</button>
+  <div class="footer-credits">Idea y programación por <span>Raúl Cote</span></div>
 </div>
 
 <!-- ══ FAB ══════════════════════════════════════════════════ -->
@@ -702,18 +737,13 @@ var adminOk = false;
 var faqOrigen = 'vistaSelector';
 
 /* ══ NAVEGACIÓN PRINCIPAL ══════════════════════════════════ */
-function mostrarVista(id) {
+function mostrarVista(id, paso) {
   document.querySelectorAll('.vista').forEach(function(v){ v.classList.remove('activa'); });
   document.getElementById(id).classList.add('activa');
-  // FAB: visible en formularios, oculto en selector y faq
   var fab = document.getElementById('fabAyuda');
   fab.style.display = (id === 'vistaJugador' || id === 'vistaEntrenador') ? 'flex' : 'none';
-  // Guardar origen para el botón volver de FAQ
-  if (id === 'vistaFaq') {
-    // origen ya guardado antes de llamar
-  } else {
-    faqOrigen = id;
-  }
+  if (id !== 'vistaFaq') faqOrigen = id;
+  actualizarNav(id, paso || 1);
   window.scrollTo({top:0});
 }
 
@@ -725,7 +755,21 @@ function cerrarFaq() {
 var jpaso = 0;
 var cat = '';
 var generoJ = ''; // M o F
+var _tipoRegistro = 'jugador';
 
+function irSeccion(tipo) {
+  _tipoRegistro = tipo;
+  mostrarVista('vistaSección');
+}
+function elegirSeccion(g) {
+  if (_tipoRegistro === 'jugador') {
+    generoJ = g;
+    iniciarJugador();
+  } else {
+    generoE = g;
+    iniciarEntrenador();
+  }
+}
 function iniciarJugador() {
   jpaso = 0; cat = ''; generoJ = '';
   var bm = document.getElementById('jBtnM'); if (bm) bm.classList.remove('sel-m','sel-f');
@@ -768,6 +812,7 @@ function jir(n) {
   document.getElementById('jp' + n).classList.add('show');
   jpaso = n;
   jactualizarTabs(n);
+  actualizarNav('vistaJugador', n === 0 ? 1 : n);
   if (n === 4) jconstruirResumen();
   window.scrollTo({top:0});
 }
@@ -780,8 +825,8 @@ function jvalidar(p) {
     return true;
   }
   if (p === 1) {
-    var ok = jreq('jNombre') & jreq('jApellidos') & jreq('jFecha') & jreq('jDni') & jreq('jTalla') & (generoJ ? 1 : 0);
-    if (!ok) { var m = document.getElementById('jerr1'); m.textContent = !generoJ ? 'Selecciona la sección (Masculino / Femenino) y rellena los campos obligatorios.' : 'Rellena nombre, apellidos, fecha, DNI y talla.'; m.classList.add('visible'); }
+    var ok = jreq('jNombre') & jreq('jApellidos') & jreq('jFecha') & jreq('jDni') & jreq('jTalla');
+    if (!ok) document.getElementById('jerr1').classList.add('visible');
     return !!ok;
   }
   if (p === 2) {
@@ -873,6 +918,7 @@ function eir(n) {
   document.getElementById('ep' + n).classList.add('show');
   epaso = n;
   eactualizarTabs(n);
+  actualizarNav('vistaEntrenador', n);
   if (n === 4) econstruirResumen();
   window.scrollTo({top:0});
 }
@@ -882,8 +928,8 @@ function evalidar(p) {
   document.querySelectorAll('#vistaEntrenador input.error, #vistaEntrenador select.error').forEach(function(e){ e.classList.remove('error'); });
   if (p === 1) {
     generoE = document.getElementById('eGenero') ? document.getElementById('eGenero').value : generoE;
-    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla') & (generoE ? 1 : 0);
-    if (!ok) { var m = document.getElementById('eerr1'); m.textContent = !generoE ? 'Selecciona la sección y rellena todos los campos obligatorios.' : 'Rellena todos los campos obligatorios.'; m.classList.add('visible'); }
+    var ok = ereq('eNombre') & ereq('eApellidos') & ereq('eDni') & ereq('eFecha') & ereq('eTel') & ereq('eEmail') & ereq('eCat') & ereq('eTalla');
+    if (!ok) document.getElementById('eerr1').classList.add('visible');
     return !!ok;
   }
   if (p === 2) {
@@ -1003,6 +1049,51 @@ function guardarCorreo() {
 function actualizarPreview() {
   var pre = document.getElementById('adminPreview');
   if (pre) pre.textContent = JSON.stringify({ temporada: TEMPORADA, emailDestino: EMAIL_DEST }, null, 2);
+}
+
+
+/* ══ NAV GLOBAL ════════════════════════════════════════════ */
+function actualizarNav(vista, paso) {
+  // Limpiar
+  document.getElementById('nc0').classList.remove('activo');
+  document.getElementById('nc1').style.display = 'none';
+  document.getElementById('nc2').style.display = 'none';
+  document.getElementById('ncSep1').style.display = 'none';
+
+  if (vista === 'vistaSelector') {
+    document.getElementById('nc0').classList.add('activo');
+    return;
+  }
+
+  // nc1 = tipo (Jugador / Entrenador / Equipo / Ayuda)
+  var nc1 = document.getElementById('nc1');
+  var nc2 = document.getElementById('nc2');
+  var sep1 = document.getElementById('ncSep1');
+
+  if (vista === 'vistaSección') {
+    nc1.textContent = _tipoRegistro === 'jugador' ? 'Jugador' : 'Entrenador';
+    nc1.style.display = 'block';
+    nc1.classList.add('activo');
+    sep1.style.display = 'none';
+    nc2.style.display = 'none';
+  } else if (vista === 'vistaJugador') {
+    nc1.textContent = 'Jugador · ' + textoGenero(generoJ);
+    nc1.style.display = 'block'; nc1.classList.remove('activo');
+    sep1.style.display = 'block';
+    var pasos = ['','Datos','Tutor','Documentos','Enviar'];
+    nc2.textContent = pasos[paso] || 'Datos';
+    nc2.style.display = 'block'; nc2.classList.add('activo');
+  } else if (vista === 'vistaEntrenador') {
+    nc1.textContent = 'Entrenador · ' + textoGenero(generoE);
+    nc1.style.display = 'block'; nc1.classList.remove('activo');
+    sep1.style.display = 'block';
+    var epasos = ['','Datos','Formación','Proceso','Enviar'];
+    nc2.textContent = epasos[paso] || 'Datos';
+    nc2.style.display = 'block'; nc2.classList.add('activo');
+  } else if (vista === 'vistaFaq') {
+    nc1.textContent = 'Ayuda';
+    nc1.style.display = 'block'; nc1.classList.add('activo');
+  }
 }
 
 /* ══ ARRANQUE ══════════════════════════════════════════════ */
