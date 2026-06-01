@@ -33,7 +33,7 @@ body { font-family:'Outfit',sans-serif; background:var(--fondo); color:var(--tex
 /* ══ VISTAS (sistema de navegación) ═══════════════════════ */
 .vista { display:none; }
 .vista.activa { display:block; }
-#vistaSelector.activa { display:flex; }
+#vistaSelector.activa, #vistaSección.activa { display:block; }
 
 
 /* ══ SAFE AREA iPhone ══════════════════════════════════════ */
@@ -55,12 +55,12 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .topbar-btn:hover { background:rgba(255,255,255,.22); }
 
 /* ══ PANTALLA SELECTOR ═════════════════════════════════════ */
-#vistaSelector { min-height:calc(100vh - 60px); flex-direction:column; align-items:center; justify-content:center; padding:16px 16px 24px; background:var(--fondo); }
+#vistaSelector, #vistaSección { min-height:calc(100vh - 60px); background:var(--fondo); }
 .sel-title { font-size:11px; font-weight:700; color:var(--texto-suave); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px; text-align:center; }
-.sel-sub { font-size:17px; font-weight:700; color:var(--azul); max-width:480px; text-align:center; margin-bottom:12px; line-height:1.3; }
-.sel-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:10px 14px; font-size:12px; color:#7a5a00; margin-bottom:16px; max-width:480px; width:100%; text-align:left; line-height:1.5; }
+.sel-sub { font-size:17px; font-weight:700; color:var(--azul); text-align:center; margin-bottom:12px; line-height:1.3; }
+.sel-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:10px 14px; font-size:12px; color:#7a5a00; margin-bottom:16px; width:100%; text-align:left; line-height:1.5; }
 .sel-label { font-size:13px; font-weight:600; color:var(--texto-med); margin-bottom:14px; text-align:center; letter-spacing:.02em; }
-.sel-btns { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:480px; }
+.sel-btns { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; }
 @media(max-width:420px){ .sel-btns { grid-template-columns:1fr; } }
 .sel-btn { background:var(--blanco); border:2px solid var(--borde); border-radius:14px; padding:20px 12px 16px; text-align:center; cursor:pointer; transition:border-color .18s, box-shadow .18s, transform .15s; display:flex; flex-direction:column; align-items:center; gap:8px; }
 .sel-btn:hover { border-color:var(--azul); box-shadow:0 4px 20px rgba(26,58,107,.13); transform:translateY(-2px); }
@@ -247,35 +247,62 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .seccion-label { font-size:11px; font-weight:700; color:var(--texto-med); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
 
 
-/* ══ PANTALLA SECCIÓN ══════════════════════════════════════ */
-#vistaSección { min-height:calc(100vh - 60px); flex-direction:column; align-items:center; justify-content:center; padding:24px 20px 40px; background:var(--fondo); }
-#vistaSección.activa { display:flex; }
-.sec-back { align-self:flex-start; background:none; border:none; font-size:13px; font-weight:600; color:var(--texto-suave); font-family:'Outfit',sans-serif; cursor:pointer; margin-bottom:20px; display:flex; align-items:center; gap:6px; }
-.sec-back:hover { color:var(--azul); }
-
-.sec-title { font-size:18px; font-weight:700; color:var(--azul); text-align:center; margin-bottom:8px; }
-.sec-sub { font-size:13px; color:var(--texto-suave); text-align:center; margin-bottom:28px; }
-.sec-btns { display:flex; flex-direction:column; gap:16px; width:100%; max-width:480px; }
-.sec-btn { border-radius:16px; padding:40px 24px; cursor:pointer; transition:border-color .18s, box-shadow .18s, transform .15s; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; border:2px solid var(--borde); background:var(--blanco); width:100%; }
-.sec-btn:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,.1); }
-.sec-btn.masc { border-color:#c0d4f0; }
-.sec-btn.masc:hover { border-color:var(--azul); }
-.sec-btn.fem  { border-color:#e8c0e0; }
-.sec-btn.fem:hover  { border-color:#a0287a; }
-
-.sec-btn-label { font-size:22px; font-weight:800; text-align:center; }
-.sec-btn.masc .sec-btn-label { color:var(--azul); }
-.sec-btn.fem  .sec-btn-label { color:#a0287a; }
-.sec-btn-desc { display:none; }
 
 
-/* ══ NAV GLOBAL ════════════════════════════════════════════ */
-#navGlobal { background:var(--blanco); border-bottom:.5px solid var(--borde); display:flex; overflow-x:auto; scrollbar-width:none; position:sticky; top:60px; z-index:90; }
-#navGlobal::-webkit-scrollbar { display:none; }
-.nav-crumb { flex:none; padding:12px 14px 10px; font-size:12px; font-weight:600; color:var(--texto-suave); border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; user-select:none; }
-.nav-crumb:hover { color:var(--azul); }
-.nav-crumb.activo { color:var(--azul); border-bottom-color:var(--amarillo); font-weight:700; }
-.nav-crumb.sep { color:var(--borde); padding:12px 4px 10px; cursor:default; }
+
+
+/* ══ BARRA DE PROGRESO ═════════════════════════════════════ */
+.progress-container {
+  max-width:640px;
+  margin:0 auto;
+  padding:0 16px 14px;
+}
+.progress-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+.progress-label {
+  font-size:11px;
+  font-weight:600;
+  color:var(--texto-suave);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.progress-pct {
+  font-size:12px;
+  font-weight:700;
+  color:var(--azul);
+}
+.progress-track {
+  background:var(--azul-claro);
+  border-radius:20px;
+  height:6px;
+  overflow:hidden;
+}
+.progress-fill {
+  background:linear-gradient(90deg, var(--azul) 0%, var(--amarillo) 100%);
+  height:100%;
+  border-radius:20px;
+  transition:width .4s ease;
+  width:0%;
+}
+
+
+/* ══ NAV EXTERNO (fuera de tarjeta) ═══════════════════════ */
+.nav-ext {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.nav-ext .bback {
+  flex: 1;
+}
+.nav-ext .bnext {
+  flex: 2;
+}
+.nav-ext .bnext::after { content: ''; }
 
 /* ══ MSGS ERROR ════════════════════════════════════════════ */
 .msg-error { background:#fff0f0; color:#c0392b; border:.5px solid #f5c0c0; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:12px; display:none; }
@@ -313,18 +340,29 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
   </div>
 </div>
 
-<!-- ══ NAV GLOBAL ════════════════════════════════════════ -->
-<div id="navGlobal">
-  <div class="nav-crumb activo" id="nc0" onclick="mostrarVista('vistaSelector')">Inicio</div>
-  <div class="nav-crumb sep">›</div>
-  <div class="nav-crumb" id="nc1" style="display:none"></div>
-  <div class="nav-crumb sep" id="ncSep1" style="display:none">›</div>
-  <div class="nav-crumb" id="nc2" style="display:none"></div>
-</div>
-
 
 <!-- ══ VISTA: SELECTOR ═════════════════════════════════════ -->
-<div id="vistaSelector" class="vista activa">
+<div id="vistaSelector" class="vista activa" style="display:block">
+  <div class="tabs-wrap" id="tabsSelector">
+    <div class="tab active" style="cursor:default">Inicio</div>
+    <div class="tab"><span class="tab-num">1</span>Datos</div>
+    <div class="tab"><span class="tab-num">2</span>Tutor</div>
+    <div class="tab"><span class="tab-num">3</span>Documentos</div>
+    <div class="tab"><span class="tab-num">4</span>Enviar</div>
+  </div>
+
+  <!-- BARRA PROGRESO GLOBAL -->
+  <div class="progress-container" id="progressGlobal">
+    <div class="progress-header">
+      <div class="progress-label">Progreso del registro</div>
+      <div class="progress-pct" id="progressGlobalPct">0%</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressGlobalFill"></div>
+    </div>
+  </div>
+  <div class="content">
+  <div class="card show">
   <div class="sel-title" id="selectorSeason">Temporada 2025–26</div>
   <div class="sel-sub">Bienvenidos a la página de registro del<br>Atlético Zabal Linense</div>
   <div class="sel-aviso"><strong>📌 Antes de comenzar</strong>, ten a mano el <strong>DNI del jugador</strong> y el <strong>DNI del tutor legal</strong>.</div>
@@ -354,29 +392,99 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <span class="sel-pill">Registro de entrenador</span>
     </div>
   </div>
-  <button class="sel-ayuda-btn" onclick="mostrarVista('vistaFaq')">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    ¿Tienes dudas? Ver preguntas frecuentes
-  </button>
+  </div>
+  </div>
+  <div class="content" style="padding-top:0;padding-bottom:16px">
+    <button class="sel-ayuda-btn" style="width:100%" onclick="mostrarVista('vistaFaq')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      ¿Tienes dudas? Ver preguntas frecuentes
+    </button>
+  </div>
 </div>
 
 <!-- ══ VISTA: SECCIÓN ════════════════════════════════════ -->
-<div id="vistaSección" class="vista">
-  <div class="sec-title">Equipo</div>
-  <div class="sec-btns">
-    <div class="sec-btn masc" onclick="elegirSeccion('M')">
-      <div class="sec-btn-label">Masculino</div>
+<div id="vistaSección" class="vista" style="display:none">
+  <div class="tabs-wrap" id="tabsSeccion">
+    <div class="tab active" style="cursor:default">Inicio</div>
+    <div class="tab"><span class="tab-num">1</span>Datos</div>
+    <div class="tab"><span class="tab-num">2</span>Tutor</div>
+    <div class="tab"><span class="tab-num">3</span>Documentos</div>
+    <div class="tab"><span class="tab-num">4</span>Enviar</div>
+  </div>
+
+  <!-- BARRA PROGRESO GLOBAL -->
+  <div class="progress-container" id="progressGlobal2">
+    <div class="progress-header">
+      <div class="progress-label">Progreso del registro</div>
+      <div class="progress-pct" id="progressGlobal2Pct">0%</div>
     </div>
-    <div class="sec-btn fem" onclick="elegirSeccion('F')">
-      <div class="sec-btn-label">Femenino</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressGlobal2Fill"></div>
     </div>
+  </div>
+  <div class="content">
+  <div class="card show">
+  <div class="sel-title">Equipo</div>
+  <div class="sel-sub">Selecciona la sección del club</div>
+  <div class="sel-label" id="seccionSubtipo">Inscripción de jugador</div>
+  <div class="sel-btns">
+    <div class="sel-btn jugador" onclick="elegirSeccion('M')" style="border-color:#c0d4f0">
+      <div class="sel-btn-icon">
+        <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="29" cy="18" r="10" stroke="#1a3a6b" stroke-width="2.8"/>
+          <path d="M10 52c0-10.493 8.507-19 19-19s19 8.507 19 19" stroke="#1a3a6b" stroke-width="2.8" stroke-linecap="round"/>
+          <path d="M42 8l6-6m0 0h-5m5 0v5" stroke="#1a3a6b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="sel-btn-label">Masculino</div>
+      <div class="sel-btn-desc">Equipo masculino del club</div>
+      <span class="sel-pill" style="background:var(--completado-bg);color:var(--azul)">Sección masculina</span>
+    </div>
+    <div class="sel-btn" onclick="elegirSeccion('F')" style="border-color:#e8c0e0">
+      <div class="sel-btn-icon">
+        <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="29" cy="18" r="10" stroke="#a0287a" stroke-width="2.8"/>
+          <path d="M10 52c0-10.493 8.507-19 19-19s19 8.507 19 19" stroke="#a0287a" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="29" y1="5" x2="29" y2="0" stroke="#a0287a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="2.5" x2="34" y2="2.5" stroke="#a0287a" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sel-btn-label" style="color:#a0287a">Femenino</div>
+      <div class="sel-btn-desc">Equipo femenino del club</div>
+      <span class="sel-pill" style="background:#fce8f5;color:#a0287a">Sección femenina</span>
+    </div>
+  </div>
+  </div>
+  </div>
+  <div class="content" style="padding-top:0;padding-bottom:16px">
+    <button class="sel-ayuda-btn" style="width:100%" onclick="mostrarVista('vistaFaq')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      ¿Tienes dudas? Ver preguntas frecuentes
+    </button>
   </div>
 </div>
 
 
 <!-- ══ VISTA: JUGADOR ══════════════════════════════════════ -->
 <div id="vistaJugador" class="vista">
+  <div class="tabs-wrap">
+    <div class="tab active" id="jtabInicio" onclick="mostrarVista('vistaSelector')" style="cursor:pointer">Inicio</div>
+    <div class="tab" id="jtab1"><span class="tab-num">1</span>Jugador</div>
+    <div class="tab" id="jtab2"><span class="tab-num">2</span>Tutor</div>
+    <div class="tab" id="jtab3"><span class="tab-num">3</span>Documentos</div>
+    <div class="tab" id="jtab4"><span class="tab-num">4</span>Enviar</div>
+  </div>
 
+  <!-- BARRA PROGRESO JUGADOR -->
+  <div class="progress-container" id="progressJ">
+    <div class="progress-header">
+      <div class="progress-label">Progreso del registro</div>
+      <div class="progress-pct" id="progressJPct">0%</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressJFill"></div>
+    </div>
+  </div>
   <div class="content">
 
     <!-- PASO 0: Bienvenida + categoría -->
@@ -393,24 +501,22 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
         <div class="cat-btn" id="catJuv" onclick="selCat('Juvenil')"><div class="cat-name">Juvenil</div><span class="cat-age">Nacidos 2008–2010</span></div>
       </div>
       <div class="msg-error" id="jerr0">Selecciona la categoría para continuar.</div>
-      <button class="bnext" style="width:100%" onclick="jir(1)">Comenzar inscripción</button>
     </div>
-
     <!-- PASO 1: Datos jugador -->
     <div class="card" id="jp1">
       <div class="card-title"><div class="card-title-icon">👤</div>Datos del jugador</div>
       <p class="card-desc">Información del menor que se inscribe.</p>
       <div class="field-row">
-        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="jNombre" placeholder="Nombre"></div>
-        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="jApellidos" placeholder="Apellidos"></div>
+        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="jNombre" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="Nombre"></div>
+        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="jApellidos" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="Apellidos"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="jFecha"></div>
-        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="jDni" placeholder="12345678A"></div>
+        <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="jFecha" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')"></div>
+        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="jDni" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="12345678A"></div>
       </div>
       <div class="field-row">
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
-          <select id="jTalla">
+          <select id="jTalla" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')">
             <option value="">Seleccionar</option>
             <option>2 años</option><option>4 años</option><option>6 años</option>
             <option>8 años</option><option>10 años</option><option>12 años</option>
@@ -421,32 +527,39 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
         <div class="field"><label>Alergias / Condiciones médicas</label><input type="text" id="jSalud" placeholder="Indicar si las hay, o vacío"></div>
       </div>
       <div class="field-row full">
-        <div class="field"><label>Nombre del entrenador</label><input type="text" id="jEntrenador" placeholder="Si lo conoces, indícalo aquí"></div>
+        <div class="field"><label>Nombre del entrenador</label>
+          <select id="jEntrenador">
+            <option value="">Seleccionar (opcional)</option>
+            <option>Adrian</option>
+            <option>Javier del Rio</option>
+            <option>Sebastian</option>
+            <option>Ramon</option>
+            <option>Oscar Moreno</option>
+            <option>Hugo Becerra</option>
+            <option>Jorge Baez</option>
+            <option>Fabian</option>
+          </select>
+        </div>
       </div>
       <div class="msg-error" id="jerr1">Rellena nombre, apellidos, fecha, DNI y talla.</div>
-      <div class="nav">
-        <button class="bback" onclick="jir(0)">← Atrás</button>
-        <button class="bnext" onclick="jir(2)">Siguiente</button>
-      </div>
     </div>
-
     <!-- PASO 2: Datos tutor -->
     <div class="card" id="jp2">
       <div class="card-title"><div class="card-title-icon">👨‍👩‍👦</div>Datos del tutor legal</div>
       <p class="card-desc">Padre, madre o tutor legal responsable del jugador.</p>
       <div class="field-row">
-        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="tNombre" placeholder="Nombre"></div>
-        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="tApellidos" placeholder="Apellidos"></div>
+        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="tNombre" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="Nombre"></div>
+        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="tApellidos" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="Apellidos"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="tDni" placeholder="12345678A"></div>
+        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="tDni" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="12345678A"></div>
         <div class="field"><label>Relación <span class="req">*</span></label>
-          <select id="tRel"><option value="">Seleccionar</option><option>Padre</option><option>Madre</option><option>Tutor legal</option><option>Otro</option></select>
+          <select id="tRel" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')"><option value="">Seleccionar</option><option>Padre</option><option>Madre</option><option>Tutor legal</option><option>Otro</option></select>
         </div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="tTel" placeholder="6XX XXX XXX"></div>
-        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="tEmail" placeholder="email@ejemplo.com"></div>
+        <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="tTel" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="6XX XXX XXX"></div>
+        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="tEmail" oninput="actualizarProgreso('jugador')" onchange="actualizarProgreso('jugador')" placeholder="email@ejemplo.com"></div>
       </div>
       <!-- Consentimiento imágenes -->
       <div class="consent-box">
@@ -458,12 +571,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
         </div>
       </div>
       <div class="msg-error" id="jerr2">Todos los campos del tutor son obligatorios.</div>
-      <div class="nav">
-        <button class="bback" onclick="jir(1)">← Atrás</button>
-        <button class="bnext" onclick="jir(3)">Siguiente</button>
-      </div>
     </div>
-
     <!-- PASO 3: Documentos + infografía -->
     <div class="card" id="jp3">
       <div class="card-title"><div class="card-title-icon">📋</div>Documentación y siguiente paso</div>
@@ -483,12 +591,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="proceso-paso"><div class="proceso-num">3</div><div class="proceso-cuerpo amarillo"><div class="proceso-ptitulo">Revisión en 24–48 horas</div><div class="proceso-pdesc">El club revisará la documentación. Si todo es correcto recibirás un segundo correo en <strong>24 a 48 horas</strong>.</div></div></div>
       <div class="proceso-separador"><div class="proceso-linea"></div></div>
       <div class="proceso-paso"><div class="proceso-num">4</div><div class="proceso-cuerpo azul"><div class="proceso-ptitulo">Firma en las oficinas del club</div><div class="proceso-pdesc">El correo de aprobación indicará los <strong>días y horarios</strong> para acudir a firmar la documentación oficial.</div></div></div>
-      <div class="nav" style="margin-top:20px">
-        <button class="bback" onclick="jir(2)">← Atrás</button>
-        <button class="bnext" onclick="jir(4)">Continuar</button>
-      </div>
     </div>
-
     <!-- PASO 4: Resumen + envío -->
     <div class="card" id="jp4">
       <div class="card-title"><div class="card-title-icon">📤</div>Revisar y enviar</div>
@@ -497,9 +600,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="resumen-section" id="jResTutor"></div>
       <div class="email-display">Enviar a: <span id="emailDestSpan">direcciondeportivazabal@gmail.com</span></div>
       <button class="bcta" onclick="enviarJugador()">Abrir correo y enviar <span class="acento">→</span></button>
-      <div class="nav" style="margin-top:10px"><button class="bback" onclick="jir(3)">← Atrás</button></div>
     </div>
-
     <!-- PANTALLA FINAL JUGADOR -->
     <div class="card" id="jFinal">
       <div class="success-card">
@@ -521,11 +622,37 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 
 
   </div>
+  <div class="content" style="padding-top:0" id="navExtJ">
+    <div class="nav-ext" id="navExtJInner"></div>
+  </div>
+  <div class="content" style="padding-top:0;padding-bottom:16px">
+    <button class="sel-ayuda-btn" style="width:100%" onclick="mostrarVista('vistaFaq')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      ¿Tienes dudas? Ver preguntas frecuentes
+    </button>
+  </div>
+
 </div>
 
 <!-- ══ VISTA: ENTRENADOR ═══════════════════════════════════ -->
 <div id="vistaEntrenador" class="vista">
+  <div class="tabs-wrap">
+    <div class="tab active" id="etabInicio" onclick="mostrarVista('vistaSelector')" style="cursor:pointer">Inicio</div>
+    <div class="tab" id="etab1"><span class="tab-num">1</span>Datos</div>
+    <div class="tab" id="etab3"><span class="tab-num">2</span>Proceso</div>
+    <div class="tab" id="etab4"><span class="tab-num">3</span>Enviar</div>
+  </div>
 
+  <!-- BARRA PROGRESO ENTRENADOR -->
+  <div class="progress-container" id="progressE">
+    <div class="progress-header">
+      <div class="progress-label">Progreso del registro</div>
+      <div class="progress-pct" id="progressEPct">0%</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressEFill"></div>
+    </div>
+  </div>
   <div class="content">
 
     <!-- E-PASO 1 -->
@@ -533,50 +660,32 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="card-title"><div class="card-title-icon">📋</div>Datos del entrenador</div>
       <p class="card-desc">Información personal del entrenador que se incorpora al club.</p>
       <div class="field-row">
-        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="eNombre" placeholder="Nombre"></div>
-        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="eApellidos" placeholder="Apellidos"></div>
+        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="eNombre" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')" placeholder="Nombre"></div>
+        <div class="field"><label>Apellidos <span class="req">*</span></label><input type="text" id="eApellidos" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')" placeholder="Apellidos"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="eDni" placeholder="12345678A"></div>
-        <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="eFecha"></div>
+        <div class="field"><label>DNI / NIE <span class="req">*</span></label><input type="text" id="eDni" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')" placeholder="12345678A"></div>
+        <div class="field"><label>Fecha de nacimiento <span class="req">*</span></label><input type="date" id="eFecha" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="eTel" placeholder="6XX XXX XXX"></div>
-        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="eEmail" placeholder="email@ejemplo.com"></div>
+        <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" id="eTel" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')" placeholder="6XX XXX XXX"></div>
+        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="eEmail" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')" placeholder="email@ejemplo.com"></div>
       </div>
       <div class="field-row">
         <div class="field"><label>Categoría que entrenaría <span class="req">*</span></label>
-          <select id="eCat"><option value="">Seleccionar</option><option>Bebé</option><option>Prebenjamín</option><option>Benjamín</option><option>Alevín</option><option>Infantil</option><option>Cadete</option><option>Juvenil</option><option>Varias / Por determinar</option></select>
+          <select id="eCat" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')"><option value="">Seleccionar</option><option>Bebé</option><option>Prebenjamín</option><option>Benjamín</option><option>Alevín</option><option>Infantil</option><option>Cadete</option><option>Juvenil</option><option>Varias / Por determinar</option></select>
         </div>
         <div class="field"><label>Talla de ropa <span class="req">*</span></label>
-          <select id="eTalla"><option value="">Seleccionar</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+          <select id="eTalla" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')"><option value="">Seleccionar</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
         </div>
-      </div>
-      <div class="msg-error" id="eerr1">Rellena todos los campos obligatorios.</div>
-      <div class="nav">
-        <button class="bback" onclick="mostrarVista('vistaSelector')">← Inicio</button>
-        <button class="bnext" onclick="eir(2)">Siguiente</button>
-      </div>
-    </div>
-
-    <!-- E-PASO 2 -->
-    <div class="card" id="ep2">
-      <div class="card-title"><div class="card-title-icon">🎓</div>Formación</div>
-      <p class="card-desc">Titulación federativa del entrenador.</p>
-      </div>
       </div>
       <div class="field-row full">
         <div class="field"><label>Titulación UEFA / RFEF <span class="req">*</span></label>
-          <select id="eTitulo"><option value="">Seleccionar</option><option>Sin titulación</option><option>Monitor</option><option>UEFA C</option><option>UEFA B</option><option>UEFA A</option><option>UEFA Pro</option></select>
+          <select id="eTitulo" oninput="actualizarProgreso('entrenador')" onchange="actualizarProgreso('entrenador')"><option value="">Seleccionar</option><option>Sin titulación</option><option>Monitor</option><option>UEFA C</option><option>UEFA B</option><option>UEFA A</option><option>UEFA Pro</option></select>
         </div>
       </div>
-      <div class="msg-error" id="eerr2">Selecciona la titulación.</div>
-      <div class="nav">
-        <button class="bback" onclick="eir(1)">← Atrás</button>
-        <button class="bnext" onclick="eir(3)">Siguiente</button>
-      </div>
+      <div class="msg-error" id="eerr1">Rellena todos los campos obligatorios.</div>
     </div>
-
     <!-- E-PASO 3 -->
     <div class="card" id="ep3">
       <div class="card-title"><div class="card-title-icon">📋</div>Documentación y proceso</div>
@@ -596,12 +705,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="proceso-paso"><div class="proceso-num">3</div><div class="proceso-cuerpo amarillo"><div class="proceso-ptitulo">Revisión en 24–48 horas</div><div class="proceso-pdesc">El club revisará tu perfil y recibirás confirmación en <strong>24 a 48 horas</strong>.</div></div></div>
       <div class="proceso-separador"><div class="proceso-linea"></div></div>
       <div class="proceso-paso"><div class="proceso-num">4</div><div class="proceso-cuerpo azul"><div class="proceso-ptitulo">Firma en las oficinas del club</div><div class="proceso-pdesc">El correo de aprobación indicará los <strong>días y horarios</strong> para firmar el contrato.</div></div></div>
-      <div class="nav" style="margin-top:20px">
-        <button class="bback" onclick="eir(2)">← Atrás</button>
-        <button class="bnext" onclick="eir(4)">Continuar</button>
-      </div>
     </div>
-
     <!-- E-PASO 4 -->
     <div class="card" id="ep4">
       <div class="card-title"><div class="card-title-icon">📤</div>Revisar y enviar</div>
@@ -610,9 +714,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="resumen-section" id="eResForm"></div>
       <div class="email-display">Enviar a: <span id="eEmailDestSpan">direcciondeportivazabal@gmail.com</span></div>
       <button class="bcta" onclick="enviarEntrenador()">Abrir correo y enviar <span class="acento">→</span></button>
-      <div class="nav" style="margin-top:10px"><button class="bback" onclick="eir(3)">← Atrás</button></div>
     </div>
-
     <!-- PANTALLA FINAL ENTRENADOR -->
     <div class="card" id="eFinal">
       <div class="success-card">
@@ -633,6 +735,16 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 
 
   </div>
+  <div class="content" style="padding-top:0" id="navExtE">
+    <div class="nav-ext" id="navExtEInner"></div>
+  </div>
+  <div class="content" style="padding-top:0;padding-bottom:16px">
+    <button class="sel-ayuda-btn" style="width:100%" onclick="mostrarVista('vistaFaq')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      ¿Tienes dudas? Ver preguntas frecuentes
+    </button>
+  </div>
+
 </div>
 
 <!-- ══ VISTA: FAQs ══════════════════════════════════════════ -->
@@ -737,13 +849,18 @@ var adminOk = false;
 var faqOrigen = 'vistaSelector';
 
 /* ══ NAVEGACIÓN PRINCIPAL ══════════════════════════════════ */
-function mostrarVista(id, paso) {
-  document.querySelectorAll('.vista').forEach(function(v){ v.classList.remove('activa'); });
-  document.getElementById(id).classList.add('activa');
+function mostrarVista(id) {
+  // Ocultar todas las vistas
+  ['vistaSelector','vistaSección','vistaJugador','vistaEntrenador','vistaFaq'].forEach(function(v){
+    var el = document.getElementById(v);
+    if (el) el.style.display = 'none';
+  });
+  // Mostrar la vista pedida
+  var target = document.getElementById(id);
+  if (target) target.style.display = 'block';
   var fab = document.getElementById('fabAyuda');
   fab.style.display = (id === 'vistaJugador' || id === 'vistaEntrenador') ? 'flex' : 'none';
   if (id !== 'vistaFaq') faqOrigen = id;
-  actualizarNav(id, paso || 1);
   window.scrollTo({top:0});
 }
 
@@ -759,9 +876,11 @@ var _tipoRegistro = 'jugador';
 
 function irSeccion(tipo) {
   _tipoRegistro = tipo;
+  setGlobalPct(10);
   mostrarVista('vistaSección');
 }
 function elegirSeccion(g) {
+  setGlobalPct(20);
   if (_tipoRegistro === 'jugador') {
     generoJ = g;
     iniciarJugador();
@@ -777,8 +896,9 @@ function iniciarJugador() {
   document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
   document.getElementById('jp0').classList.add('show');
   document.querySelectorAll('#vistaJugador .tab').forEach(function(t){ t.classList.remove('active','done'); });
-  document.getElementById('jtab1').classList.add('active');
+  var ji = document.getElementById('jtabInicio'); if (ji) ji.classList.add('active');
   mostrarVista('vistaJugador');
+  setTimeout(function(){ actualizarNavExt('jugador'); }, 0);
 }
 
 
@@ -812,8 +932,9 @@ function jir(n) {
   document.getElementById('jp' + n).classList.add('show');
   jpaso = n;
   jactualizarTabs(n);
-  actualizarNav('vistaJugador', n === 0 ? 1 : n);
   if (n === 4) jconstruirResumen();
+  actualizarProgreso('jugador');
+  actualizarNavExt('jugador');
   window.scrollTo({top:0});
 }
 
@@ -847,15 +968,19 @@ function jreq(id) {
 function jv(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
 function jactualizarTabs(n) {
-  // n=0 → tab1 activa (paso 0 es previa al tab1)
-  var mapa = [1,1,2,3,4];
-  var tabActiva = mapa[n] || 1;
+  var tabInicio = document.getElementById('jtabInicio');
+  if (tabInicio) {
+    tabInicio.classList.toggle('active', n === 0);
+    tabInicio.classList.toggle('done', n > 0);
+  }
   for (var i = 1; i <= 4; i++) {
     var t = document.getElementById('jtab' + i);
     if (!t) continue;
     t.classList.remove('active', 'done');
-    if (i === tabActiva) t.classList.add('active');
-    else if (i < tabActiva) t.classList.add('done');
+    if (n > 0) {
+      if (i === n) t.classList.add('active');
+      else if (i < n) t.classList.add('done');
+    }
   }
 }
 
@@ -907,7 +1032,7 @@ function iniciarEntrenador() {
   document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
   document.getElementById('ep1').classList.add('show');
   document.querySelectorAll('#vistaEntrenador .tab').forEach(function(t){ t.classList.remove('active','done'); });
-  document.getElementById('etab1').classList.add('active');
+  var ei = document.getElementById('etabInicio'); if (ei) ei.classList.add('active');
   document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
   mostrarVista('vistaEntrenador');
 }
@@ -918,8 +1043,9 @@ function eir(n) {
   document.getElementById('ep' + n).classList.add('show');
   epaso = n;
   eactualizarTabs(n);
-  actualizarNav('vistaEntrenador', n);
   if (n === 4) econstruirResumen();
+  actualizarProgreso('entrenador');
+  actualizarNavExt('entrenador');
   window.scrollTo({top:0});
 }
 
@@ -932,11 +1058,7 @@ function evalidar(p) {
     if (!ok) document.getElementById('eerr1').classList.add('visible');
     return !!ok;
   }
-  if (p === 2) {
-    var ok = ereq('eTitulo');
-    if (!ok) document.getElementById('eerr2').classList.add('visible');
-    return !!ok;
-  }
+  if (p === 2) { return true; }
   return true;
 }
 
@@ -949,13 +1071,17 @@ function ereq(id) {
 function ev(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
 function eactualizarTabs(n) {
-  for (var i = 1; i <= 4; i++) {
+  var tabInicio = document.getElementById('etabInicio');
+  if (tabInicio) tabInicio.classList.toggle('active', n < 1);
+  // Mapa: paso real → tab visible (paso 2 no existe, paso 3=2, paso 4=3)
+  var mapa = {1:1, 3:3, 4:4};
+  [1,3,4].forEach(function(i) {
     var t = document.getElementById('etab' + i);
-    if (!t) continue;
+    if (!t) return;
     t.classList.remove('active', 'done');
     if (i === n) t.classList.add('active');
     else if (i < n) t.classList.add('done');
-  }
+  });
 }
 
 function econstruirResumen() {
@@ -1052,47 +1178,98 @@ function actualizarPreview() {
 }
 
 
-/* ══ NAV GLOBAL ════════════════════════════════════════════ */
-function actualizarNav(vista, paso) {
-  // Limpiar
-  document.getElementById('nc0').classList.remove('activo');
-  document.getElementById('nc1').style.display = 'none';
-  document.getElementById('nc2').style.display = 'none';
-  document.getElementById('ncSep1').style.display = 'none';
 
-  if (vista === 'vistaSelector') {
-    document.getElementById('nc0').classList.add('activo');
-    return;
+
+/* ══ BARRA DE PROGRESO ═════════════════════════════════════ */
+function setGlobalPct(pct) {
+  setAllPct(pct);
+}
+function setAllPct(pct) {
+  var ids = ['progressGlobalFill','progressGlobal2Fill','progressJFill','progressEFill'];
+  ids.forEach(function(id){ var el=document.getElementById(id); if(el) el.style.width=pct+'%'; });
+  var lids = ['progressGlobalPct','progressGlobal2Pct','progressJPct','progressEPct'];
+  lids.forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=pct+'%'; });
+}
+
+function actualizarProgreso(tipo) {
+  // Escala global completa (0-100% desde Inicio hasta Enviar)
+  // Fases comunes: Inicio=0, elegir tipo=10, elegir sección=20
+  // Jugador: categoría=30, datos(30-55), tutor(55-75), proceso=80, enviar=100
+  // Entrenador: datos(20-70), proceso=80, enviar=100
+
+  if (tipo === 'jugador') {
+    var base = 0;
+    var bonus = 0;
+    if (jpaso === 0) {
+      base = 30; // ya eligió tipo+sección+llegó a categoría
+    } else if (jpaso === 1) {
+      base = 30;
+      var campos = ['jNombre','jApellidos','jFecha','jDni','jTalla'];
+      var r = campos.filter(function(id){ var el=document.getElementById(id); return el&&el.value.trim(); }).length;
+      bonus = Math.round((r / campos.length) * 25);
+      base = 30 + bonus;
+    } else if (jpaso === 2) {
+      base = 55;
+      var campos2 = ['tNombre','tApellidos','tDni','tTel','tEmail','tRel'];
+      var r2 = campos2.filter(function(id){ var el=document.getElementById(id); return el&&el.value.trim(); }).length;
+      bonus = Math.round((r2 / campos2.length) * 20);
+      base = 55 + bonus;
+    } else if (jpaso === 3) {
+      base = 80;
+    } else if (jpaso === 4) {
+      base = 100;
+    }
+    setAllPct(Math.min(100, base));
+
+  } else {
+    var base2 = 0;
+    if (epaso === 1) {
+      base2 = 20;
+      var camposE = ['eNombre','eApellidos','eDni','eFecha','eTel','eEmail','eCat','eTalla','eTitulo'];
+      var rE = camposE.filter(function(id){ var el=document.getElementById(id); return el&&el.value.trim(); }).length;
+      base2 = 20 + Math.round((rE / camposE.length) * 50);
+    } else if (epaso === 3) {
+      base2 = 80;
+    } else if (epaso === 4) {
+      base2 = 100;
+    }
+    setAllPct(Math.min(100, base2));
   }
+}
 
-  // nc1 = tipo (Jugador / Entrenador / Equipo / Ayuda)
-  var nc1 = document.getElementById('nc1');
-  var nc2 = document.getElementById('nc2');
-  var sep1 = document.getElementById('ncSep1');
 
-  if (vista === 'vistaSección') {
-    nc1.textContent = _tipoRegistro === 'jugador' ? 'Jugador' : 'Entrenador';
-    nc1.style.display = 'block';
-    nc1.classList.add('activo');
-    sep1.style.display = 'none';
-    nc2.style.display = 'none';
-  } else if (vista === 'vistaJugador') {
-    nc1.textContent = 'Jugador · ' + textoGenero(generoJ);
-    nc1.style.display = 'block'; nc1.classList.remove('activo');
-    sep1.style.display = 'block';
-    var pasos = ['','Datos','Tutor','Documentos','Enviar'];
-    nc2.textContent = pasos[paso] || 'Datos';
-    nc2.style.display = 'block'; nc2.classList.add('activo');
-  } else if (vista === 'vistaEntrenador') {
-    nc1.textContent = 'Entrenador · ' + textoGenero(generoE);
-    nc1.style.display = 'block'; nc1.classList.remove('activo');
-    sep1.style.display = 'block';
-    var epasos = ['','Datos','Formación','Proceso','Enviar'];
-    nc2.textContent = epasos[paso] || 'Datos';
-    nc2.style.display = 'block'; nc2.classList.add('activo');
-  } else if (vista === 'vistaFaq') {
-    nc1.textContent = 'Ayuda';
-    nc1.style.display = 'block'; nc1.classList.add('activo');
+
+
+/* ══ NAV GLOBAL EXTERNO ═══════════════════════════════════ */
+function actualizarNavExt(tipo) {
+  if (tipo === 'jugador') {
+    var el = document.getElementById('navExtJInner');
+    if (!el) return;
+    var html = '';
+    if (jpaso === 0) {
+      html = '<button class="bnext" style="flex:1" onclick="jir(1)">Siguiente</button>';
+    } else if (jpaso === 1) {
+      html = '<button class="bback" onclick="jir(0)">Anterior</button><button class="bnext" onclick="jir(2)">Siguiente</button>';
+    } else if (jpaso === 2) {
+      html = '<button class="bback" onclick="jir(1)">Anterior</button><button class="bnext" onclick="jir(3)">Siguiente</button>';
+    } else if (jpaso === 3) {
+      html = '<button class="bback" onclick="jir(2)">Anterior</button><button class="bnext" onclick="jir(4)">Siguiente</button>';
+    } else if (jpaso === 4) {
+      html = '<button class="bback" onclick="jir(3)">Anterior</button>';
+    }
+    el.innerHTML = html;
+  } else {
+    var el2 = document.getElementById('navExtEInner');
+    if (!el2) return;
+    var html2 = '';
+    if (epaso === 1) {
+      html2 = '<button class="bback" onclick="mostrarVista(\'vistaSelector\')">Inicio</button><button class="bnext" onclick="eir(3)">Siguiente</button>';
+    } else if (epaso === 3) {
+      html2 = '<button class="bback" onclick="eir(1)">Anterior</button><button class="bnext" onclick="eir(4)">Siguiente</button>';
+    } else if (epaso === 4) {
+      html2 = '<button class="bback" onclick="eir(3)">Anterior</button>';
+    }
+    el2.innerHTML = html2;
   }
 }
 
