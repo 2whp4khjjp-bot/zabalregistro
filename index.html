@@ -623,7 +623,10 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 
   </div>
   <div class="content" style="padding-top:0" id="navExtJ">
-    <div class="nav-ext" id="navExtJInner"></div>
+    <div class="nav-ext" id="navExtJInner">
+      <button class="bback" id="jBtnAnterior" onclick="jir(jpaso-1)" style="display:none">Anterior</button>
+      <button class="bnext" id="jBtnSiguiente" onclick="jir(jpaso+1)">Siguiente</button>
+    </div>
   </div>
   <div class="content" style="padding-top:0;padding-bottom:16px">
     <button class="sel-ayuda-btn" style="width:100%" onclick="mostrarVista('vistaFaq')">
@@ -736,7 +739,10 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 
   </div>
   <div class="content" style="padding-top:0" id="navExtE">
-    <div class="nav-ext" id="navExtEInner"></div>
+    <div class="nav-ext" id="navExtEInner">
+      <button class="bback" id="eBtnAnterior" onclick="eBtnAtras()" style="display:none">Anterior</button>
+      <button class="bnext" id="eBtnSiguiente" onclick="eBtnAdelante()">Siguiente</button>
+    </div>
   </div>
   <div class="content" style="padding-top:0;padding-bottom:16px">
     <button class="sel-ayuda-btn" style="width:100%" onclick="mostrarVista('vistaFaq')">
@@ -898,7 +904,7 @@ function iniciarJugador() {
   document.querySelectorAll('#vistaJugador .tab').forEach(function(t){ t.classList.remove('active','done'); });
   var ji = document.getElementById('jtabInicio'); if (ji) ji.classList.add('active');
   mostrarVista('vistaJugador');
-  setTimeout(function(){ actualizarNavExt('jugador'); }, 0);
+  actualizarNavExt('jugador');
 }
 
 
@@ -1035,6 +1041,7 @@ function iniciarEntrenador() {
   var ei = document.getElementById('etabInicio'); if (ei) ei.classList.add('active');
   document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
   mostrarVista('vistaEntrenador');
+  actualizarNavExt('entrenador');
 }
 
 function eir(n) {
@@ -1243,35 +1250,48 @@ function actualizarProgreso(tipo) {
 /* ══ NAV GLOBAL EXTERNO ═══════════════════════════════════ */
 function actualizarNavExt(tipo) {
   if (tipo === 'jugador') {
-    var el = document.getElementById('navExtJInner');
-    if (!el) return;
-    var html = '';
-    if (jpaso === 0) {
-      html = '<button class="bnext" style="flex:1" onclick="jir(1)">Siguiente</button>';
-    } else if (jpaso === 1) {
-      html = '<button class="bback" onclick="jir(0)">Anterior</button><button class="bnext" onclick="jir(2)">Siguiente</button>';
-    } else if (jpaso === 2) {
-      html = '<button class="bback" onclick="jir(1)">Anterior</button><button class="bnext" onclick="jir(3)">Siguiente</button>';
-    } else if (jpaso === 3) {
-      html = '<button class="bback" onclick="jir(2)">Anterior</button><button class="bnext" onclick="jir(4)">Siguiente</button>';
-    } else if (jpaso === 4) {
-      html = '<button class="bback" onclick="jir(3)">Anterior</button>';
-    }
-    el.innerHTML = html;
+    var ant = document.getElementById('jBtnAnterior');
+    var sig = document.getElementById('jBtnSiguiente');
+    if (!ant || !sig) return;
+    ant.style.display = jpaso > 0 ? '' : 'none';
+    sig.style.display = jpaso < 4 ? '' : 'none';
+    // Actualizar onclick del anterior según paso
+    if (jpaso === 1) ant.onclick = function(){ jir(0); };
+    else if (jpaso === 2) ant.onclick = function(){ jir(1); };
+    else if (jpaso === 3) ant.onclick = function(){ jir(2); };
+    else if (jpaso === 4) ant.onclick = function(){ jir(3); };
+    // Actualizar onclick del siguiente
+    if (jpaso === 0) sig.onclick = function(){ jir(1); };
+    else if (jpaso === 1) sig.onclick = function(){ jir(2); };
+    else if (jpaso === 2) sig.onclick = function(){ jir(3); };
+    else if (jpaso === 3) sig.onclick = function(){ jir(4); };
   } else {
-    var el2 = document.getElementById('navExtEInner');
-    if (!el2) return;
-    var html2 = '';
+    var ant2 = document.getElementById('eBtnAnterior');
+    var sig2 = document.getElementById('eBtnSiguiente');
+    if (!ant2 || !sig2) return;
     if (epaso === 1) {
-      html2 = '<button class="bback" onclick="mostrarVista(\'vistaSelector\')">Inicio</button><button class="bnext" onclick="eir(3)">Siguiente</button>';
+      ant2.textContent = 'Anterior';
+      ant2.style.display = '';
+      ant2.onclick = function(){ mostrarVista('vistaSelector'); };
+      sig2.style.display = '';
+      sig2.onclick = function(){ eir(3); };
     } else if (epaso === 3) {
-      html2 = '<button class="bback" onclick="eir(1)">Anterior</button><button class="bnext" onclick="eir(4)">Siguiente</button>';
+      ant2.textContent = 'Anterior';
+      ant2.style.display = '';
+      ant2.onclick = function(){ eir(1); };
+      sig2.style.display = '';
+      sig2.onclick = function(){ eir(4); };
     } else if (epaso === 4) {
-      html2 = '<button class="bback" onclick="eir(3)">Anterior</button>';
+      ant2.textContent = 'Anterior';
+      ant2.style.display = '';
+      ant2.onclick = function(){ eir(3); };
+      sig2.style.display = 'none';
     }
-    el2.innerHTML = html2;
   }
 }
+
+function eBtnAtras() { if(epaso===1) mostrarVista('vistaSelector'); else if(epaso===3) eir(1); else if(epaso===4) eir(3); }
+function eBtnAdelante() { if(epaso===1) eir(3); else if(epaso===3) eir(4); }
 
 /* ══ ARRANQUE ══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
