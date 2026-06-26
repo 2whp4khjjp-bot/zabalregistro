@@ -371,7 +371,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
   <div class="sel-title" id="selectorSeason">Temporada 2025–26</div>
   <div class="sel-sub">Bienvenidos a la página de registro del<br>Atlético Zabal Linense</div>
   <div class="sel-aviso"><strong>📌 Antes de comenzar</strong>, ten a mano el <strong>DNI del jugador</strong> y el <strong>DNI del tutor legal</strong>.</div>
-  <div class="sel-label">Selecciona el tipo de registro</div>
+  <div class="sel-label">Pulsa para comenzar el registro</div>
   <div class="sel-btns">
     <div class="sel-btn jugador" onclick="irSeccion('jugador')">
       <div class="sel-btn-icon">
@@ -392,9 +392,9 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
           <path d="M17 44c0-6.627 5.373-8 12-8s12 1.373 12 8" stroke="#7a5a00" stroke-width="2.5" stroke-linecap="round"/>
         </svg>
       </div>
-      <div class="sel-btn-label">Entrenador</div>
+      <div class="sel-btn-label" style="color:#7a5a00">Entrenador</div>
       <div class="sel-btn-desc">Inscripción de un nuevo entrenador del club</div>
-      <span class="sel-pill">Registro de entrenador</span>
+      <span class="sel-pill" style="background:#fff3c4;color:#7a5a00">Registro de entrenador</span>
     </div>
   </div>
   </div>
@@ -431,7 +431,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
   <div class="card show">
   <div class="sel-title">Equipo</div>
   <div class="sel-sub">Selecciona la sección del club</div>
-  <div class="sel-label" id="seccionSubtipo">Inscripción de jugador</div>
+  
   <div class="sel-btns">
     <div class="sel-btn jugador" onclick="elegirSeccion('M')" style="border-color:#c0d4f0">
       <div class="sel-btn-icon">
@@ -531,21 +531,6 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
         </div>
         <div class="field"><label>Alergias / Condiciones médicas</label><input type="text" id="jSalud" placeholder="Indicar si las hay, o vacío"></div>
       </div>
-      <div class="field-row full">
-        <div class="field"><label>Nombre del entrenador</label>
-          <select id="jEntrenador">
-            <option value="">Seleccionar (opcional)</option>
-            <option>Adrian</option>
-            <option>Javier del Rio</option>
-            <option>Sebastian</option>
-            <option>Ramon</option>
-            <option>Oscar Moreno</option>
-            <option>Hugo Becerra</option>
-            <option>Jorge Baez</option>
-            <option>Fabian</option>
-          </select>
-        </div>
-      </div>
       <div class="msg-error" id="jerr1">Rellena nombre, apellidos, fecha, DNI y talla.</div>
     </div>
     <!-- PASO 2: Datos tutor -->
@@ -582,11 +567,24 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="card-title"><div class="card-title-icon">📋</div>Documentación y siguiente paso</div>
       <p class="card-desc">Revisa qué documentos tendrás que enviar y cómo funciona el proceso.</p>
       <div class="docs-lista">
-        <div class="docs-lista-titulo">Documentos que deberás adjuntar al correo</div>
-        <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE del jugador</strong><span class="doc-tag obl">Obligatorio</span></div></div>
-        <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE del tutor legal</strong><span class="doc-tag obl">Obligatorio</span></div></div>
-        <div class="doc-fila"><span class="doc-fila-emoji">🏥</span><div><strong>Certificado médico</strong><span class="doc-tag opt">Opcional</span></div></div>
-        <div class="doc-fila"><span class="doc-fila-emoji">📷</span><div><strong>Foto tipo DNI del jugador</strong><span class="doc-tag obl">Obligatorio</span> · Fondo liso</div></div>
+        <div class="docs-lista-titulo">Adjunta los documentos del jugador</div>
+        <div class="field" style="margin-bottom:12px">
+          <label>🪪 DNI / NIE del jugador <span class="req">*</span></label>
+          <input type="file" id="fDniJugador" name="DNI_Jugador" accept="image/*,application/pdf" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label>🪪 DNI / NIE del tutor legal <span class="req">*</span></label>
+          <input type="file" id="fDniTutor" name="DNI_Tutor" accept="image/*,application/pdf" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label>📷 Foto tipo DNI del jugador <span class="req">*</span> <span style="font-size:11px;color:var(--texto-suave);font-weight:400">· Fondo liso</span></label>
+          <input type="file" id="fFoto" name="Foto_DNI" accept="image/*" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="field" style="margin-bottom:4px">
+          <label>🏥 Certificado médico <span style="font-size:11px;color:var(--texto-suave);font-weight:400">· Opcional</span></label>
+          <input type="file" id="fCertMed" name="Certificado_Medico" accept="image/*,application/pdf" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="msg-error" id="jerr3" style="margin-top:10px">Adjunta los documentos obligatorios para continuar.</div>
       </div>
       <div class="proceso-titulo">Cómo funciona el proceso</div>
       <div class="proceso-paso"><div class="proceso-num">1</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Completa el formulario y envía el correo</div><div class="proceso-pdesc">En el último paso se abrirá tu app de correo con todos los datos ya escritos. <strong>Adjunta los 4 documentos</strong> y pulsa Enviar.</div></div></div>
@@ -604,14 +602,14 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="resumen-section" id="jResJugador"></div>
       <div class="resumen-section" id="jResTutor"></div>
       <div class="email-display">Enviar a: <span id="emailDestSpan">direcciondeportivazabal@gmail.com</span></div>
-      <button class="bcta" onclick="enviarJugador()">Abrir correo y enviar <span class="acento">→</span></button>
+      <button class="bcta" onclick="enviarJugador()">Enviar inscripción <span class="acento">→</span></button>
     </div>
     <!-- PANTALLA FINAL JUGADOR -->
     <div class="card" id="jFinal">
       <div class="success-card">
-        <div class="success-icon">📧</div>
-        <div class="success-title">¡Revisa tu correo antes de enviar!</div>
-        <p class="success-desc">Se ha abierto la aplicación de correo con todos los datos ya escritos.<br><br><strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong></p>
+        <div class="success-icon" style="background:#0f7a3c;border-color:var(--amarillo)">✅</div>
+        <div class="success-title" style="color:#0f5a2a">¡Inscripción enviada correctamente!</div>
+        <p class="success-desc">Toda la documentación ha llegado al club.<br><br>Recibirás confirmación en <strong id="jFinalEmail"></strong> y en <strong>24–48 horas</strong> el club te confirmará si todo está correcto.</p>
         <div class="success-docs">
           <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE del jugador</strong></div>
           <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE del tutor legal</strong></div>
@@ -699,11 +697,24 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="card-title"><div class="card-title-icon">📋</div>Documentación y proceso</div>
       <p class="card-desc">Documentos a adjuntar y cómo funciona el proceso.</p>
       <div class="docs-lista">
-        <div class="docs-lista-titulo">Documentos que deberás adjuntar al correo</div>
-        <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE</strong><span class="doc-tag obl">Obligatorio</span></div></div>
-        <div class="doc-fila"><span class="doc-fila-emoji">🎓</span><div><strong>Titulación federativa</strong><span class="doc-tag opt">Si dispones de ella</span></div></div>
-        <div class="doc-fila"><span class="doc-fila-emoji">📷</span><div><strong>Foto tipo DNI</strong><span class="doc-tag obl">Obligatorio</span> · Fondo liso</div></div>
-        <div class="doc-fila"><span class="doc-fila-emoji">📄</span><div><strong>Currículum deportivo</strong><span class="doc-tag opt">Opcional</span></div></div>
+        <div class="docs-lista-titulo">Adjunta tus documentos</div>
+        <div class="field" style="margin-bottom:12px">
+          <label>🪪 DNI / NIE <span class="req">*</span></label>
+          <input type="file" id="eDni_file" name="DNI_Entrenador" accept="image/*,application/pdf" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label>📷 Foto tipo DNI <span class="req">*</span> <span style="font-size:11px;color:var(--texto-suave);font-weight:400">· Fondo liso</span></label>
+          <input type="file" id="eFoto_file" name="Foto_DNI_Entrenador" accept="image/*" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label>🎓 Titulación federativa <span style="font-size:11px;color:var(--texto-suave);font-weight:400">· Si dispones de ella</span></label>
+          <input type="file" id="eTitulacion_file" name="Titulacion" accept="image/*,application/pdf" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="field" style="margin-bottom:4px">
+          <label>📄 Currículum deportivo <span style="font-size:11px;color:var(--texto-suave);font-weight:400">· Opcional</span></label>
+          <input type="file" id="eCurriculum_file" name="Curriculum" accept="image/*,application/pdf" style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:var(--radio);padding:8px 12px;font-family:'Outfit',sans-serif;font-size:13px;width:100%;color:var(--texto)">
+        </div>
+        <div class="msg-error" id="eerr3" style="margin-top:10px">Adjunta el DNI y la foto para continuar.</div>
       </div>
       <div class="proceso-titulo">Cómo funciona el proceso</div>
       <div class="proceso-paso"><div class="proceso-num">1</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Envía el formulario con los documentos</div><div class="proceso-pdesc">En el último paso se abrirá tu app de correo. Adjunta los documentos y pulsa Enviar.</div></div></div>
@@ -721,14 +732,14 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="resumen-section" id="eResDatos"></div>
       <div class="resumen-section" id="eResForm"></div>
       <div class="email-display">Enviar a: <span id="eEmailDestSpan">direcciondeportivazabal@gmail.com</span></div>
-      <button class="bcta" onclick="enviarEntrenador()">Abrir correo y enviar <span class="acento">→</span></button>
+      <button class="bcta" onclick="enviarEntrenador()">Enviar solicitud <span class="acento">→</span></button>
     </div>
     <!-- PANTALLA FINAL ENTRENADOR -->
     <div class="card" id="eFinal">
       <div class="success-card">
-        <div class="success-icon">📧</div>
-        <div class="success-title">¡Revisa tu correo antes de enviar!</div>
-        <p class="success-desc">Se ha abierto la aplicación de correo con todos los datos ya escritos.<br><br><strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong></p>
+        <div class="success-icon" style="background:#0f7a3c;border-color:var(--amarillo)">✅</div>
+        <div class="success-title" style="color:#0f5a2a">¡Inscripción enviada correctamente!</div>
+        <p class="success-desc">Toda la documentación ha llegado al club.<br><br>Recibirás confirmación en <strong id="jFinalEmail"></strong> y en <strong>24–48 horas</strong> el club te confirmará si todo está correcto.</p>
         <div class="success-docs">
           <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE</strong></div>
           <div class="doc-fila"><span class="doc-fila-emoji">🎓</span><strong>Titulación federativa</strong> <span style="font-size:11px;color:var(--texto-suave)">(si dispones)</span></div>
@@ -1005,7 +1016,6 @@ function jconstruirResumen() {
     ['Categoría', cat],
     ['Talla', jv('jTalla')],
     ['Condiciones médicas', jv('jSalud') || '—'],
-    ['Entrenador', jv('jEntrenador') || '—'],
   ];
   var tutor = [
     ['Nombre', jv('tNombre') + ' ' + jv('tApellidos')],
@@ -1022,14 +1032,53 @@ function jconstruirResumen() {
 
 function enviarJugador() {
   var img = document.querySelector('input[name="consentImg"]:checked');
-  var asunto = 'Inscripci\u00f3n ' + jv('jNombre') + ' ' + jv('jApellidos') + ' \u2014 ' + textoGenero(generoJ) + ' ' + cat + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
-  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nLe remito la documentaci\u00f3n de inscripci\u00f3n para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL JUGADOR\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('jNombre') + ' ' + jv('jApellidos') + '\nFecha nacimiento: ' + jv('jFecha') + '\nDNI / NIE:        ' + jv('jDni') + '\nSecci\u00f3n:          ' + textoGenero(generoJ) + '\nCategor\u00eda:        ' + cat + '\nTalla:            ' + jv('jTalla') + '\nCondiciones m\u00e9d.: ' + (jv('jSalud') || '\u2014') + '\nEntrenador:       ' + (jv('jEntrenador') || '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL TUTOR LEGAL\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('tNombre') + ' ' + jv('tApellidos') + '\nDNI / NIE:        ' + jv('tDni') + '\nRelaci\u00f3n:         ' + jv('tRel') + '\nTel\u00e9fono:         ' + jv('tTel') + '\nEmail:            ' + jv('tEmail') + '\nUso de im\u00e1genes:  ' + (img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
-  window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
-  document.getElementById('jFinalEmail').textContent = EMAIL_DEST;
-  document.getElementById('jYtBtn').href = YOUTUBE_URL;
-  document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
-  document.getElementById('jFinal').classList.add('show');
-  window.scrollTo({top:0});
+  var btnEnviar = document.querySelector('#jp4 .bcta');
+  if (btnEnviar) { btnEnviar.disabled = true; btnEnviar.textContent = 'Enviando...'; }
+
+  var fd = new FormData();
+  fd.append('Nombre_Jugador', jv('jNombre') + ' ' + jv('jApellidos'));
+  fd.append('Fecha_Nacimiento', jv('jFecha'));
+  fd.append('DNI_Jugador_Num', jv('jDni'));
+  fd.append('Seccion', textoGenero(generoJ));
+  fd.append('Categoria', cat);
+  fd.append('Talla', jv('jTalla'));
+  fd.append('Condiciones_Medicas', jv('jSalud') || '—');
+  fd.append('Nombre_Tutor', jv('tNombre') + ' ' + jv('tApellidos'));
+  fd.append('DNI_Tutor_Num', jv('tDni'));
+  fd.append('Relacion', jv('tRel'));
+  fd.append('Telefono', jv('tTel'));
+  fd.append('Email_Tutor', jv('tEmail'));
+  fd.append('Uso_Imagenes', img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '—');
+  fd.append('Temporada', TEMPORADA);
+  fd.append('Fecha_Envio', new Date().toLocaleDateString('es-ES'));
+  var f1 = document.getElementById('fDniJugador');
+  var f2 = document.getElementById('fDniTutor');
+  var f3 = document.getElementById('fFoto');
+  var f4 = document.getElementById('fCertMed');
+  if (f1 && f1.files[0]) fd.append('DNI_Jugador', f1.files[0]);
+  if (f2 && f2.files[0]) fd.append('DNI_Tutor', f2.files[0]);
+  if (f3 && f3.files[0]) fd.append('Foto_DNI', f3.files[0]);
+  if (f4 && f4.files[0]) fd.append('Certificado_Medico', f4.files[0]);
+
+  fetch('https://formgrid.dev/api/f/j2ma67vb', { method: 'POST', body: fd })
+  .then(function(r) {
+    if (r.ok) {
+      var el = document.getElementById('jFinalEmail');
+      if (el) el.textContent = EMAIL_DEST;
+      var yt = document.getElementById('jYtBtn');
+      if (yt) yt.href = YOUTUBE_URL;
+      document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
+      document.getElementById('jFinal').classList.add('show');
+      window.scrollTo({top:0});
+    } else {
+      if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar inscripción →'; }
+      alert('Error al enviar. Inténtalo de nuevo.');
+    }
+  })
+  .catch(function() {
+    if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar inscripción →'; }
+    alert('Error de conexión. Comprueba tu internet e inténtalo de nuevo.');
+  });
 }
 
 /* ══ ENTRENADOR ════════════════════════════════════════════ */
@@ -1114,13 +1163,47 @@ function econstruirResumen() {
 }
 
 function enviarEntrenador() {
-  var asunto = 'Solicitud entrenador: ' + ev('eNombre') + ' ' + ev('eApellidos') + ' \u2014 ' + textoGenero(generoE) + ' ' + ev('eCat') + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
-  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nMe pongo en contacto para solicitar mi incorporaci\u00f3n como entrenador para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS PERSONALES\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + ev('eNombre') + ' ' + ev('eApellidos') + '\nDNI / NIE:        ' + ev('eDni') + '\nFecha nacimiento: ' + ev('eFecha') + '\nTel\u00e9fono:         ' + ev('eTel') + '\nEmail:            ' + ev('eEmail') + '\nSecci\u00f3n:          ' + textoGenero(generoE) + '\nCategor\u00eda:        ' + ev('eCat') + '\nTalla:            ' + ev('eTalla') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n FORMACI\u00d3N\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nTitulaci\u00f3n:       ' + ev('eTitulo') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nAdjunto a este correo: DNI, titulaci\u00f3n (si dispongo), foto tipo DNI y curr\u00edculum (opcional).\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
-  window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
-  document.getElementById('eFinalEmail').textContent = EMAIL_DEST;
-  document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
-  document.getElementById('eFinal').classList.add('show');
-  window.scrollTo({top:0});
+  var btnEnviar = document.querySelector('#ep4 .bcta');
+  if (btnEnviar) { btnEnviar.disabled = true; btnEnviar.textContent = 'Enviando...'; }
+
+  var fd = new FormData();
+  fd.append('Nombre_Entrenador', ev('eNombre') + ' ' + ev('eApellidos'));
+  fd.append('DNI_Entrenador_Num', ev('eDni'));
+  fd.append('Fecha_Nacimiento', ev('eFecha'));
+  fd.append('Telefono', ev('eTel'));
+  fd.append('Email', ev('eEmail'));
+  fd.append('Seccion', textoGenero(generoE));
+  fd.append('Categoria', ev('eCat'));
+  fd.append('Talla', ev('eTalla'));
+  fd.append('Titulacion', ev('eTitulo'));
+  fd.append('Temporada', TEMPORADA);
+  fd.append('Fecha_Envio', new Date().toLocaleDateString('es-ES'));
+  var f1 = document.getElementById('eDni_file');
+  var f2 = document.getElementById('eFoto_file');
+  var f3 = document.getElementById('eTitulacion_file');
+  var f4 = document.getElementById('eCurriculum_file');
+  if (f1 && f1.files[0]) fd.append('DNI_Entrenador', f1.files[0]);
+  if (f2 && f2.files[0]) fd.append('Foto_DNI', f2.files[0]);
+  if (f3 && f3.files[0]) fd.append('Titulacion_Doc', f3.files[0]);
+  if (f4 && f4.files[0]) fd.append('Curriculum', f4.files[0]);
+
+  fetch('https://formgrid.dev/api/f/j2ma67vb', { method: 'POST', body: fd })
+  .then(function(r) {
+    if (r.ok) {
+      var el = document.getElementById('eFinalEmail');
+      if (el) el.textContent = EMAIL_DEST;
+      document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
+      document.getElementById('eFinal').classList.add('show');
+      window.scrollTo({top:0});
+    } else {
+      if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar solicitud →'; }
+      alert('Error al enviar. Inténtalo de nuevo.');
+    }
+  })
+  .catch(function() {
+    if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar solicitud →'; }
+    alert('Error de conexión. Comprueba tu internet e inténtalo de nuevo.');
+  });
 }
 
 /* ══ HELPERS ═══════════════════════════════════════════════ */
