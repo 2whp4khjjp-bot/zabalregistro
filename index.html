@@ -1032,53 +1032,41 @@ function jconstruirResumen() {
 
 function enviarJugador() {
   var img = document.querySelector('input[name="consentImg"]:checked');
-  var btnEnviar = document.querySelector('#jp4 .bcta');
-  if (btnEnviar) { btnEnviar.disabled = true; btnEnviar.textContent = 'Enviando...'; }
 
-  var fd = new FormData();
-  fd.append('Nombre_Jugador', jv('jNombre') + ' ' + jv('jApellidos'));
-  fd.append('Fecha_Nacimiento', jv('jFecha'));
-  fd.append('DNI_Jugador_Num', jv('jDni'));
-  fd.append('Seccion', textoGenero(generoJ));
-  fd.append('Categoria', cat);
-  fd.append('Talla', jv('jTalla'));
-  fd.append('Condiciones_Medicas', jv('jSalud') || '—');
-  fd.append('Nombre_Tutor', jv('tNombre') + ' ' + jv('tApellidos'));
-  fd.append('DNI_Tutor_Num', jv('tDni'));
-  fd.append('Relacion', jv('tRel'));
-  fd.append('Telefono', jv('tTel'));
-  fd.append('Email_Tutor', jv('tEmail'));
-  fd.append('Uso_Imagenes', img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '—');
-  fd.append('Temporada', TEMPORADA);
-  fd.append('Fecha_Envio', new Date().toLocaleDateString('es-ES'));
-  var f1 = document.getElementById('fDniJugador');
-  var f2 = document.getElementById('fDniTutor');
-  var f3 = document.getElementById('fFoto');
-  var f4 = document.getElementById('fCertMed');
-  if (f1 && f1.files[0]) fd.append('DNI_Jugador', f1.files[0]);
-  if (f2 && f2.files[0]) fd.append('DNI_Tutor', f2.files[0]);
-  if (f3 && f3.files[0]) fd.append('Foto_DNI', f3.files[0]);
-  if (f4 && f4.files[0]) fd.append('Certificado_Medico', f4.files[0]);
+  // Rellenar campos ocultos del formulario nativo
+  document.getElementById('hNombreJugador').value = jv('jNombre') + ' ' + jv('jApellidos');
+  document.getElementById('hFecha').value = jv('jFecha');
+  document.getElementById('hDniJugador').value = jv('jDni');
+  document.getElementById('hSeccion').value = textoGenero(generoJ);
+  document.getElementById('hCategoria').value = cat;
+  document.getElementById('hTalla').value = jv('jTalla');
+  document.getElementById('hCondiciones').value = jv('jSalud') || '—';
+  document.getElementById('hNombreTutor').value = jv('tNombre') + ' ' + jv('tApellidos');
+  document.getElementById('hDniTutor').value = jv('tDni');
+  document.getElementById('hRelacion').value = jv('tRel');
+  document.getElementById('hTelefono').value = jv('tTel');
+  document.getElementById('hEmail').value = jv('tEmail');
+  document.getElementById('hImagenes').value = img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '—';
+  document.getElementById('hTemporada').value = TEMPORADA;
+  document.getElementById('hFechaEnvio').value = new Date().toLocaleDateString('es-ES');
 
-  fetch('https://formgrid.dev/api/f/j2ma67vb', { method: 'POST', body: fd })
-  .then(function(r) {
-    if (r.ok) {
-      var el = document.getElementById('jFinalEmail');
-      if (el) el.textContent = EMAIL_DEST;
-      var yt = document.getElementById('jYtBtn');
-      if (yt) yt.href = YOUTUBE_URL;
-      document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
-      document.getElementById('jFinal').classList.add('show');
-      window.scrollTo({top:0});
-    } else {
-      if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar inscripción →'; }
-      alert('Error al enviar. Inténtalo de nuevo.');
+  // Copiar archivos al formulario nativo
+  var copiarArchivo = function(origenId, destinoId) {
+    var origen = document.getElementById(origenId);
+    var destino = document.getElementById(destinoId);
+    if (origen && origen.files[0] && destino) {
+      var dt = new DataTransfer();
+      dt.items.add(origen.files[0]);
+      destino.files = dt.files;
     }
-  })
-  .catch(function() {
-    if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar inscripción →'; }
-    alert('Error de conexión. Comprueba tu internet e inténtalo de nuevo.');
-  });
+  };
+  copiarArchivo('fDniJugador', 'hFileDniJugador');
+  copiarArchivo('fDniTutor', 'hFileDniTutor');
+  copiarArchivo('fFoto', 'hFileFoto');
+  copiarArchivo('fCertMed', 'hFileCertMed');
+
+  // Enviar el formulario nativo
+  document.getElementById('formNativoJugador').submit();
 }
 
 /* ══ ENTRENADOR ════════════════════════════════════════════ */
@@ -1163,47 +1151,33 @@ function econstruirResumen() {
 }
 
 function enviarEntrenador() {
-  var btnEnviar = document.querySelector('#ep4 .bcta');
-  if (btnEnviar) { btnEnviar.disabled = true; btnEnviar.textContent = 'Enviando...'; }
+  document.getElementById('eHNombre').value = ev('eNombre') + ' ' + ev('eApellidos');
+  document.getElementById('eHDni').value = ev('eDni');
+  document.getElementById('eHFecha').value = ev('eFecha');
+  document.getElementById('eHTel').value = ev('eTel');
+  document.getElementById('eHEmail').value = ev('eEmail');
+  document.getElementById('eHSeccion').value = textoGenero(generoE);
+  document.getElementById('eHCategoria').value = ev('eCat');
+  document.getElementById('eHTalla').value = ev('eTalla');
+  document.getElementById('eHTitulo').value = ev('eTitulo');
+  document.getElementById('eHTemporada').value = TEMPORADA;
+  document.getElementById('eHFechaEnvio').value = new Date().toLocaleDateString('es-ES');
 
-  var fd = new FormData();
-  fd.append('Nombre_Entrenador', ev('eNombre') + ' ' + ev('eApellidos'));
-  fd.append('DNI_Entrenador_Num', ev('eDni'));
-  fd.append('Fecha_Nacimiento', ev('eFecha'));
-  fd.append('Telefono', ev('eTel'));
-  fd.append('Email', ev('eEmail'));
-  fd.append('Seccion', textoGenero(generoE));
-  fd.append('Categoria', ev('eCat'));
-  fd.append('Talla', ev('eTalla'));
-  fd.append('Titulacion', ev('eTitulo'));
-  fd.append('Temporada', TEMPORADA);
-  fd.append('Fecha_Envio', new Date().toLocaleDateString('es-ES'));
-  var f1 = document.getElementById('eDni_file');
-  var f2 = document.getElementById('eFoto_file');
-  var f3 = document.getElementById('eTitulacion_file');
-  var f4 = document.getElementById('eCurriculum_file');
-  if (f1 && f1.files[0]) fd.append('DNI_Entrenador', f1.files[0]);
-  if (f2 && f2.files[0]) fd.append('Foto_DNI', f2.files[0]);
-  if (f3 && f3.files[0]) fd.append('Titulacion_Doc', f3.files[0]);
-  if (f4 && f4.files[0]) fd.append('Curriculum', f4.files[0]);
-
-  fetch('https://formgrid.dev/api/f/j2ma67vb', { method: 'POST', body: fd })
-  .then(function(r) {
-    if (r.ok) {
-      var el = document.getElementById('eFinalEmail');
-      if (el) el.textContent = EMAIL_DEST;
-      document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
-      document.getElementById('eFinal').classList.add('show');
-      window.scrollTo({top:0});
-    } else {
-      if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar solicitud →'; }
-      alert('Error al enviar. Inténtalo de nuevo.');
+  var copiarArchivo = function(origenId, destinoId) {
+    var origen = document.getElementById(origenId);
+    var destino = document.getElementById(destinoId);
+    if (origen && origen.files[0] && destino) {
+      var dt = new DataTransfer();
+      dt.items.add(origen.files[0]);
+      destino.files = dt.files;
     }
-  })
-  .catch(function() {
-    if (btnEnviar) { btnEnviar.disabled = false; btnEnviar.textContent = 'Enviar solicitud →'; }
-    alert('Error de conexión. Comprueba tu internet e inténtalo de nuevo.');
-  });
+  };
+  copiarArchivo('eDni_file', 'eHFileDni');
+  copiarArchivo('eFoto_file', 'eHFileFoto');
+  copiarArchivo('eTitulacion_file', 'eHFileTitulacion');
+  copiarArchivo('eCurriculum_file', 'eHFileCurriculum');
+
+  document.getElementById('formNativoEntrenador').submit();
 }
 
 /* ══ HELPERS ═══════════════════════════════════════════════ */
@@ -1404,5 +1378,47 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
+<!-- FORMULARIO NATIVO JUGADOR (oculto) -->
+<form id="formNativoJugador" action="https://formgrid.dev/api/f/j2ma67vb" method="POST" enctype="multipart/form-data" style="display:none">
+  <input type="hidden" id="hNombreJugador" name="Nombre_Jugador">
+  <input type="hidden" id="hFecha" name="Fecha_Nacimiento">
+  <input type="hidden" id="hDniJugador" name="DNI_Jugador_Num">
+  <input type="hidden" id="hSeccion" name="Seccion">
+  <input type="hidden" id="hCategoria" name="Categoria">
+  <input type="hidden" id="hTalla" name="Talla">
+  <input type="hidden" id="hCondiciones" name="Condiciones_Medicas">
+  <input type="hidden" id="hNombreTutor" name="Nombre_Tutor">
+  <input type="hidden" id="hDniTutor" name="DNI_Tutor_Num">
+  <input type="hidden" id="hRelacion" name="Relacion">
+  <input type="hidden" id="hTelefono" name="Telefono">
+  <input type="hidden" id="hEmail" name="Email_Tutor">
+  <input type="hidden" id="hImagenes" name="Uso_Imagenes">
+  <input type="hidden" id="hTemporada" name="Temporada">
+  <input type="hidden" id="hFechaEnvio" name="Fecha_Envio">
+  <input type="file" id="hFileDniJugador" name="DNI_Jugador">
+  <input type="file" id="hFileDniTutor" name="DNI_Tutor">
+  <input type="file" id="hFileFoto" name="Foto_DNI">
+  <input type="file" id="hFileCertMed" name="Certificado_Medico">
+</form>
+
+<!-- FORMULARIO NATIVO ENTRENADOR (oculto) -->
+<form id="formNativoEntrenador" action="https://formgrid.dev/api/f/j2ma67vb" method="POST" enctype="multipart/form-data" style="display:none">
+  <input type="hidden" id="eHNombre" name="Nombre_Entrenador">
+  <input type="hidden" id="eHDni" name="DNI_Entrenador_Num">
+  <input type="hidden" id="eHFecha" name="Fecha_Nacimiento">
+  <input type="hidden" id="eHTel" name="Telefono">
+  <input type="hidden" id="eHEmail" name="Email">
+  <input type="hidden" id="eHSeccion" name="Seccion">
+  <input type="hidden" id="eHCategoria" name="Categoria">
+  <input type="hidden" id="eHTalla" name="Talla">
+  <input type="hidden" id="eHTitulo" name="Titulacion">
+  <input type="hidden" id="eHTemporada" name="Temporada">
+  <input type="hidden" id="eHFechaEnvio" name="Fecha_Envio">
+  <input type="file" id="eHFileDni" name="DNI_Entrenador">
+  <input type="file" id="eHFileFoto" name="Foto_DNI">
+  <input type="file" id="eHFileTitulacion" name="Titulacion_Doc">
+  <input type="file" id="eHFileCurriculum" name="Curriculum">
+</form>
 </body>
 </html>
