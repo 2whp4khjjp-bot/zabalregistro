@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Atlético Zabal Linense — Inscripción Online</title>
+<title>Atlético Zabal Linense — Inscripción</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Zabal Registro">
-<meta property="og:title" content="Atlético Zabal Linense — Inscripción Online">
-<meta property="og:description" content="Registro de jugadores y entrenadores del Atlético Zabal Linense. Envío de documentación directamente desde el navegador. Temporada 2025-26.">
-<meta property="og:image" content="https://2whp4khjjp-bot.github.io/zabalregistro/favicon.png">
-<meta property="og:url" content="https://2whp4khjjp-bot.github.io/zabalregistro/">
+<meta name="apple-mobile-web-app-title" content="Zabal">
+<meta property="og:title" content="Atlético Zabal Linense — Inscripción">
+<meta property="og:description" content="Formulario de registro de jugadores y entrenadores del Atlético Zabal Linense. Temporada 2026-27.">
+<meta property="og:image" content="https://2whp4khjjp-bot.github.io/zabalregistrowithmail/favicon.png">
+<meta property="og:url" content="https://2whp4khjjp-bot.github.io/zabalregistrowithmail/">
 <meta property="og:type" content="website">
-<meta name="description" content="Registro online de jugadores y entrenadores del Atlético Zabal Linense. Envío de documentación desde el navegador.">
+<meta name="description" content="Formulario de registro de jugadores y entrenadores del Atlético Zabal Linense.">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ══ VARIABLES ══════════════════════════════════════════════ */
@@ -66,7 +66,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .topbar-btn:hover { background:rgba(255,255,255,.22); }
 
 /* ══ PANTALLA SELECTOR ═════════════════════════════════════ */
-#vistaSelector, #vistaSección { min-height:calc(100vh - 60px); background:var(--fondo); }
+#vistaSelector, #vistaSección { background:var(--fondo); }
 .sel-title { font-size:11px; font-weight:700; color:var(--texto-suave); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px; text-align:center; }
 .sel-sub { font-size:17px; font-weight:700; color:var(--azul); text-align:center; margin-bottom:12px; line-height:1.3; }
 .sel-aviso { background:var(--amarillo-bg); border:1px solid var(--amarillo-borde); border-radius:var(--radio); padding:10px 14px; font-size:12px; color:#7a5a00; margin-bottom:16px; width:100%; text-align:left; line-height:1.5; }
@@ -315,6 +315,22 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 }
 .nav-ext .bnext::after { content: ''; }
 
+
+/* ══ UPLOAD FIELDS (de Codex) ══════════════════════════════ */
+.upload-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+@media(max-width:560px){ .upload-grid { grid-template-columns:1fr; } }
+.upload-field { background:var(--fondo-card); border:1px solid var(--borde); border-radius:var(--radio); padding:12px 14px; }
+.upload-field label { display:block; font-size:12px; font-weight:700; color:var(--azul); margin-bottom:5px; }
+.upload-field small { display:block; font-size:11px; color:var(--texto-suave); line-height:1.4; margin-bottom:8px; }
+.upload-field input[type=file] { width:100%; font-size:12px; color:var(--texto-med); }
+.upload-field.error { border-color:#e05050; background:#fff0f0; }
+.send-status { display:none; margin-top:12px; padding:11px 14px; border-radius:var(--radio); font-size:13px; line-height:1.5; }
+.send-status.visible { display:block; }
+.send-status.ok { background:var(--completado-bg); color:var(--azul); }
+.send-status.err { background:#fff0f0; color:#b83838; }
+.send-status.loading { background:var(--amarillo-bg); color:#7a5a00; border:1px solid var(--amarillo-borde); }
+.bcta[disabled] { opacity:.65; cursor:wait; }
+
 /* ══ MSGS ERROR ════════════════════════════════════════════ */
 .msg-error { background:#fff0f0; color:#c0392b; border:.5px solid #f5c0c0; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:12px; display:none; }
 .msg-error.visible { display:block; }
@@ -537,21 +553,6 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
         </div>
         <div class="field"><label>Alergias / Condiciones médicas</label><input type="text" id="jSalud" placeholder="Indicar si las hay, o vacío"></div>
       </div>
-      <div class="field-row full">
-        <div class="field"><label>Nombre del entrenador</label>
-          <select id="jEntrenador">
-            <option value="">Seleccionar (opcional)</option>
-            <option>Adrian</option>
-            <option>Javier del Rio</option>
-            <option>Sebastian</option>
-            <option>Ramon</option>
-            <option>Oscar Moreno</option>
-            <option>Hugo Becerra</option>
-            <option>Jorge Baez</option>
-            <option>Fabian</option>
-          </select>
-        </div>
-      </div>
       <div class="msg-error" id="jerr1">Rellena nombre, apellidos, fecha, DNI y talla.</div>
     </div>
     <!-- PASO 2: Datos tutor -->
@@ -583,17 +584,24 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       </div>
       <div class="msg-error" id="jerr2">Todos los campos del tutor son obligatorios.</div>
     </div>
-    <!-- PASO 3: Documentos + infografía -->
+    <!-- PASO 3: Documentos + uploads -->
     <div class="card" id="jp3">
       <div class="card-title"><div class="card-title-icon">📋</div>Documentación y siguiente paso</div>
-      <p class="card-desc">Revisa qué documentos tendrás que enviar y cómo funciona el proceso.</p>
+      <p class="card-desc">Adjunta los documentos y revisa cómo funciona el proceso.</p>
       <div class="docs-lista">
-        <div class="docs-lista-titulo">Documentos que deberás adjuntar al correo</div>
+        <div class="docs-lista-titulo">Documentos a subir</div>
         <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE del jugador</strong><span class="doc-tag obl">Obligatorio</span></div></div>
         <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE del tutor legal</strong><span class="doc-tag obl">Obligatorio</span></div></div>
         <div class="doc-fila"><span class="doc-fila-emoji">🏥</span><div><strong>Certificado médico</strong><span class="doc-tag opt">Opcional</span></div></div>
         <div class="doc-fila"><span class="doc-fila-emoji">📷</span><div><strong>Foto tipo DNI del jugador</strong><span class="doc-tag obl">Obligatorio</span> · Fondo liso</div></div>
       </div>
+      <div class="upload-grid">
+        <div class="upload-field" id="wrapJDniJugador"><label>DNI / NIE del jugador <span class="req">*</span></label><small>Foto o PDF.</small><input type="file" id="jDocDniJugador" accept="image/*,.pdf"></div>
+        <div class="upload-field" id="wrapJDniTutor"><label>DNI / NIE del tutor legal <span class="req">*</span></label><small>Foto o PDF.</small><input type="file" id="jDocDniTutor" accept="image/*,.pdf"></div>
+        <div class="upload-field" id="wrapJFoto"><label>Foto tipo DNI <span class="req">*</span></label><small>Imagen de cara con fondo liso.</small><input type="file" id="jDocFoto" accept="image/*"></div>
+        <div class="upload-field"><label>Certificado médico</label><small>Opcional. Foto o PDF.</small><input type="file" id="jDocMedico" accept="image/*,.pdf"></div>
+      </div>
+      <div class="msg-error" id="jerr3">Adjunta los documentos obligatorios para continuar.</div>
       <div class="proceso-titulo">Cómo funciona el proceso</div>
       <div class="proceso-paso"><div class="proceso-num">1</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Completa el formulario y envía el correo</div><div class="proceso-pdesc">En el último paso se abrirá tu app de correo con todos los datos ya escritos. <strong>Adjunta los 4 documentos</strong> y pulsa Enviar.</div></div></div>
       <div class="proceso-separador"><div class="proceso-linea"></div></div>
@@ -610,21 +618,23 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="resumen-section" id="jResJugador"></div>
       <div class="resumen-section" id="jResTutor"></div>
       <div class="email-display">Enviar a: <span id="emailDestSpan">direcciondeportivazabal@gmail.com</span></div>
-      <button class="bcta" onclick="enviarJugador()">Abrir correo y enviar <span class="acento">→</span></button>
+      <div class="resumen-section" id="jResDocs"></div>
+      <button class="bcta" id="jSubmitBtn" onclick="enviarJugador()">Enviar inscripción <span class="acento">→</span></button>
+      <div class="send-status" id="jSendStatus"></div>
     </div>
     <!-- PANTALLA FINAL JUGADOR -->
     <div class="card" id="jFinal">
       <div class="success-card">
-        <div class="success-icon">📧</div>
-        <div class="success-title">¡Revisa tu correo antes de enviar!</div>
-        <p class="success-desc">Se ha abierto la aplicación de correo con todos los datos ya escritos.<br><br><strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong></p>
+        <div class="success-icon" style="background:#0f7a3c;border-color:var(--amarillo)">✅</div>
+        <div class="success-title" style="color:#0f5a2a">¡Inscripción enviada!</div>
+        <p class="success-desc">Los datos y documentos se han enviado al club correctamente.<br><br>El club revisará la documentación en <strong>24–48 horas</strong>.</p>
         <div class="success-docs">
           <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE del jugador</strong></div>
           <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE del tutor legal</strong></div>
           <div class="doc-fila"><span class="doc-fila-emoji">🏥</span><strong>Certificado médico</strong> <span style="font-size:11px;color:var(--texto-suave)">(si lo tienes)</span></div>
           <div class="doc-fila"><span class="doc-fila-emoji">📷</span><strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
         </div>
-        <div class="success-aviso">📨 Envía el correo a <strong id="jFinalEmail" style="color:var(--azul)"></strong>.<br>Si no se abrió el correo, abre tu app de correo manualmente y envía los archivos a esa dirección.</div>
+        <div class="success-aviso">El club recibirá un aviso en <strong id="jFinalEmail" style="color:var(--azul)"></strong>.</div>
         <a href="#" id="jYtBtn" target="_blank" class="btn-yt"><div class="btn-yt-icon"><svg viewBox="0 0 24 24" fill="white"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/></svg></div><div class="btn-yt-texts"><div class="btn-yt-title">¿Tienes dudas? Ver vídeo explicativo</div><div class="btn-yt-sub">Guía paso a paso para completar la inscripción</div></div></a>
         <br>
         <button class="btn-reiniciar" onclick="location.reload()">Nueva inscripción</button>
@@ -705,12 +715,19 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="card-title"><div class="card-title-icon">📋</div>Documentación y proceso</div>
       <p class="card-desc">Documentos a adjuntar y cómo funciona el proceso.</p>
       <div class="docs-lista">
-        <div class="docs-lista-titulo">Documentos que deberás adjuntar al correo</div>
+        <div class="docs-lista-titulo">Documentos a subir</div>
         <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><div><strong>DNI / NIE</strong><span class="doc-tag obl">Obligatorio</span></div></div>
         <div class="doc-fila"><span class="doc-fila-emoji">🎓</span><div><strong>Titulación federativa</strong><span class="doc-tag opt">Si dispones de ella</span></div></div>
         <div class="doc-fila"><span class="doc-fila-emoji">📷</span><div><strong>Foto tipo DNI</strong><span class="doc-tag obl">Obligatorio</span> · Fondo liso</div></div>
         <div class="doc-fila"><span class="doc-fila-emoji">📄</span><div><strong>Currículum deportivo</strong><span class="doc-tag opt">Opcional</span></div></div>
       </div>
+      <div class="upload-grid">
+        <div class="upload-field" id="wrapEDni"><label>DNI / NIE <span class="req">*</span></label><small>Foto o PDF.</small><input type="file" id="eDocDni" accept="image/*,.pdf"></div>
+        <div class="upload-field" id="wrapEFoto"><label>Foto tipo DNI <span class="req">*</span></label><small>Imagen de cara con fondo liso.</small><input type="file" id="eDocFoto" accept="image/*"></div>
+        <div class="upload-field"><label>Titulación federativa</label><small>Opcional. Foto o PDF.</small><input type="file" id="eDocTitulo" accept="image/*,.pdf"></div>
+        <div class="upload-field"><label>Currículum deportivo</label><small>Opcional.</small><input type="file" id="eDocCv" accept=".pdf,.doc,.docx,image/*"></div>
+      </div>
+      <div class="msg-error" id="eerr3">Adjunta el DNI y la foto para continuar.</div>
       <div class="proceso-titulo">Cómo funciona el proceso</div>
       <div class="proceso-paso"><div class="proceso-num">1</div><div class="proceso-cuerpo default"><div class="proceso-ptitulo">Envía el formulario con los documentos</div><div class="proceso-pdesc">En el último paso se abrirá tu app de correo. Adjunta los documentos y pulsa Enviar.</div></div></div>
       <div class="proceso-separador"><div class="proceso-linea"></div></div>
@@ -727,21 +744,23 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
       <div class="resumen-section" id="eResDatos"></div>
       <div class="resumen-section" id="eResForm"></div>
       <div class="email-display">Enviar a: <span id="eEmailDestSpan">direcciondeportivazabal@gmail.com</span></div>
-      <button class="bcta" onclick="enviarEntrenador()">Abrir correo y enviar <span class="acento">→</span></button>
+      <div class="resumen-section" id="eResDocs"></div>
+      <button class="bcta" id="eSubmitBtn" onclick="enviarEntrenador()">Enviar solicitud <span class="acento">→</span></button>
+      <div class="send-status" id="eSendStatus"></div>
     </div>
     <!-- PANTALLA FINAL ENTRENADOR -->
     <div class="card" id="eFinal">
       <div class="success-card">
-        <div class="success-icon">📧</div>
-        <div class="success-title">¡Revisa tu correo antes de enviar!</div>
-        <p class="success-desc">Se ha abierto la aplicación de correo con todos los datos ya escritos.<br><br><strong style="color:var(--azul)">Antes de pulsar Enviar, adjunta estos archivos:</strong></p>
+        <div class="success-icon" style="background:#0f7a3c;border-color:var(--amarillo)">✅</div>
+        <div class="success-title" style="color:#0f5a2a">¡Inscripción enviada!</div>
+        <p class="success-desc">Los datos y documentos se han enviado al club correctamente.<br><br>El club revisará la documentación en <strong>24–48 horas</strong>.</p>
         <div class="success-docs">
           <div class="doc-fila"><span class="doc-fila-emoji">🪪</span><strong>DNI / NIE</strong></div>
           <div class="doc-fila"><span class="doc-fila-emoji">🎓</span><strong>Titulación federativa</strong> <span style="font-size:11px;color:var(--texto-suave)">(si dispones)</span></div>
           <div class="doc-fila"><span class="doc-fila-emoji">📷</span><strong>Foto tipo DNI</strong> <span style="font-size:11px;color:var(--texto-suave)">fondo liso</span></div>
           <div class="doc-fila"><span class="doc-fila-emoji">📄</span><strong>Currículum deportivo</strong> <span style="font-size:11px;color:var(--texto-suave)">(opcional)</span></div>
         </div>
-        <div class="success-aviso">📨 Envía el correo a <strong id="eFinalEmail" style="color:var(--azul)"></strong>.<br>Si no se abrió el correo, abre tu app manualmente y envía los archivos.</div>
+        <div class="success-aviso">El club recibirá un aviso en <strong id="eFinalEmail" style="color:var(--azul)"></strong>.</div>
         <br>
         <button class="btn-reiniciar" onclick="location.reload()">Volver al inicio</button>
       </div>
@@ -792,6 +811,39 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">He terminado pero no se abrió el correo, ¿qué hago?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Abre tu aplicación de correo manualmente, crea un correo nuevo a <strong>direcciondeportivazabal@gmail.com</strong>, en el asunto indica <em>Inscripción [nombre] — [categoría]</em>, adjunta los documentos y envíalo.</div></div>
     <div class="faq-section-title">Categorías</div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿En qué categoría se inscribe mi hijo?</div><div class="faq-chevron">▾</div></div><div class="faq-a"><ul><li><strong>Bebé</strong> — nacidos en 2021 o posterior</li><li><strong>Prebenjamín</strong> — nacidos en 2019–2020</li><li><strong>Benjamín</strong> — nacidos en 2017–2018</li><li><strong>Alevín</strong> — nacidos en 2015–2016</li><li><strong>Infantil</strong> — nacidos en 2013–2014</li><li><strong>Cadete</strong> — nacidos en 2011–2012</li><li><strong>Juvenil</strong> — nacidos en 2008–2010</li></ul></div></div>
+    <div class="faq-section-title">Configurar el correo en el móvil</div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">¿Por qué necesito tener el correo configurado?</div><div class="faq-chevron">▾</div></div><div class="faq-a">Al finalizar el formulario se abrirá tu aplicación de correo con todos los datos ya escritos. Si no tienes el correo configurado en el móvil, no podrá abrirse y tendrás que hacerlo desde un ordenador o configurarlo primero.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">Cómo configurar el correo en iPhone (Apple)</div><div class="faq-chevron">▾</div></div><div class="faq-a">
+      <ol>
+        <li>Abre <strong>Ajustes</strong> en tu iPhone</li>
+        <li>Baja y pulsa <strong>Mail</strong></li>
+        <li>Pulsa <strong>Cuentas</strong> → <strong>Añadir cuenta</strong></li>
+        <li>Elige tu proveedor: <strong>Google</strong> (Gmail), <strong>Outlook</strong>, etc.</li>
+        <li>Introduce tu correo y contraseña</li>
+        <li>Pulsa <strong>Siguiente</strong> y sigue los pasos</li>
+      </ol>
+      Si usas Gmail, también puedes descargar la app <strong>Gmail</strong> desde el App Store — funciona igual de bien.<br><br>
+      <a href="https://www.youtube.com/shorts/9ruG4IUrzO0" target="_blank" class="btn-yt" style="margin-top:8px">
+        <div class="btn-yt-icon"><svg viewBox="0 0 24 24" fill="white"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/></svg></div>
+        <div class="btn-yt-texts"><div class="btn-yt-title">Ver vídeo: configurar correo en iPhone</div><div class="btn-yt-sub">Guía paso a paso en español</div></div>
+      </a>
+    </div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">Cómo configurar el correo en Android</div><div class="faq-chevron">▾</div></div><div class="faq-a">
+      <ol>
+        <li>Abre <strong>Ajustes</strong> en tu Android</li>
+        <li>Busca <strong>Cuentas</strong> o <strong>Usuarios y cuentas</strong></li>
+        <li>Pulsa <strong>Añadir cuenta</strong></li>
+        <li>Elige <strong>Google</strong> si tienes Gmail, o <strong>Exchange / correo personal</strong> para otros</li>
+        <li>Introduce tu correo y contraseña y sigue los pasos</li>
+      </ol>
+      También puedes descargar directamente la app <strong>Gmail</strong> o <strong>Outlook</strong> desde Google Play — son las más fáciles de configurar.<br><br>
+      <a href="https://www.youtube.com/watch?v=JfRzLkYUhsM" target="_blank" class="btn-yt" style="margin-top:8px">
+        <div class="btn-yt-icon"><svg viewBox="0 0 24 24" fill="white"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/></svg></div>
+        <div class="btn-yt-texts"><div class="btn-yt-title">Ver vídeo: configurar correo en Android</div><div class="btn-yt-sub">Guía paso a paso en español</div></div>
+      </a>
+    </div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><div class="faq-q-text">No tengo correo, ¿cómo creo uno?</div><div class="faq-chevron">▾</div></div><div class="faq-a">La opción más sencilla es crear una cuenta de <strong>Gmail</strong>:<ol><li>Ve a <strong>gmail.com</strong> desde el navegador</li><li>Pulsa <strong>Crear cuenta</strong></li><li>Sigue los pasos — es gratuito y tarda menos de 5 minutos</li><li>Una vez creado, configúralo en tu móvil siguiendo los pasos de arriba</li></ol></div></div>
+
     <a href="https://www.youtube.com/watch?v=PENDIENTE" target="_blank" rel="noopener" class="faq-yt" id="faqYtLink">
       <div class="faq-yt-icon"><svg viewBox="0 0 24 24" fill="white"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5v-7.3l8.1 3.7-8.1 3.6z"/></svg></div>
       <div><div class="faq-yt-title">Ver vídeo explicativo completo</div><div class="faq-yt-sub">Guía paso a paso · Próximamente disponible</div></div>
@@ -840,6 +892,12 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
           <div class="admin-msg" id="adminTempMsg"></div>
         </div>
         <div class="admin-section">
+          <div class="admin-stitle">URL de Apps Script</div>
+          <input class="admin-input" type="text" id="adminScriptInput" placeholder="https://script.google.com/macros/s/...">
+          <button class="admin-btn" onclick="guardarScript()">Guardar URL</button>
+          <div class="admin-msg" id="adminScriptMsg"></div>
+        </div>
+        <div class="admin-section">
           <div class="admin-stitle">Correo de destino</div>
           <input class="admin-input" type="email" id="adminEmailInput" placeholder="correo@club.es">
           <button class="admin-btn" onclick="guardarCorreo()">Guardar correo</button>
@@ -859,6 +917,7 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 <script>
 /* ══ CONFIG ════════════════════════════════════════════════ */
 var EMAIL_DEST = localStorage.getItem('zabal_email') || 'direcciondeportivazabal@gmail.com';
+var SCRIPT_URL = localStorage.getItem('zabal_script_url') || 'https://script.google.com/macros/s/AKfycbw5o0PWWuVl1Yn9sC6aXSRBU5f0_av3GfqkRxWyQBVUzixX7oOL7OJpj0eznaklFlSI/exec';
 var TEMPORADA  = localStorage.getItem('zabal_temp')  || '2025\u201326';
 var ADMIN_PWD  = '1234admin';
 var YOUTUBE_URL = 'https://www.youtube.com/watch?v=PENDIENTE';
@@ -1011,7 +1070,6 @@ function jconstruirResumen() {
     ['Categoría', cat],
     ['Talla', jv('jTalla')],
     ['Condiciones médicas', jv('jSalud') || '—'],
-    ['Entrenador', jv('jEntrenador') || '—'],
   ];
   var tutor = [
     ['Nombre', jv('tNombre') + ' ' + jv('tApellidos')],
@@ -1023,13 +1081,20 @@ function jconstruirResumen() {
   ];
   document.getElementById('jResJugador').innerHTML = seccion('Jugador', jugador);
   document.getElementById('jResTutor').innerHTML   = seccion('Tutor', tutor);
+  var jResDocs = document.getElementById('jResDocs');
+  if (jResDocs) jResDocs.innerHTML = seccion('Documentos', [
+    ['DNI jugador', fileName('jDocDniJugador')],
+    ['DNI tutor', fileName('jDocDniTutor')],
+    ['Foto tipo DNI', fileName('jDocFoto')],
+    ['Certificado médico', fileName('jDocMedico')]
+  ]);
   document.getElementById('emailDestSpan').textContent = EMAIL_DEST;
 }
 
 function enviarJugador() {
   var img = document.querySelector('input[name="consentImg"]:checked');
   var asunto = 'Inscripci\u00f3n ' + jv('jNombre') + ' ' + jv('jApellidos') + ' \u2014 ' + textoGenero(generoJ) + ' ' + cat + ' ' + new Date().getFullYear() + '/' + (new Date().getFullYear()+1);
-  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nLe remito la documentaci\u00f3n de inscripci\u00f3n para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL JUGADOR\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('jNombre') + ' ' + jv('jApellidos') + '\nFecha nacimiento: ' + jv('jFecha') + '\nDNI / NIE:        ' + jv('jDni') + '\nSecci\u00f3n:          ' + textoGenero(generoJ) + '\nCategor\u00eda:        ' + cat + '\nTalla:            ' + jv('jTalla') + '\nCondiciones m\u00e9d.: ' + (jv('jSalud') || '\u2014') + '\nEntrenador:       ' + (jv('jEntrenador') || '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL TUTOR LEGAL\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('tNombre') + ' ' + jv('tApellidos') + '\nDNI / NIE:        ' + jv('tDni') + '\nRelaci\u00f3n:         ' + jv('tRel') + '\nTel\u00e9fono:         ' + jv('tTel') + '\nEmail:            ' + jv('tEmail') + '\nUso de im\u00e1genes:  ' + (img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
+  var cuerpo = 'Estimado Atl\u00e9tico Zabal Linense,\n\nLe remito la documentaci\u00f3n de inscripci\u00f3n para la temporada ' + TEMPORADA + '.\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL JUGADOR\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('jNombre') + ' ' + jv('jApellidos') + '\nFecha nacimiento: ' + jv('jFecha') + '\nDNI / NIE:        ' + jv('jDni') + '\nSecci\u00f3n:          ' + textoGenero(generoJ) + '\nCategor\u00eda:        ' + cat + '\nTalla:            ' + jv('jTalla') + '\nCondiciones m\u00e9d.: ' + (jv('jSalud') || '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n DATOS DEL TUTOR LEGAL\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNombre:           ' + jv('tNombre') + ' ' + jv('tApellidos') + '\nDNI / NIE:        ' + jv('tDni') + '\nRelaci\u00f3n:         ' + jv('tRel') + '\nTel\u00e9fono:         ' + jv('tTel') + '\nEmail:            ' + jv('tEmail') + '\nUso de im\u00e1genes:  ' + (img ? (img.value === 'si' ? 'AUTORIZADO' : 'NO AUTORIZADO') : '\u2014') + '\n\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nEnviado desde el formulario web del Atl\u00e9tico Zabal Linense.\nFecha: ' + new Date().toLocaleDateString('es-ES');
   window.location.href = 'mailto:' + encodeURIComponent(EMAIL_DEST) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
   document.getElementById('jFinalEmail').textContent = EMAIL_DEST;
   document.getElementById('jYtBtn').href = YOUTUBE_URL;
@@ -1116,6 +1181,13 @@ function econstruirResumen() {
   var form = [['Titulación', ev('eTitulo')]];
   document.getElementById('eResDatos').innerHTML = seccion('Datos personales', datos);
   document.getElementById('eResForm').innerHTML  = seccion('Formación', form);
+  var eResDocs = document.getElementById('eResDocs');
+  if (eResDocs) eResDocs.innerHTML = seccion('Documentos', [
+    ['DNI / NIE', fileName('eDocDni')],
+    ['Foto tipo DNI', fileName('eDocFoto')],
+    ['Titulación', fileName('eDocTitulo')],
+    ['Currículum', fileName('eDocCv')]
+  ]);
   document.getElementById('eEmailDestSpan').textContent = EMAIL_DEST;
 }
 
@@ -1146,6 +1218,7 @@ function toggleFaq(qEl) {
 function abrirAdmin() {
   document.getElementById('adminOverlay').classList.add('abierto');
   document.getElementById('adminTempInput').value = TEMPORADA;
+  var si = document.getElementById('adminScriptInput'); if (si) si.value = localStorage.getItem('zabal_script_url') || '';
   document.getElementById('adminEmailInput').value = EMAIL_DEST;
   actualizarPreview();
   if (adminOk) document.getElementById('adminConfigZone').style.display = 'block';
@@ -1188,6 +1261,14 @@ function guardarCorreo() {
   document.getElementById('eEmailDestSpan').textContent = val;
   actualizarPreview();
   msg.innerHTML = '✅ Actualizado en este dispositivo. Para aplicarlo a todos edita <strong>config.json</strong> en GitHub con el valor: <strong>' + val + '</strong>';
+  msg.className = 'admin-msg ok';
+}
+function guardarScript() {
+  var val = document.getElementById('adminScriptInput').value.trim();
+  var msg = document.getElementById('adminScriptMsg');
+  if (!val) { msg.textContent = 'Introduce la URL de Apps Script.'; msg.className = 'admin-msg err'; return; }
+  localStorage.setItem('zabal_script_url', val);
+  msg.innerHTML = '✅ URL guardada. Los envíos irán a Google Drive.';
   msg.className = 'admin-msg ok';
 }
 function actualizarPreview() {
@@ -1303,6 +1384,125 @@ function actualizarNavExt(tipo) {
 
 function eBtnAtras() { if(epaso===1) mostrarVista('vistaSelector'); else if(epaso===3) eir(1); else if(epaso===4) eir(3); }
 function eBtnAdelante() { if(epaso===1) eir(3); else if(epaso===3) eir(4); }
+
+
+/* ══ HELPERS DE ENVÍO (Google Drive / Apps Script) ════════ */
+function fileName(id) {
+  var el = document.getElementById(id);
+  return el && el.files && el.files[0] ? el.files[0].name : 'No adjuntado';
+}
+function reqFile(id, wrapId) {
+  var el = document.getElementById(id);
+  var wrap = document.getElementById(wrapId);
+  var ok = !!(el && el.files && el.files[0]);
+  if (wrap) wrap.classList.toggle('error', !ok);
+  return ok;
+}
+function fileToPayload(id, label) {
+  var el = document.getElementById(id);
+  if (!el || !el.files || !el.files[0]) return Promise.resolve(null);
+  var file = el.files[0];
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var result = String(reader.result || '');
+      resolve({ label: label, name: file.name, type: file.type || 'application/octet-stream', size: file.size, data: result.split(',')[1] || '' });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function setSendStatus(id, type, text) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'send-status visible ' + type;
+  el.textContent = text;
+}
+function setSending(btnId, isSending) {
+  var btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = isSending;
+  btn.innerHTML = isSending ? 'Enviando...' : (btnId === 'jSubmitBtn' ? 'Enviar inscripción <span class=\"acento\">→</span>' : 'Enviar solicitud <span class=\"acento\">→</span>');
+}
+function enviarServidor(payload) {
+  if (window.google && google.script && google.script.run) {
+    return new Promise(function(resolve, reject) {
+      google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).submitRegistration(payload);
+    });
+  }
+  var url = localStorage.getItem('zabal_script_url') || SCRIPT_URL;
+  if (!url) return Promise.reject(new Error('Falta configurar la URL de Apps Script en el panel de administración.'));
+  return fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).then(function(r){ return r.json(); });
+}
+
+function enviarJugador() {
+  if (!jvalidar(3)) { jir(3); return; }
+  var img = document.querySelector('input[name="consentImg"]:checked');
+  setSending('jSubmitBtn', true);
+  setSendStatus('jSendStatus', 'loading', 'Subiendo documentos...');
+  Promise.all([
+    fileToPayload('jDocDniJugador', 'DNI jugador'),
+    fileToPayload('jDocDniTutor', 'DNI tutor'),
+    fileToPayload('jDocFoto', 'Foto tipo DNI'),
+    fileToPayload('jDocMedico', 'Certificado medico')
+  ]).then(function(files) {
+    return enviarServidor({
+      tipo: 'jugador', temporada: TEMPORADA, emailDestino: EMAIL_DEST,
+      datos: {
+        nombre: jv('jNombre'), apellidos: jv('jApellidos'), fechaNacimiento: jv('jFecha'), dni: jv('jDni'),
+        seccion: textoGenero(generoJ), categoria: cat, talla: jv('jTalla'), salud: jv('jSalud'),
+        tutorNombre: jv('tNombre'), tutorApellidos: jv('tApellidos'), tutorDni: jv('tDni'), tutorRelacion: jv('tRel'),
+        tutorTelefono: jv('tTel'), tutorEmail: jv('tEmail'),
+        consentimientoImagenes: img ? (img.value === 'si' ? 'Autorizado' : 'No autorizado') : ''
+      },
+      archivos: files.filter(Boolean)
+    });
+  }).then(function(res) {
+    if (res && res.ok === false) throw new Error(res.error || 'No se pudo enviar.');
+    document.getElementById('jFinalEmail').textContent = EMAIL_DEST;
+    document.getElementById('jYtBtn').href = YOUTUBE_URL;
+    document.querySelectorAll('#vistaJugador .card').forEach(function(c){ c.classList.remove('show'); });
+    document.getElementById('jFinal').classList.add('show');
+    window.scrollTo({top:0});
+  }).catch(function(err) {
+    setSendStatus('jSendStatus', 'err', 'Error: ' + (err && err.message ? err.message : err));
+  }).finally(function() { setSending('jSubmitBtn', false); });
+}
+
+function enviarEntrenador() {
+  if (!evalidar(3)) { eir(3); return; }
+  setSending('eSubmitBtn', true);
+  setSendStatus('eSendStatus', 'loading', 'Subiendo documentos...');
+  Promise.all([
+    fileToPayload('eDocDni', 'DNI entrenador'),
+    fileToPayload('eDocFoto', 'Foto tipo DNI'),
+    fileToPayload('eDocTitulo', 'Titulacion federativa'),
+    fileToPayload('eDocCv', 'Curriculum deportivo')
+  ]).then(function(files) {
+    return enviarServidor({
+      tipo: 'entrenador', temporada: TEMPORADA, emailDestino: EMAIL_DEST,
+      datos: {
+        nombre: ev('eNombre'), apellidos: ev('eApellidos'), dni: ev('eDni'), fechaNacimiento: ev('eFecha'),
+        telefono: ev('eTel'), email: ev('eEmail'), seccion: textoGenero(generoE),
+        categoria: ev('eCat'), talla: ev('eTalla'), titulacion: ev('eTitulo')
+      },
+      archivos: files.filter(Boolean)
+    });
+  }).then(function(res) {
+    if (res && res.ok === false) throw new Error(res.error || 'No se pudo enviar.');
+    document.getElementById('eFinalEmail').textContent = EMAIL_DEST;
+    document.querySelectorAll('#vistaEntrenador .card').forEach(function(c){ c.classList.remove('show'); });
+    document.getElementById('eFinal').classList.add('show');
+    window.scrollTo({top:0});
+  }).catch(function(err) {
+    setSendStatus('eSendStatus', 'err', 'Error: ' + (err && err.message ? err.message : err));
+  }).finally(function() { setSending('eSubmitBtn', false); });
+}
 
 /* ══ ARRANQUE ══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
