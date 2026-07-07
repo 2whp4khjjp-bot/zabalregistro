@@ -114,7 +114,8 @@ body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inse
 .field { display:flex; flex-direction:column; gap:5px; }
 .field label { font-size:11px; font-weight:700; color:var(--texto-med); text-transform:uppercase; letter-spacing:.06em; }
 .req { color:var(--azul-med); margin-left:2px; }
-.field input, .field select { background:var(--fondo-card); border:1px solid var(--borde); border-radius:var(--radio); padding:10px 13px; font-size:14px; font-family:'Outfit',sans-serif; color:var(--texto); outline:none; transition:border-color .15s, background .15s; width:100%; }
+.field input, .field select { background:var(--fondo-card); border:1px solid var(--borde); border-radius:var(--radio); padding:10px 13px; font-size:14px; font-family:'Outfit',sans-serif; color:var(--texto); outline:none; transition:border-color .15s, background .15s; width:100%; box-sizing:border-box; }
+.field input[type=date] { -webkit-appearance:none; appearance:none; text-align:left; }
 .field input:focus, .field select:focus { border-color:var(--azul-med); background:var(--blanco); }
 .field input.error { border-color:#e05050; background:#fff0f0; }
 
@@ -959,9 +960,11 @@ function elegirSeccion(g) {
   setGlobalPct(20);
   if (_tipoRegistro === 'jugador') {
     generoJ = g;
+    sessionStorage.setItem('zabal_generoJ', g);
     iniciarJugador();
   } else {
     generoE = g;
+    sessionStorage.setItem('zabal_generoE', g);
     iniciarEntrenador();
   }
 }
@@ -1061,6 +1064,7 @@ function jactualizarTabs(n) {
 }
 
 function jconstruirResumen() {
+  if (!generoJ) generoJ = sessionStorage.getItem('zabal_generoJ') || '';
   var img = document.querySelector('input[name="consentImg"]:checked');
   var jugador = [
     ['Nombre', jv('jNombre') + ' ' + jv('jApellidos')],
@@ -1168,6 +1172,7 @@ function eactualizarTabs(n) {
 }
 
 function econstruirResumen() {
+  if (!generoE) generoE = sessionStorage.getItem('zabal_generoE') || '';
   var datos = [
     ['Nombre', ev('eNombre') + ' ' + ev('eApellidos')],
     ['DNI / NIE', ev('eDni')],
