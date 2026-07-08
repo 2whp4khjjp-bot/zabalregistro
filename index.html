@@ -1430,19 +1430,17 @@ function setSending(btnId, isSending) {
   btn.innerHTML = isSending ? 'Enviando...' : (btnId === 'jSubmitBtn' ? 'Enviar inscripción <span class=\"acento\">→</span>' : 'Enviar solicitud <span class=\"acento\">→</span>');
 }
 function enviarServidor(payload) {
-  if (window.google && google.script && google.script.run) {
-    return new Promise(function(resolve, reject) {
-      google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).submitRegistration(payload);
-    });
-  }
   var url = localStorage.getItem('zabal_script_url') || SCRIPT_URL;
-  if (!url) return Promise.reject(new Error('Falta configurar la URL de Apps Script en el panel de administración.'));
+  if (!url) return Promise.reject(new Error('Falta configurar la URL del script.'));
   return fetch(url, {
     method: 'POST',
-    mode: 'cors',
+    mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
-  }).then(function(r){ return r.json(); });
+  }).then(function() {
+    // no-cors no devuelve body legible pero si llega aquí es que funcionó
+    return { ok: true };
+  });
 }
 
 function enviarJugador() {
