@@ -1432,13 +1432,14 @@ function setSending(btnId, isSending) {
 function enviarServidor(payload) {
   var url = localStorage.getItem('zabal_script_url') || SCRIPT_URL;
   if (!url) return Promise.reject(new Error('Falta configurar la URL del script.'));
+  // payload ya viene en el formato correcto para doPost:
+  // { tipo, temporada, emailDestino, datos: {...}, archivos: [{label, name, type, data}] }
   return fetch(url, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   }).then(function() {
-    // no-cors no devuelve body legible pero si llega aquí es que funcionó
     return { ok: true };
   });
 }
